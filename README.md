@@ -2,7 +2,7 @@
 
 # Comix Zone: Glitch
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/mdmen/ComixZoneGlitch/deploy?label=CI&logo=github&style=plastic) [![Oh, yeah!](https://img.shields.io/badge/%F0%9F%92%AA-Oh%2C%20yeah!-orange.svg?style=plastic)](https://en.wikipedia.org/wiki/Comix_Zone)
+[![Github lint status](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml/badge.svg)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml) [![Oh, yeah!](https://img.shields.io/badge/%F0%9F%92%AA-Oh%2C%20yeah!-orange.svg?style=flat)](https://en.wikipedia.org/wiki/Comix_Zone)
 
 Some description
 
