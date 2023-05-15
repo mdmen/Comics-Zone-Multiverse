@@ -1,0 +1,20 @@
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/test.woff2') format('woff2');
+}
+
+body {
+  -webkit-font-smoothing: none;
+  text-rendering: optimizeSpeed;
+}
+
+canvas, img {
+  image-rendering: pixelated;
+}
+
+:root {
+  --bg-color: #fff;
+}
