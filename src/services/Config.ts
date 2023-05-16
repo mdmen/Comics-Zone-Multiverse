@@ -1,4 +1,4 @@
-import { Storage } from 'platform/Storage';
+import { Storage } from '../platform/Storage';
 
 type Theme = 'system' | 'light' | 'dark';
 type Sound = 'on' | 'off';

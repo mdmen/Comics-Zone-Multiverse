@@ -12,7 +12,7 @@ module.exports = () =>
         attributes: { as: 'audio' },
       },
       {
-        match: /.*\.(png|webp)$/,
+        match: /.+(?<!favicon)\.(png|webp)$/,
         attributes: { as: 'image' },
       },
     ],

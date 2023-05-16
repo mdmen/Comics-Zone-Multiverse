@@ -1,4 +1,4 @@
-import { isProduction, isSuppressProductionLogs } from 'constants/app';
+import { isProduction, isSuppressProductionLogs } from '../constants/app';
 
 interface Logger {
   error(...args: unknown[]): void;

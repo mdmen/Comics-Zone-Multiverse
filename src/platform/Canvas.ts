@@ -1,4 +1,4 @@
-import { getAppContainer } from 'helpers';
+import { getAppContainer } from '../helpers';
 
 interface Options {
   width?: number;

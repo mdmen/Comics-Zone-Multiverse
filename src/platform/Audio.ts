@@ -1,4 +1,4 @@
-import { Logger } from 'interfaces';
+import { Logger } from '../interfaces';
 
 export class Audio<SoundNames extends string> {
   private readonly sounds;

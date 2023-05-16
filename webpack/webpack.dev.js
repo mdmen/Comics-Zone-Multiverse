@@ -5,12 +5,6 @@ const mode = 'development';
 module.exports = {
   mode,
   entry: [`${sourceFolder}/index.ts`],
-  devtool: 'eval-cheap-source-map',
-  output: {
-    filename: '[name].js',
-    path: distFolder,
-    clean: true,
-  },
   devServer: {
     static: distFolder,
     open: true,
@@ -23,8 +17,8 @@ module.exports = {
       ...require('./loaders/assets')(),
     ],
   },
-  plugins: [require('./plugins/html')(), require('./plugins/copy')()],
+  plugins: [require('./plugins/html')()],
   resolve: {
-    extensions: ['.ts'],
+    extensions: ['.ts', '.js'],
   },
 };

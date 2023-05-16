@@ -1,4 +1,4 @@
-import { isEmpty } from 'helpers/utils';
+import { isEmpty } from '../helpers/utils';
 
 type Subscriber = (...args: unknown[]) => void;
 

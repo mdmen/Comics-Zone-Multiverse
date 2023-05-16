@@ -1,5 +1,5 @@
-import { Logger } from 'interfaces/Logger';
-import { appPrefix } from 'constants/app';
+import { Logger } from '../interfaces/Logger';
+import { appPrefix } from '../constants/app';
 
 function getKey(key: string) {
   return `${appPrefix}${key}`;

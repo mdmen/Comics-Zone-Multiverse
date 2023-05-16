@@ -13,6 +13,7 @@ module.exports = {
     filename: 'js/[contenthash].js',
     assetModuleFilename: 'media/[hash][ext][query]',
     path: distFolder,
+    publicPath: '/',
     clean: true,
   },
   optimization: {
@@ -22,9 +23,16 @@ module.exports = {
       new TerserPlugin(),
       new ImageMinimizerPlugin({
         minimizer: {
-          implementation: ImageMinimizerPlugin.imageminMinify,
+          implementation: ImageMinimizerPlugin.sharpMinify,
           options: {
-            plugins: [['optipng', { strip: true }]],
+            encodeOptions: {
+              webp: {
+                lossless: true,
+              },
+              png: {
+                quality: 100,
+              },
+            },
           },
         },
       }),
@@ -46,6 +54,6 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: ['.ts'],
+    extensions: ['.ts', '.js'],
   },
 };

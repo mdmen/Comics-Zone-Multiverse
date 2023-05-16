@@ -1,4 +1,4 @@
-import { appContainerID } from 'constants/app';
+import { appContainerID } from '../constants/app';
 
 export function onDOMReady(callback: () => unknown): void {
   window.addEventListener('DOMContentLoaded', () => {
