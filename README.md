@@ -2,7 +2,7 @@
 
 # Comix Zone: Glitch
 
-[![Github lint status](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml/badge.svg)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml) [![Oh, yeah!](https://img.shields.io/badge/%F0%9F%92%AA-Oh%2C%20yeah!-orange.svg?style=flat)](https://en.wikipedia.org/wiki/Comix_Zone)
+[![Github lint status](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml/badge.svg)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml) ![Oh, yeah!](https://img.shields.io/badge/%F0%9F%92%AA-Oh%2C%20yeah!-orange.svg?style=flat)
 
 Some description
 
@@ -30,3 +30,12 @@ Gamepad is also supported
 
 - **Sit**  
   ![Uppercut move](./src/assets/images/readme/uppercut_test.png)
+
+## License
+
+The code in this repository is under [MIT license](https://choosealicense.com/licenses/mit/). But audio files and images belong to their copyright holders and cannot be used for commercial purposes without their consent.
+
+The images and audio files are taken from the following games:
+
+- [Comix Zone](https://en.wikipedia.org/wiki/Comix_Zone)
+- ...
