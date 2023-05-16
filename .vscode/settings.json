@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["Comix", "Gamepad"]
+  "cSpell.words": ["Comix", "Gamepad"],
+  "livePreview.serverRoot": "./dist"
 }

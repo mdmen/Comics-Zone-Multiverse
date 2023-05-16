@@ -7,11 +7,12 @@
 }
 
 body {
-  -webkit-font-smoothing: none;
+  -webkit-font-smoothing: subpixel-antialiased;
   text-rendering: optimizeSpeed;
 }
 
-canvas, img {
+canvas,
+img {
   image-rendering: pixelated;
 }
 
