@@ -53,9 +53,9 @@ export abstract class Assets<
   }
 
   private handleProgress(): void {
-    this.progress.increase();
+    this.progress.increment();
 
-    if (this.progress.isIncreased()) {
+    if (this.progress.hasProgress()) {
       this.emitter.emit(AssetsEvents.LOADING_PROGRESS, this.progress.get());
     }
   }

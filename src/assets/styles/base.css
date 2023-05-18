@@ -7,7 +7,6 @@
 }
 
 body {
-  -webkit-font-smoothing: subpixel-antialiased;
   text-rendering: optimizeSpeed;
 }
 
