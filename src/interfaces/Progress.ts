@@ -1,3 +1,4 @@
+// TODO rewrite through generators
 export class Progress {
   private total = 0;
   private counter = 0;

@@ -7,13 +7,5 @@ module.exports = () =>
         match: /.*\.woff2$/,
         attributes: { as: 'font' },
       },
-      {
-        match: /.*\.mp3$/,
-        attributes: { as: 'audio' },
-      },
-      {
-        match: /.*\.webp$/,
-        attributes: { as: 'image' },
-      },
     ],
   });

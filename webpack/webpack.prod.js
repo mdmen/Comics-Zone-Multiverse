@@ -11,7 +11,7 @@ module.exports = {
   entry: [`${sourceFolder}/index.ts`],
   output: {
     filename: 'js/[contenthash].js',
-    assetModuleFilename: 'media/[hash][ext][query]',
+    assetModuleFilename: 'assets/[hash][ext][query]',
     path: distFolder,
     publicPath: '/',
     clean: true,
