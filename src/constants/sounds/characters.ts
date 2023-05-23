@@ -5,6 +5,6 @@ export const charactersSounds = {
   test: sketchSprite,
   sketch: {
     src: sketchSprite,
-    map: sketchSpriteMap,
+    data: sketchSpriteMap,
   },
 };

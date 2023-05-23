@@ -44,9 +44,7 @@ export class Audio {
 
   public stop(buffer: AudioBuffer): void {
     if (this.playing.has(buffer)) {
-      const source = this.playing.get(buffer) as AudioBufferSourceNode;
-      source.stop(0);
-
+      this.playing.get(buffer)?.stop(0);
       this.playing.delete(buffer);
     }
   }

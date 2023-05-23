@@ -1,12 +1,12 @@
 import type { Audio } from '../platform/Audio';
 
-interface AudioSpriteSegment {
+interface Segment {
   start: number;
   end: number;
 }
 
-export interface AudioSpriteData<T extends string> {
-  map: Record<T, AudioSpriteSegment>;
+export interface SpriteData<Names extends string> {
+  map: Record<Names, Segment>;
 }
 
 export class AudioSprite<Names extends string> {
@@ -14,19 +14,14 @@ export class AudioSprite<Names extends string> {
   private context;
   private data;
 
-  constructor(
-    context: Audio,
-    buffer: AudioBuffer,
-    data: AudioSpriteData<string>
-  ) {
+  constructor(context: Audio, buffer: AudioBuffer, data: SpriteData<Names>) {
     this.context = context;
     this.buffer = buffer;
     this.data = data;
   }
 
   public play(name: Names): void {
-    const { map } = this.data;
-    const { start, end } = map[name];
+    const { start, end } = this.data.map[name];
 
     this.context.play({
       buffer: this.buffer,

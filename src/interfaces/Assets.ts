@@ -1,13 +1,12 @@
 import { Logger } from './Logger';
 
-type Resources<Type> = Record<string, Type>;
-
-export abstract class Assets<Asset extends unknown> {
+export abstract class Assets<Names extends string, Asset extends unknown> {
   protected readonly sources;
-  private assets: Resources<Asset> = {};
+  private assets;
 
-  constructor(sources: Record<string, unknown>) {
+  constructor(sources: Record<Names, unknown>) {
     this.sources = sources;
+    this.assets = {} as Record<Names, Asset>;
   }
 
   private getTotalCount() {
@@ -16,15 +15,14 @@ export abstract class Assets<Asset extends unknown> {
 
   public async load(): Promise<void> {
     try {
-      const names = Object.keys(this.sources);
+      const names = Object.keys(this.sources) as Names[];
 
       await Promise.all(
         names.map(async (key) => {
-          const asset = await this.loadResource(this.sources[key]);
+          const source = this.sources[key];
+          const asset = await this.loadResource(source);
 
           this.assets[key] = asset;
-
-          return asset;
         })
       );
     } catch (error) {
@@ -32,7 +30,7 @@ export abstract class Assets<Asset extends unknown> {
     }
   }
 
-  public get(): Resources<Asset> {
+  public get(): Record<Names, Asset> {
     return this.assets;
   }
 

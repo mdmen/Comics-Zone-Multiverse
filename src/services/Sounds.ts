@@ -2,13 +2,16 @@ import type { AudioSprite } from '../entities/AudioSprite';
 import type { Audio } from '../platform/Audio';
 import { isAudio } from '../helpers';
 
-type Resource<T extends string> = Record<T, AudioBuffer | AudioSprite<string>>;
+type Resource<Names extends string, Segments extends string> = Record<
+  Names,
+  AudioBuffer | AudioSprite<Segments>
+>;
 
-export class Sounds<Names extends string> {
+export class Sounds<Names extends string, Segments extends string> {
   private readonly resources;
   private readonly context;
 
-  constructor(context: Audio, resources: Resource<Names>) {
+  constructor(context: Audio, resources: Resource<Names, Segments>) {
     this.context = context;
     this.resources = resources;
   }
@@ -26,9 +29,7 @@ export class Sounds<Names extends string> {
     }
   }
 
-  public getSprite<Segments extends string>(
-    name: Names
-  ): AudioSprite<Segments> {
+  public getSprite(name: Names): AudioSprite<Segments> {
     const resource = this.resources[name];
 
     if (isAudio(resource)) {
