@@ -49,7 +49,5 @@ module.exports = {
       filename: 'css/[contenthash].css',
     }),
   ],
-  resolve: {
-    extensions: ['.ts', '.js'],
-  },
+  resolve: require('./resolve')(),
 };

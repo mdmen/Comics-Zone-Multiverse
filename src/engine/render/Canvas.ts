@@ -1,5 +1,3 @@
-import { getAppContainer } from '../helpers';
-
 interface Options {
   width?: number;
   height?: number;
@@ -23,13 +21,15 @@ export class Canvas {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private options: Required<Options>;
+  private container;
 
-  constructor(options: Options = {}) {
+  constructor(container: HTMLElement, options: Options = {}) {
     this.options = {
       ...defaults,
       ...options,
     };
 
+    this.container = container;
     this.canvas = this.createCanvas();
     this.context = this.createContext();
 
@@ -61,8 +61,7 @@ export class Canvas {
   }
 
   private mountCanvas() {
-    const container = getAppContainer();
-    container.appendChild(this.canvas);
+    this.container.appendChild(this.canvas);
   }
 
   public setStyle<T extends keyof Styles>(name: T, value: Styles[T]): void {

@@ -8,10 +8,14 @@ export function isEmpty(
   return !value.size;
 }
 
-export function isAudio(value: unknown): value is AudioBuffer {
-  return value instanceof AudioBuffer;
-}
-
 export function isString(value: unknown): value is string {
   return typeof value === 'string';
 }
+
+export const isProduction = ((): (() => boolean) => {
+  const value = process.env.NODE_ENV === 'production';
+
+  return function () {
+    return value;
+  };
+})();

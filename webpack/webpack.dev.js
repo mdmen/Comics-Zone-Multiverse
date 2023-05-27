@@ -18,7 +18,5 @@ module.exports = {
     ],
   },
   plugins: [require('./plugins/html')()],
-  resolve: {
-    extensions: ['.ts', '.js'],
-  },
+  resolve: require('./resolve')(),
 };

@@ -1,8 +1,8 @@
-import { Logger } from '../interfaces/Logger';
-import { appPrefix } from '../constants/app';
+import { Logger } from '../common/Logger';
+import { storagePrefix } from '../settings';
 
 function getKey(key: string) {
-  return `${appPrefix}${key}`;
+  return `${storagePrefix}${key}`;
 }
 
 interface Storage {

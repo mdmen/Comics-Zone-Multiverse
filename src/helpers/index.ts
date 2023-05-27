@@ -1,3 +1,3 @@
 export * from './html';
-export * from './loaders';
-export * from './utils';
+export * from '../engine/assets/loaders';
+export * from '../engine/common/utils';

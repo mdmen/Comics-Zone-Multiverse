@@ -1,16 +1,14 @@
-import { Logger } from './Logger';
+import { Logger } from '../common/Logger';
 
 export abstract class Assets<Names extends string, Asset extends unknown> {
   protected readonly sources;
-  private assets;
+  private readonly count;
+  private readonly assets;
 
   constructor(sources: Record<Names, unknown>) {
     this.sources = sources;
+    this.count = Object.keys(sources).length;
     this.assets = {} as Record<Names, Asset>;
-  }
-
-  private getTotalCount() {
-    return Object.keys(this.sources).length;
   }
 
   public async load(): Promise<void> {
@@ -20,7 +18,7 @@ export abstract class Assets<Names extends string, Asset extends unknown> {
       await Promise.all(
         names.map(async (key) => {
           const source = this.sources[key];
-          const asset = await this.loadResource(source);
+          const asset = await this.loadAsset(source);
 
           this.assets[key] = asset;
         })
@@ -34,5 +32,5 @@ export abstract class Assets<Names extends string, Asset extends unknown> {
     return this.assets;
   }
 
-  protected abstract loadResource(src: unknown): Promise<Asset>;
+  protected abstract loadAsset(src: unknown): Promise<Asset>;
 }
