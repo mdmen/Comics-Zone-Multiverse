@@ -1,3 +1,3 @@
 export * from './input/Input';
-export * from './config/Config';
+export * from './storage/Storage';
 export * from './audio/Sounds';

@@ -2,28 +2,31 @@ import type { SpriteSound } from './SpriteSound';
 import type { Sound } from './Sound';
 import { Logger } from '../common/Logger';
 
-type Resource<Names extends string, Segments extends string> = Record<
-  Names,
-  Sound | SpriteSound<Segments>
->;
-
-export class Sounds<Names extends string, Segments extends string> {
+export class Sounds<Resources extends Record<string, Sound | SpriteSound>> {
   private readonly resources;
 
-  constructor(resources: Resource<Names, Segments>) {
+  constructor(resources: Resources) {
     this.resources = resources;
   }
 
-  public play(name: Names, segment?: Segments): void {
+  public play<Key extends keyof Resources>(
+    ...args: Resources[Key] extends SpriteSound
+      ? [
+          Key,
+          Resources[Key] extends SpriteSound<infer Segments> ? Segments : never
+        ]
+      : [Key]
+  ): void {
     try {
+      const [name, segment] = args;
       const resource = this.resources[name];
-      resource.play(segment as Segments);
+      resource.play(segment as string);
     } catch (error) {
       Logger.error(error);
     }
   }
 
-  public stop(name: Names): void {
+  public stop(name: keyof Resources): void {
     try {
       this.resources[name].stop();
     } catch (error) {

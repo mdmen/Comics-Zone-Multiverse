@@ -4,31 +4,36 @@ import { SpriteSound, type SpriteSoundData } from '../audio/SpriteSound';
 import { Sound } from '../audio/Sound';
 import { loadAudio, loadData, isString } from '../../helpers';
 
-interface SpriteLoadSource {
+interface SpriteSource {
   src: string;
   data: string;
 }
 
-interface SpriteSource<Names extends string> {
+interface SpriteData {
   src: string;
-  data: SpriteSoundData<Names>;
+  data: SpriteSoundData;
 }
 
+type ReturnAssets<Sources> = Promise<{
+  [Key in keyof Sources]: Sources[Key] extends SpriteData
+    ? SpriteSound<keyof Sources[Key]['data']['map']>
+    : Sound;
+}>;
+
 export class AudioAssets<
-  Names extends string,
-  Segments extends string
-> extends Assets<Names, Sound | SpriteSound<Segments>> {
+  Sources extends Record<string, unknown>
+> extends Assets {
   private readonly audio;
 
-  constructor(sources: Record<Names, string | SpriteSource<Segments>>) {
+  constructor(sources: Sources) {
     super(sources);
 
     this.audio = Audio.getInstance();
   }
 
   protected async loadAsset(
-    source: string | SpriteLoadSource
-  ): Promise<Sound | SpriteSound<Segments>> {
+    source: string | SpriteSource
+  ): Promise<Sound | SpriteSound> {
     const context = this.audio.getContext();
 
     if (isString(source)) {
@@ -36,11 +41,16 @@ export class AudioAssets<
       return new Sound(buffer);
     }
 
-    const [buffer, data] = await Promise.all([
-      loadAudio(source.src, context),
-      loadData(source.data) as unknown as Promise<SpriteSoundData<Segments>>,
+    const { src, data: spriteDataSrc } = source;
+    const [buffer, spriteData] = await Promise.all([
+      loadAudio(src, context),
+      loadData(spriteDataSrc) as unknown as Promise<SpriteSoundData>,
     ]);
 
-    return new SpriteSound(buffer, data);
+    return new SpriteSound(buffer, spriteData);
+  }
+
+  public async get(): ReturnAssets<Sources> {
+    return (await this.retrieve()) as ReturnAssets<Sources>;
   }
 }

@@ -5,11 +5,11 @@ interface Segment {
   end: number;
 }
 
-export interface SpriteSoundData<Names extends string> {
+export interface SpriteSoundData<Names extends PrimitiveKeys = string> {
   map: Record<Names, Segment>;
 }
 
-export class SpriteSound<Names extends string> {
+export class SpriteSound<Names extends PrimitiveKeys = string> {
   private readonly source;
   private readonly audio;
   private readonly data;

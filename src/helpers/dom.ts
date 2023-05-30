@@ -6,6 +6,12 @@ export function onDOMReady(callback: () => unknown): void {
   });
 }
 
+export function onGlobalError(callback: (error: ErrorEvent) => unknown): void {
+  window.addEventListener('error', (event) => {
+    callback(event);
+  });
+}
+
 export function setDocumentMeta(name: string, content: string): void {
   let meta = document.head.querySelector<HTMLMetaElement>(
     `meta[name="${name}"]`

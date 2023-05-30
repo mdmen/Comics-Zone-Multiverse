@@ -7,8 +7,8 @@ type GamepadButtonIndex = number;
 type ControlsSet = [KeyboardKeyCode, GamepadButtonIndex];
 type Controls<Names extends string> = Record<Names, ControlsSet>;
 
-export class Input<Names extends string> {
-  private static instance: Input<string>;
+export class Input<Names extends string = string> {
+  private static instance: Input;
   private readonly keyboard;
   private readonly gamepad;
   private controls;

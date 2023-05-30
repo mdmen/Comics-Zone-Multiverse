@@ -1,8 +1,8 @@
-<img src="./src/assets/images/readme/test.jpg" width="100%" alt="Comix Zone">
+<img src="./src/assets/images/readme/header.webp" width="100%" alt="Comix Zone">
 
 # Comix Zone: Glitch
 
-[![Github lint status](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml/badge.svg)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml) ![Oh, yeah!](https://img.shields.io/badge/%F0%9F%92%AA-Oh%2C%20yeah!-orange.svg?style=flat)
+[![Github lint status](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml/badge.svg)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml) [![License](https://img.shields.io/badge/License-!!!-orange.svg?style=flat)](#license)
 
 Some description
 
@@ -33,7 +33,7 @@ Gamepad is also supported
 
 ## License
 
-The code in this repository is under [MIT license](https://choosealicense.com/licenses/mit/). But sounds and images belong to their copyright holders and cannot be used for commercial purposes without their consent.
+The code in this repository is under [MIT license](./LICENSE). But sounds and images belong to their copyright holders and cannot be used for commercial purposes without their consent.
 
 The images and sounds are taken from the following games:
 

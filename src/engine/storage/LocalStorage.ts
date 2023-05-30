@@ -5,12 +5,12 @@ function getKey(key: string) {
   return `${storagePrefix}${key}`;
 }
 
-interface Storage {
+interface LocalStorage {
   set: (key: string, value: unknown) => void;
   get: (key: string) => unknown;
 }
 
-export const Storage: Readonly<Storage> = {
+export const LocalStorage: Readonly<LocalStorage> = {
   set(key, value) {
     try {
       const jsonValue = JSON.stringify(value);

@@ -47,7 +47,5 @@
   "engines": {
     "node": ">=18",
     "yarn": ">=3"
-  },
-  "author": "Dmitry Menovshchikov",
-  "license": "MIT"
+  }
 }

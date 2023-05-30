@@ -1,4 +1,4 @@
-import { Config as EngineConfig } from '@/engine';
+import { Storage } from '@/engine';
 
 type Theme = 'system' | 'light' | 'dark';
 type Sound = 'on' | 'off';
@@ -14,25 +14,25 @@ const defaults: ConfigValues = {
 } as const;
 
 export class Config {
-  private readonly config;
+  private readonly storage;
 
   constructor() {
-    this.config = EngineConfig.getInstance(defaults);
+    this.storage = new Storage('config', defaults);
   }
 
   public setTheme(value: Theme): void {
-    this.config.setValue('theme', value);
+    this.storage.setValue('theme', value);
   }
 
   public getTheme(): Theme {
-    return this.config.getValue('theme') as Theme;
+    return this.storage.getValue('theme');
   }
 
   public setSound(value: Sound): void {
-    this.config.setValue('sound', value);
+    this.storage.setValue('sound', value);
   }
 
   public getSound(): Sound {
-    return this.config.getValue('sound') as Sound;
+    return this.storage.getValue('sound');
   }
 }

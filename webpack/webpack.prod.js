@@ -26,7 +26,6 @@ module.exports = {
           implementation: ImageMinimizerPlugin.sharpMinify,
           options: {
             encodeOptions: {
-              webp: { lossless: true },
               png: { quality: 90 },
             },
           },

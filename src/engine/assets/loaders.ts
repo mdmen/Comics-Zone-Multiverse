@@ -14,16 +14,26 @@ export function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+async function fetchResource(src: string): Promise<Response> {
+  const response = await fetch(src);
+
+  if (!response.ok) {
+    throw Error(`Failed to load ${src}`);
+  }
+
+  return response;
+}
+
 export async function loadAudio(
   src: string,
   context: AudioContext
 ): Promise<AudioBuffer> {
-  const response = await fetch(src);
+  const response = await fetchResource(src);
   const arrayBuffer = await response.arrayBuffer();
   return await context.decodeAudioData(arrayBuffer);
 }
 
 export async function loadData(src: string): Promise<Record<string, unknown>> {
-  const response = await fetch(src);
+  const response = await fetchResource(src);
   return await response.json();
 }
