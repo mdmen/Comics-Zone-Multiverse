@@ -1,3 +1,5 @@
+import { canvasDefaultWidth, canvasDefaultHeight } from '../settings';
+
 interface Options {
   width?: number;
   height?: number;
@@ -10,8 +12,8 @@ type AllowedProps = 'zIndex';
 type Styles = Pick<CSSStyleDeclaration, AllowedProps>;
 
 const defaults: Required<Options> = {
-  width: 800,
-  height: 600,
+  width: canvasDefaultWidth,
+  height: canvasDefaultHeight,
   offscreen: false,
   transparent: true,
   imageSmooth: false,
@@ -66,5 +68,14 @@ export class Canvas {
 
   public setStyle<T extends keyof Styles>(name: T, value: Styles[T]): void {
     this.canvas.style[name] = value;
+  }
+
+  public getContext(): CanvasRenderingContext2D {
+    return this.context;
+  }
+
+  public clear(): void {
+    const { width, height } = this.options;
+    this.context.clearRect(0, 0, width, height);
   }
 }

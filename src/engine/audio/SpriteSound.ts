@@ -1,4 +1,4 @@
-import { Audio } from './Audio';
+import { BaseSound } from './BaseSound';
 
 interface Segment {
   start: number;
@@ -9,17 +9,13 @@ export interface SpriteSoundData<Names extends PrimitiveKeys = string> {
   map: Record<Names, Segment>;
 }
 
-export class SpriteSound<Names extends PrimitiveKeys = string> {
-  private readonly source;
-  private readonly audio;
+export class SpriteSound<
+  Names extends PrimitiveKeys = string
+> extends BaseSound {
   private readonly data;
 
   constructor(buffer: AudioBuffer, data: SpriteSoundData<Names>) {
-    this.audio = Audio.getInstance();
-    const context = this.audio.getContext();
-
-    this.source = new AudioBufferSourceNode(context, { buffer });
-    this.source.connect(context.destination);
+    super(buffer);
 
     this.data = data;
   }
@@ -28,9 +24,5 @@ export class SpriteSound<Names extends PrimitiveKeys = string> {
     const { start, end } = this.data.map[name];
 
     this.source.start(0, start, end);
-  }
-
-  public stop(): void {
-    this.source.stop();
   }
 }

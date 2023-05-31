@@ -1,5 +1,5 @@
 import { Assets } from './Assets';
-import { loadImage } from '../../helpers';
+import { loadImage } from './loaders';
 
 type ReturnAssets<Sources> = Promise<Record<keyof Sources, HTMLImageElement>>;
 

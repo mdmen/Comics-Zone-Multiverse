@@ -1,4 +1,4 @@
-import { appContainerID } from '../constants/app';
+import { containerID } from '@/constants/app';
 
 export function onDOMReady(callback: () => unknown): void {
   window.addEventListener('DOMContentLoaded', () => {
@@ -30,9 +30,9 @@ export function setDocumentMeta(name: string, content: string): void {
 }
 
 export function getAppContainer(): HTMLElement {
-  const container = document.getElementById(appContainerID);
+  const container = document.getElementById(containerID);
 
-  if (!container) throw Error(`#${appContainerID} not found`);
+  if (!container) throw Error(`#${containerID} not found`);
 
   return container;
 }

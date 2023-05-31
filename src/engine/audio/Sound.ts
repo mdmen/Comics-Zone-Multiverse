@@ -1,23 +1,8 @@
-import { Audio } from './Audio';
+import { BaseSound } from './BaseSound';
 
-export class Sound {
-  private readonly source;
-  private readonly audio;
-
-  constructor(buffer: AudioBuffer) {
-    this.audio = Audio.getInstance();
-
-    const context = this.audio.getContext();
-    this.source = new AudioBufferSourceNode(context, { buffer });
-    this.source.connect(context.destination);
-  }
-
+export class Sound extends BaseSound {
   public play(): void {
     this.source.start();
-  }
-
-  public stop(): void {
-    this.source.stop();
   }
 
   public setLoop(value = true): void {

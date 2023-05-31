@@ -1,4 +1,4 @@
-import { isProduction } from './utils';
+import { isProduction } from '@/helpers/utils';
 import { isSuppressProductionLogs } from '../settings';
 
 interface Logger {

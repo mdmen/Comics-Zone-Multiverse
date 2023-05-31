@@ -1,1 +1,1 @@
-export const appContainerID = 'container';
+export const containerID = 'container';
