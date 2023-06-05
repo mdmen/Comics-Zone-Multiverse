@@ -24,13 +24,9 @@ async function fetchResource(src: string): Promise<Response> {
   return response;
 }
 
-export async function loadAudio(
-  src: string,
-  context: AudioContext
-): Promise<AudioBuffer> {
+export async function loadAudio(src: string): Promise<ArrayBuffer> {
   const response = await fetchResource(src);
-  const arrayBuffer = await response.arrayBuffer();
-  return await context.decodeAudioData(arrayBuffer);
+  return await response.arrayBuffer();
 }
 
 export async function loadData(src: string): Promise<Record<string, unknown>> {

@@ -1,11 +1,19 @@
-import { BaseSound } from './BaseSound';
+export class Sound {
+  private readonly source;
 
-export class Sound extends BaseSound {
+  constructor(source: AudioBufferSourceNode) {
+    this.source = source;
+  }
+
   public play(): void {
     this.source.start();
   }
 
-  public setLoop(value = true): void {
-    this.source.loop = value;
+  public stop(): void {
+    this.source.stop();
+  }
+
+  public getSource(): AudioBufferSourceNode {
+    return this.source;
   }
 }

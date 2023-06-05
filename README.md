@@ -12,6 +12,8 @@ Some description
 
 ### Plot
 
+...
+
 ### Controls
 
 - ↑, ↓, ←, → - moves
@@ -31,9 +33,15 @@ Gamepad is also supported
 - **Sit**  
   ![Uppercut move](./src/assets/images/readme/uppercut_test.png)
 
+### Technical features
+
+...
+
 ## License
 
-The code in this repository is under [MIT license](./LICENSE). But sounds and images belong to their copyright holders and cannot be used for commercial purposes without their consent.
+The code in this repository is under [MIT license](./LICENSE). But sounds and images belong to their authors and copyright holders and cannot be used for commercial purposes without their consent.
+
+## Attributions
 
 The images and sounds are taken from the following games:
 

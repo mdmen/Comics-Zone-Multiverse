@@ -1,20 +1,21 @@
+:root {
+  --ui-background-color: #fff;
+  --ui-background-color-dark: #000;
+  --ui-text-color: #121212;
+  --ui-text-color-light: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ui-background-color: var(--ui-background-color-dark);
+    --ui-text-color: var(--ui-text-color-light);
+  }
+}
+
 @font-face {
   font-family: 'Press Start 2P';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: url('../fonts/test.woff2') format('woff2');
-}
-
-body {
-  text-rendering: optimizeSpeed;
-}
-
-canvas,
-img {
-  image-rendering: pixelated;
-}
-
-:root {
-  --bg-color: #fff;
 }

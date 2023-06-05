@@ -36,4 +36,6 @@ export abstract class Drawable {
   }
 
   public abstract draw(): void;
+
+  public abstract update(): void;
 }

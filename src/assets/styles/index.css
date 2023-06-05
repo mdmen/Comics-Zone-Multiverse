@@ -1,4 +1,4 @@
 @import './normalize.css';
 @import './base.css';
-@import './light.css';
-@import './dark.css';
+@import './game.css';
+@import './ui.css';

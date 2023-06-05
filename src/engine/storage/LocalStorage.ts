@@ -1,4 +1,4 @@
-import { Logger } from '../common/Logger';
+import { Logger } from '../debug/Logger';
 import { storagePrefix } from '../settings';
 
 function getKey(key: string) {

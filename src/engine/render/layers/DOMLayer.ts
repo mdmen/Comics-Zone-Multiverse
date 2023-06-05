@@ -2,7 +2,7 @@ import {
   canvasDefaultWidth,
   canvasDefaultHeight,
   canvasDefaultSmoothing,
-} from '../settings';
+} from '../../settings';
 
 interface Options {
   width?: number;
@@ -23,7 +23,7 @@ const defaults: Required<Options> = {
   imageSmooth: canvasDefaultSmoothing,
 } as const;
 
-export class Canvas {
+export class DOMLayer {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private options: Required<Options>;

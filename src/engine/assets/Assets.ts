@@ -1,4 +1,4 @@
-import { Logger } from '../common/Logger';
+import { Logger } from '../debug/Logger';
 import { isEmpty } from '@/helpers/utils';
 
 type Sources = Record<string, unknown>;
@@ -7,7 +7,7 @@ type Resources = Sources;
 export abstract class Assets {
   private readonly sources;
   private readonly count;
-  private readonly assets;
+  protected assets;
 
   constructor(sources: Sources) {
     this.sources = sources;
@@ -44,5 +44,7 @@ export abstract class Assets {
 
   protected abstract loadAsset(src: unknown): Promise<unknown>;
 
-  protected abstract get(): Promise<unknown>;
+  public clear(): void {
+    this.assets = {};
+  }
 }

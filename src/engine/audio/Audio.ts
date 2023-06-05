@@ -17,7 +17,8 @@ export class Audio {
   }
 
   public setMuted(value: boolean): void {
-    this.gainNode.gain.value = value ? 0 : 1;
+    const volume = value ? 0 : 1;
+    this.gainNode.gain.setValueAtTime(volume, this.context.currentTime);
   }
 
   public getContext(): AudioContext {
