@@ -1,9 +1,7 @@
 const { distFolder, sourceFolder } = require('./helpers');
 
-const mode = 'development';
-
 module.exports = {
-  mode,
+  mode: 'development',
   entry: [`${sourceFolder}/index.ts`],
   devServer: {
     static: distFolder,
@@ -12,7 +10,7 @@ module.exports = {
   },
   module: {
     rules: [
-      require('./loaders/css')(mode),
+      require('./loaders/css')(),
       require('./loaders/typescript')(),
       ...require('./loaders/assets')(),
     ],

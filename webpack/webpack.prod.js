@@ -4,10 +4,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const { sourceFolder, distFolder } = require('./helpers');
 
-const mode = 'production';
-
 module.exports = {
-  mode,
+  mode: 'production',
   entry: [`${sourceFolder}/index.ts`],
   output: {
     filename: 'js/[contenthash].js',
@@ -35,7 +33,7 @@ module.exports = {
   },
   module: {
     rules: [
-      require('./loaders/css')(mode),
+      require('./loaders/css')(),
       require('./loaders/typescript')(),
       ...require('./loaders/assets')(),
     ],

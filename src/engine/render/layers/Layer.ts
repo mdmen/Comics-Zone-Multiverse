@@ -1,32 +1,48 @@
-import { canvasDefaultWidth, canvasDefaultHeight } from '@/engine/settings';
+import {
+  canvasDefaultWidth,
+  canvasDefaultHeight,
+  canvasDefaultAntialiasing,
+  canvasClassName,
+} from '../../settings';
 
 export interface LayerOptions {
+  container: HTMLElement;
   width?: number;
   height?: number;
+  isTransparent?: boolean;
+  isAntialiasing?: boolean;
 }
-
-const defaults: Required<LayerOptions> = {
-  width: canvasDefaultWidth,
-  height: canvasDefaultHeight,
-} as const;
 
 type AllowedProps = 'zIndex';
 type Styles = Pick<CSSStyleDeclaration, AllowedProps>;
 
 export abstract class Layer {
-  protected layer: HTMLElement;
-  private container;
+  private readonly container;
+  private readonly width;
+  private readonly height;
+  protected layer;
 
-  constructor(container: HTMLElement, options: LayerOptions) {
+  constructor(options: LayerOptions) {
+    const {
+      container,
+      width = canvasDefaultWidth,
+      height = canvasDefaultHeight,
+      isAntialiasing = canvasDefaultAntialiasing,
+    } = options;
     this.container = container;
-    this.layer = this.createLayer({
-      ...defaults,
-      ...options,
-    });
-    this.mountLayer();
+    this.width = width;
+    this.height = height;
+
+    this.layer = this.create(options);
+
+    this.layer.classList.add(canvasClassName);
+    this.layer.style.width = `${this.width}px`;
+    this.layer.style.height = `${this.height}px`;
+
+    if (isAntialiasing) this.layer.style.imageRendering = 'pixelated';
   }
 
-  protected mountLayer(): void {
+  public mount(): void {
     this.container.appendChild(this.layer);
   }
 
@@ -38,9 +54,25 @@ export abstract class Layer {
     return this.layer;
   }
 
-  protected abstract createLayer(options: LayerOptions): HTMLElement;
+  public getWidth(): number {
+    return this.width;
+  }
 
-  public abstract draw(): void;
+  public getHeight(): number {
+    return this.height;
+  }
 
-  public abstract clear(): void;
+  public show(): void {
+    this.layer.style.display = 'initial';
+  }
+
+  public hide(): void {
+    this.layer.style.display = 'hidden';
+  }
+
+  protected abstract create(options: LayerOptions): HTMLElement;
+
+  public abstract draw(...args: unknown[]): void;
+
+  public abstract clear(...args: unknown[]): void;
 }

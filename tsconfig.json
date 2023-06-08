@@ -5,6 +5,7 @@
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {

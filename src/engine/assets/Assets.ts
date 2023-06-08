@@ -6,7 +6,7 @@ type Resources = Sources;
 
 export abstract class Assets {
   private readonly sources;
-  private readonly count;
+  private count;
   protected assets;
 
   constructor(sources: Sources) {
@@ -32,10 +32,13 @@ export abstract class Assets {
     }
   }
 
-  protected async retrieve(): Promise<unknown> {
+  private isEmpty(): boolean {
     const keys = Object.keys(this.assets);
+    return isEmpty(keys);
+  }
 
-    if (isEmpty(keys)) {
+  protected async retrieve(): Promise<unknown> {
+    if (this.isEmpty()) {
       await this.load();
     }
 
@@ -46,5 +49,6 @@ export abstract class Assets {
 
   public clear(): void {
     this.assets = {};
+    this.count = 0;
   }
 }
