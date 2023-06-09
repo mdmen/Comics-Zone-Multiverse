@@ -3,7 +3,7 @@ import {
   canvasDefaultHeight,
   cameraDefaultXOffset,
   cameraDefaultYOffset,
-} from '../settings';
+} from '../Settings';
 
 interface Options {
   width?: number;

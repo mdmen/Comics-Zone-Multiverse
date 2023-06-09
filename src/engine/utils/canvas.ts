@@ -1,12 +1,8 @@
-import {
-  canvasDefaultWidth,
-  canvasDefaultHeight,
-  canvasDefaultAntialiasing,
-} from '../settings';
+import { Settings } from '../Settings';
 
 export function createCanvas(
-  width = canvasDefaultWidth,
-  height = canvasDefaultHeight
+  width = Settings.getValue('canvasWidth'),
+  height = Settings.getValue('canvasHeight')
 ): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   canvas.width = width;
@@ -17,18 +13,19 @@ export function createCanvas(
 
 export function getContext2D(
   canvas: HTMLCanvasElement,
-  isTransparent = true,
-  isAntialiasing = canvasDefaultAntialiasing
+  transparent = true,
+  antialiasing = Settings.getValue('antialiasing')
 ): CanvasRenderingContext2D {
   const context = canvas.getContext('2d', {
-    alpha: isTransparent,
+    alpha: transparent,
   });
 
   if (!context) {
     throw Error('Cannot create 2d context');
   }
 
-  context.imageSmoothingEnabled = isAntialiasing;
+  context.imageSmoothingEnabled = antialiasing;
+  !antialiasing && (context.textRendering = 'optimizeSpeed');
 
   return context;
 }

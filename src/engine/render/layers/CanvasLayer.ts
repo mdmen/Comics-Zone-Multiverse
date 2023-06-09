@@ -1,8 +1,9 @@
+import { Settings } from '@/engine/Settings';
 import { Logger } from '../../debug/Logger';
 import { createCanvas, getContext2D } from '../../utils';
-import { Layer, type LayerOptions } from './Layer';
+import { BaseLayer, type LayerOptions } from './BaseLayer';
 
-export class CanvasLayer extends Layer {
+export class CanvasLayer extends BaseLayer {
   private context: CanvasRenderingContext2D;
 
   constructor(options: LayerOptions) {
@@ -15,8 +16,8 @@ export class CanvasLayer extends Layer {
   }
 
   private bindEvents(): void {
-    this.layer.addEventListener('contextlost', this.onContextLost);
-    this.layer.addEventListener('contextrestored', this.onContextRestored);
+    this.node.addEventListener('contextlost', this.onContextLost);
+    this.node.addEventListener('contextrestored', this.onContextRestored);
   }
 
   private onContextLost(event: Event): void {
@@ -27,10 +28,12 @@ export class CanvasLayer extends Layer {
     Logger.log(event);
   }
 
-  protected create(options: LayerOptions): HTMLCanvasElement {
-    const { width, height, isAntialiasing, isTransparent } = options;
-    const canvas = createCanvas(width, height);
-    this.context = getContext2D(canvas, isTransparent, isAntialiasing);
+  protected create({ isTransparent }: LayerOptions): HTMLCanvasElement {
+    const canvas = createCanvas(
+      Settings.getValue('canvasWidth'),
+      Settings.getValue('canvasHeight')
+    );
+    this.context = getContext2D(canvas, isTransparent);
 
     return canvas;
   }
@@ -43,8 +46,8 @@ export class CanvasLayer extends Layer {
     height = image.height,
     dx = 0,
     dy = 0,
-    dWidth = image.width,
-    dHeight = image.height
+    dWidth = this.getWidth(),
+    dHeight = this.getHeight()
   ): void {
     this.context.drawImage(image, x, y, width, height, dx, dy, dWidth, dHeight);
   }

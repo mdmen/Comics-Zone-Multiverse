@@ -1,4 +1,13 @@
 {
-  "cSpell.words": ["Antialiasing", "Comix", "Gamepad", "Renderable", "webp"],
+  "cSpell.words": [
+    "Antialiasing",
+    "Comix",
+    "contextlost",
+    "contextrestored",
+    "Gamepad",
+    "Renderable",
+    "Renderables",
+    "webp"
+  ],
   "livePreview.serverRoot": "./dist"
 }

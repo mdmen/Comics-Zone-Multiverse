@@ -1,5 +1,5 @@
 import { isProduction } from '@/helpers/utils';
-import { isSuppressProductionLogs } from '../settings';
+import { Settings } from '../Settings';
 
 interface Logger {
   error(...args: unknown[]): void;
@@ -11,7 +11,7 @@ export const Logger: Readonly<Logger> = {
     console.error(...args);
   },
   log(...args) {
-    if (isProduction() && isSuppressProductionLogs) return;
+    if (isProduction() && Settings.getValue('suppressProductionLogs')) return;
 
     console.log(...args);
   },

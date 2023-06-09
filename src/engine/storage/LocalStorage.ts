@@ -1,8 +1,8 @@
 import { Logger } from '../debug/Logger';
-import { storagePrefix } from '../settings';
+import { Settings } from '../Settings';
 
 function getKey(key: string) {
-  return `${storagePrefix}${key}`;
+  return `${Settings.getValue('storagePrefix')}${key}`;
 }
 
 interface LocalStorage {

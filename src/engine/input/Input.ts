@@ -1,6 +1,6 @@
 import { Gamepad } from './Gamepad';
 import { Keyboard } from './Keyboard';
-import { isGamepadAllowed } from '../settings';
+import { Settings } from '../Settings';
 
 type KeyboardKeyCode = string;
 type GamepadButtonIndex = number;
@@ -17,7 +17,7 @@ export class Input<Names extends string = string> {
     this.controls = controls;
     this.keyboard = Keyboard.getInstance();
 
-    if (isGamepadAllowed) {
+    if (Settings.getValue('gamepadAllowed')) {
       this.gamepad = Gamepad.getInstance();
     }
   }

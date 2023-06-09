@@ -9,8 +9,11 @@ interface Rectangle extends Point {
 }
 
 export function isPointRectangleIntersect(p: Point, r: Rectangle): boolean {
-  return (
-    p.x >= r.x && p.x <= r.x + r.width && p.x >= r.y && p.y <= r.y + r.height
+  return !(
+    p.x < r.x ||
+    p.x > r.x + r.width ||
+    p.y < r.y ||
+    p.y > r.y + r.height
   );
 }
 

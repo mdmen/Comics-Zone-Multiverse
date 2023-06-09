@@ -1,14 +1,35 @@
-export const isGamepadAllowed = false;
-export const isSuppressProductionLogs = false;
-export const storagePrefix = 'czg_game_';
-export const defaultFps = 60;
-export const defaultRender: 'canvas' | 'dom' = 'canvas';
+type RenderEngine = 'canvas' | 'dom';
+type SettingsMap = typeof settings;
+type SettingsMapKeys = keyof SettingsMap;
 
-export const canvasDefaultWidth = 1024;
-export const canvasDefaultHeight = 768;
-export const canvasDefaultAntialiasing = false;
-export const canvasDefaultScale = 1;
-export const canvasClassName = 'layer';
+const settings = {
+  gamepadAllowed: false,
+  suppressProductionLogs: false,
+  storagePrefix: 'czg_game_',
+  renderEngine: 'canvas' as RenderEngine,
+  fps: 60,
 
-export const cameraDefaultXOffset = 50;
-export const cameraDefaultYOffset = 50;
+  canvasWidth: 1024,
+  canvasHeight: 768,
+  antialiasing: false,
+  canvasScale: 1,
+  canvasClassName: 'layer',
+
+  cameraXOffset: 50,
+  cameraYOffset: 50,
+};
+
+interface Settings {
+  getValue<T extends SettingsMapKeys>(key: T): SettingsMap[T];
+  setValue<T extends SettingsMapKeys>(key: T, value: SettingsMap[T]): void;
+}
+
+export const Settings: Readonly<Settings> = {
+  getValue(key) {
+    return settings[key];
+  },
+
+  setValue(key, value) {
+    settings[key] = value;
+  },
+};

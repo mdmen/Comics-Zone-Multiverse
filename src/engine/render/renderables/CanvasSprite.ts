@@ -1,26 +1,16 @@
-import { CanvasLayer } from '../layers/CanvasLayer';
-import { Renderable, type RenderableOptions } from './Renderable';
-
-interface SpriteOptions extends RenderableOptions {
-  layer: CanvasLayer;
-  selfClear?: boolean;
-  data?: Record<string, unknown>;
-}
+import { Renderable } from './Renderable';
+import type { SpriteOptions } from './types';
 
 export class CanvasSprite extends Renderable {
   private readonly selfClear;
-  private readonly prevDrawCoords = {
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-  };
+  private readonly prevDrawCoords;
 
   constructor(options: SpriteOptions) {
     super(options);
 
-    const { selfClear } = options;
+    const { selfClear, x, y, width, height } = options;
     this.selfClear = selfClear;
+    this.prevDrawCoords = { x, y, width, height };
   }
 
   private updatePrevDrawCoords(): void {
@@ -31,7 +21,7 @@ export class CanvasSprite extends Renderable {
   }
 
   public draw(): void {
-    if (!this.visible || !this.dirty) return;
+    if (!this.shouldDraw()) return;
 
     if (this.selfClear) {
       this.clear();
@@ -41,7 +31,7 @@ export class CanvasSprite extends Renderable {
   }
 
   public update(): void {
-    void 0;
+    return;
   }
 
   public clear(): void {

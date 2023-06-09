@@ -1,16 +1,19 @@
-import { Storage, Audio } from '@/engine';
+import { Storage, Audio, Settings } from '@/engine';
 
 type Theme = 'system' | 'light' | 'dark';
 type Sound = 'on' | 'off';
+type Render = 'canvas' | 'dom';
 
 interface ConfigValues {
   theme: Theme;
   sound: Sound;
+  render: Render;
 }
 
 const defaults: ConfigValues = {
   theme: 'system',
   sound: 'on',
+  render: Settings.getValue('renderEngine'),
 } as const;
 
 export class Config {
@@ -37,5 +40,14 @@ export class Config {
 
   public getSound(): Sound {
     return this.storage.getValue('sound');
+  }
+
+  public getRender(): Render {
+    return this.storage.getValue('render');
+  }
+
+  public setRender(value: Render): void {
+    Settings.setValue('renderEngine', value);
+    this.storage.setValue('render', value);
   }
 }

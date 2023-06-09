@@ -1,13 +1,9 @@
 import { isSafari } from '@/helpers';
 import { createCanvas, getContext2D } from './canvas';
 
-export function getReversedImage(
-  image: HTMLImageElement,
-  isTransparent = true,
-  isSmoothing?: boolean
-): HTMLImageElement {
+export function getReversedImage(image: HTMLImageElement): HTMLImageElement {
   const canvas = createCanvas(image.width, image.height);
-  const context = getContext2D(canvas, isTransparent, isSmoothing);
+  const context = getContext2D(canvas);
 
   context.translate(image.width, 0);
   context.scale(-1, 1);
@@ -18,16 +14,14 @@ export function getReversedImage(
 
 export function getScaledImage(
   image: HTMLImageElement,
-  scale = 1,
-  isTransparent = true,
-  isSmoothing?: boolean
+  scale = 1
 ): HTMLImageElement {
   if (scale === 1) return image;
 
   const width = Math.round(image.width * scale);
   const height = Math.round(image.height * scale);
   const canvas = createCanvas(width, height);
-  const context = getContext2D(canvas, isTransparent, isSmoothing);
+  const context = getContext2D(canvas);
 
   context.drawImage(
     image,
