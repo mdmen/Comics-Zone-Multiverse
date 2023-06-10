@@ -19,17 +19,11 @@ jobs:
         with:
           node-version: 18
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+      - name: Enable Corepack
+        run: corepack enable
 
-      - name: Restore yarn cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+      - name: Update Yarn
+        run: corepack prepare yarn@stable --activate
 
       - name: Install dependencies
         run: yarn --immutable --ignore-scripts
