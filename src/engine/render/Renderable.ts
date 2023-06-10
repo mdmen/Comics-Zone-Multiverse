@@ -1,10 +1,24 @@
-import { getReversedImage } from '../../utils';
-import type { RenderableOptions, SpriteImages } from './types';
+import { getReversedImage } from '../utils';
+import type { LayerBase } from './layers/LayerBase';
+
+export interface RenderableOptions {
+  layer: LayerBase;
+  image: HTMLImageElement;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  selfClear?: boolean;
+  canFlip?: boolean;
+}
+
+type ImagesType = 'straight' | 'reversed';
+type Images = Record<ImagesType, HTMLImageElement>;
 
 export abstract class Renderable {
   protected readonly layer;
   protected image;
-  protected images: SpriteImages;
+  protected images: Images;
   protected x;
   protected y;
   protected width;
@@ -78,5 +92,5 @@ export abstract class Renderable {
 
   public abstract draw(): void;
 
-  public abstract update(): void;
+  public abstract update(timeStamp: number): void;
 }

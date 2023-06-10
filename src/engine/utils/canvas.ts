@@ -11,10 +11,9 @@ export function createCanvas(
   return canvas;
 }
 
-export function getContext2D(
+export function createContext2D(
   canvas: HTMLCanvasElement,
-  transparent = true,
-  antialiasing = Settings.getValue('antialiasing')
+  transparent = true
 ): CanvasRenderingContext2D {
   const context = canvas.getContext('2d', {
     alpha: transparent,
@@ -23,9 +22,6 @@ export function getContext2D(
   if (!context) {
     throw Error('Cannot create 2d context');
   }
-
-  context.imageSmoothingEnabled = antialiasing;
-  !antialiasing && (context.textRendering = 'optimizeSpeed');
 
   return context;
 }

@@ -3,15 +3,15 @@ interface Segment {
   end: number;
 }
 
-export interface SpriteSoundData<Names extends PrimitiveKeys = string> {
+export interface SoundSpriteData<Names extends PrimitiveKeys = string> {
   map: Record<Names, Segment>;
 }
 
-export class SpriteSound<Names extends PrimitiveKeys = string> {
+export class SoundSprite<Names extends PrimitiveKeys = string> {
   private readonly source;
   private readonly data;
 
-  constructor(source: AudioBufferSourceNode, data: SpriteSoundData<Names>) {
+  constructor(source: AudioBufferSourceNode, data: SoundSpriteData<Names>) {
     this.source = source;
     this.data = data;
   }

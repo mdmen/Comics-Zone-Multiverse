@@ -3,7 +3,7 @@ import { loadImage } from './loaders';
 
 type ReturnAssets<Sources> = Promise<Record<keyof Sources, HTMLImageElement>>;
 
-export class ImageAssets<
+export class AssetsImages<
   Sources extends Record<string, string>
 > extends Assets {
   constructor(sources: Sources) {

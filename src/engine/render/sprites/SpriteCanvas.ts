@@ -1,7 +1,6 @@
-import { Renderable } from './Renderable';
-import type { SpriteOptions } from './types';
+import { SpriteBase, type SpriteOptions } from './SpriteBase';
 
-export class CanvasSprite extends Renderable {
+export class SpriteCanvas extends SpriteBase {
   private readonly selfClear;
   private readonly prevDrawCoords;
 
@@ -27,11 +26,25 @@ export class CanvasSprite extends Renderable {
       this.clear();
     }
 
+    const { frame, offset } = this.animation.getCurrentFrame();
+    const offsetX = offset?.x || 0;
+    const offsetY = offset?.y || 0;
+
+    this.layer.draw(
+      this.image,
+      this.flipped ? this.image.width - frame.x : -frame.x,
+      this.flipped ? this.image.height - frame.y : -frame.y,
+      this.width,
+      this.height,
+      this.flipped ? this.x + offsetX : -this.x + offsetX,
+      this.flipped ? this.y + offsetY : -this.y + offsetY
+    );
+
     this.updatePrevDrawCoords();
   }
 
-  public update(): void {
-    return;
+  public update(timeStamp: number): void {
+    super.update(timeStamp);
   }
 
   public clear(): void {

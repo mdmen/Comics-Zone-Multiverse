@@ -8,7 +8,7 @@ export interface LayerOptions {
 type AllowedProps = 'zIndex';
 type Styles = Pick<CSSStyleDeclaration, AllowedProps>;
 
-export abstract class BaseLayer {
+export abstract class LayerBase {
   private readonly container;
   private readonly width;
   private readonly height;

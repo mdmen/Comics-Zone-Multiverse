@@ -26,8 +26,8 @@ export class Togglers {
 
     wrapper.classList.add('togglers');
 
-    this.items.map((item) => {
-      const toggler = this.createToggler(item);
+    this.items.map(() => {
+      const toggler = this.createToggler();
       wrapper.append(toggler);
     });
 
@@ -39,7 +39,7 @@ export class Togglers {
     this.container.append(togglers);
   }
 
-  private createToggler(item: Toggler): HTMLElement {
+  private createToggler(): HTMLElement {
     const toggler = document.createElement('button');
 
     toggler.type = 'button';

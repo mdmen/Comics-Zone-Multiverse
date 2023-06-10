@@ -1,6 +1,6 @@
-import { BaseLayer } from './BaseLayer';
+import { LayerBase } from './LayerBase';
 
-export class DOMLayer extends BaseLayer {
+export class LayerDOM extends LayerBase {
   protected create(): HTMLDivElement {
     const layer = document.createElement('div');
 
@@ -18,10 +18,10 @@ export class DOMLayer extends BaseLayer {
     dx = 0,
     dy = 0
   ): void {
-    element.style.transform = `translate(${dx}px, ${dy}px)`;
+    element.style.backgroundPosition = `${x}px ${y}px`;
     element.style.width = `${width}px`;
     element.style.height = `${height}px`;
-    element.style.backgroundPosition = `${x}px ${y}px`;
+    element.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
   }
 
   public clear(): void {

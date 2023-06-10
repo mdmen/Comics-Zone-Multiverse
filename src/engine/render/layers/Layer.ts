@@ -1,11 +1,11 @@
-import { CanvasLayer } from './CanvasLayer';
-import { DOMLayer } from './DOMLayer';
+import { LayerCanvas } from './LayerCanvas';
+import { LayerDOM } from './LayerDOM';
 import { Settings } from '../../Settings';
 
-function getBaseLayer(): typeof CanvasLayer | typeof DOMLayer {
+function getBaseLayer() {
   return Settings.getValue('renderEngine') === 'canvas'
-    ? CanvasLayer
-    : DOMLayer;
+    ? LayerCanvas
+    : LayerDOM;
 }
 
 export class Layer extends getBaseLayer() {}

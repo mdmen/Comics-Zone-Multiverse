@@ -1,31 +1,25 @@
 import { Settings } from '@/engine/Settings';
 import { Logger } from '../../debug/Logger';
-import { createCanvas, getContext2D } from '../../utils';
-import { BaseLayer, type LayerOptions } from './BaseLayer';
+import { createCanvas, createContext2D } from '../../utils';
+import { LayerBase, type LayerOptions } from './LayerBase';
 
-export class CanvasLayer extends BaseLayer {
+export class LayerCanvas extends LayerBase {
   private context: CanvasRenderingContext2D;
 
   constructor(options: LayerOptions) {
     super(options);
 
-    this.onContextLost = this.onContextLost.bind(this);
-    this.onContextRestored = this.onContextRestored.bind(this);
-
+    this.onContextChange = this.onContextChange.bind(this);
     this.bindEvents();
   }
 
   private bindEvents(): void {
-    this.node.addEventListener('contextlost', this.onContextLost);
-    this.node.addEventListener('contextrestored', this.onContextRestored);
+    this.node.addEventListener('contextlost', this.onContextChange);
+    this.node.addEventListener('contextrestored', this.onContextChange);
   }
 
-  private onContextLost(event: Event): void {
+  private onContextChange(event: Event): void {
     Logger.error(event);
-  }
-
-  private onContextRestored(event: Event): void {
-    Logger.log(event);
   }
 
   protected create({ isTransparent }: LayerOptions): HTMLCanvasElement {
@@ -33,7 +27,11 @@ export class CanvasLayer extends BaseLayer {
       Settings.getValue('canvasWidth'),
       Settings.getValue('canvasHeight')
     );
-    this.context = getContext2D(canvas, isTransparent);
+    this.context = createContext2D(canvas, isTransparent);
+
+    const isAntialiasing = Settings.getValue('antialiasing');
+    this.context.imageSmoothingEnabled = isAntialiasing;
+    !isAntialiasing && (this.context.textRendering = 'optimizeSpeed');
 
     return canvas;
   }

@@ -1,9 +1,4 @@
-import {
-  canvasDefaultWidth,
-  canvasDefaultHeight,
-  cameraDefaultXOffset,
-  cameraDefaultYOffset,
-} from '../Settings';
+import { Settings } from '../Settings';
 
 interface Options {
   width?: number;
@@ -25,10 +20,10 @@ export class Camera {
   constructor({
     x = 0,
     y = 0,
-    width = canvasDefaultWidth,
-    height = canvasDefaultHeight,
-    xOffset = cameraDefaultXOffset,
-    yOffset = cameraDefaultYOffset,
+    width = Settings.getValue('canvasWidth'),
+    height = Settings.getValue('canvasHeight'),
+    xOffset = Settings.getValue('cameraXOffset'),
+    yOffset = Settings.getValue('cameraYOffset'),
   }: Options) {
     this.x = x;
     this.y = y;

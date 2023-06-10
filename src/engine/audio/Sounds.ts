@@ -1,10 +1,10 @@
 import { Audio } from './Audio';
-import { SpriteSound } from './SpriteSound';
+import { SoundSprite } from './SoundSprite';
 import { Sound } from './Sound';
 import { Logger } from '../debug/Logger';
-import type { AudioSpriteAsset, AudioAsset } from '../assets/AudioAssets';
+import type { AudioSpriteAsset, AudioAsset } from '../assets/AssetsAudio';
 
-type ResultSounds<T> = Record<keyof T, Sound | SpriteSound>;
+type ResultSounds<T> = Record<keyof T, Sound | SoundSprite>;
 
 export class Sounds<
   Resources extends Record<string, AudioAsset | AudioSpriteAsset>
@@ -50,7 +50,7 @@ export class Sounds<
 
   private async createSpriteSound(
     resource: AudioSpriteAsset
-  ): Promise<SpriteSound> {
+  ): Promise<SoundSprite> {
     const context = this.audio.getContext();
     const { buffer: arrayBuffer, data } = resource;
     const buffer = await context.decodeAudioData(arrayBuffer);
@@ -58,7 +58,7 @@ export class Sounds<
 
     source.connect(context.destination);
 
-    return new SpriteSound(source, data);
+    return new SoundSprite(source, data);
   }
 
   public play<Key extends keyof Resources>(

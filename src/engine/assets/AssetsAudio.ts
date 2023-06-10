@@ -1,5 +1,5 @@
 import { Assets } from './Assets';
-import { type SpriteSoundData } from '../audio/SpriteSound';
+import { type SoundSpriteData } from '../audio/SoundSprite';
 import { loadAudio, loadData } from './loaders';
 import { isString } from '@/helpers';
 
@@ -10,14 +10,14 @@ interface SpriteSource {
 
 interface SpriteData {
   src: string;
-  data: SpriteSoundData;
+  data: SoundSpriteData;
 }
 
 export type AudioAsset = ArrayBuffer;
 
 export interface AudioSpriteAsset<Names extends PrimitiveKeys = string> {
   buffer: AudioAsset;
-  data: SpriteSoundData<Names>;
+  data: SoundSpriteData<Names>;
 }
 
 type ReturnAssets<Sources> = {
@@ -26,7 +26,7 @@ type ReturnAssets<Sources> = {
     : ArrayBuffer;
 };
 
-export class AudioAssets<
+export class AssetsAudio<
   Sources extends Record<string, unknown>
 > extends Assets {
   constructor(sources: Sources) {
@@ -43,7 +43,7 @@ export class AudioAssets<
     const { src, data: spriteDataSrc } = source;
     const [buffer, data] = await Promise.all([
       loadAudio(src),
-      loadData(spriteDataSrc) as unknown as Promise<SpriteSoundData>,
+      loadData(spriteDataSrc) as unknown as Promise<SoundSpriteData>,
     ]);
 
     return { buffer, data };

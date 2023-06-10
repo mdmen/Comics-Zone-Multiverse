@@ -1,7 +1,6 @@
-import { Renderable } from './Renderable';
-import type { SpriteOptions } from './types';
+import { SpriteBase, type SpriteOptions } from './SpriteBase';
 
-export class DOMSprite extends Renderable {
+export class SpriteDOM extends SpriteBase {
   private readonly node;
 
   constructor(options: SpriteOptions) {
@@ -18,14 +17,10 @@ export class DOMSprite extends Renderable {
     !this.isVisible() && (node.style.display = 'hidden');
     node.style.width = `${this.width}px`;
     node.style.height = `${this.height}px`;
+    node.style.transform = 'translate3d(0, 0, 0)';
     node.style.backgroundImage = `url(${this.image.src})`;
 
     return node;
-  }
-
-  public destroy(): void {
-    super.destroy();
-    this.layer.getNode().removeChild(this.node);
   }
 
   public show(): void {
@@ -40,15 +35,31 @@ export class DOMSprite extends Renderable {
 
   public flip(): void {
     super.flip();
-
     this.node.style.backgroundImage = `url(${this.image.src})`;
   }
 
   public draw(): void {
-    return;
+    const { frame, offset } = this.animation.getCurrentFrame();
+    const offsetX = offset?.x || 0;
+    const offsetY = offset?.y || 0;
+
+    this.layer.draw(
+      this.node,
+      this.flipped ? -(this.image.width - frame.x) : -frame.x,
+      this.flipped ? -(this.image.height - frame.y) : -frame.y,
+      this.width,
+      this.height,
+      this.flipped ? this.x + offsetX : -this.x + offsetX,
+      this.flipped ? this.y + offsetY : -this.y + offsetY
+    );
   }
 
-  public update(): void {
-    return;
+  public update(timeStamp: number): void {
+    super.update(timeStamp);
+  }
+
+  public destroy(): void {
+    super.destroy();
+    this.layer.getNode().removeChild(this.node);
   }
 }
