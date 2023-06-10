@@ -1,4 +1,4 @@
-import { Settings } from '@/engine/Settings';
+import { Settings } from '../../Settings';
 import { Logger } from '../../debug/Logger';
 import { createCanvas, createContext2D } from '../../utils';
 import { LayerBase, type LayerOptions } from './LayerBase';
