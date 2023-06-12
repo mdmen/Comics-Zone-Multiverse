@@ -1,4 +1,4 @@
-import { Storage, Audio, Settings } from '@/engine';
+import { Storage, type Audio, Settings } from '@/engine';
 
 type Theme = 'system' | 'light' | 'dark';
 type Sound = 'on' | 'off';
@@ -20,9 +20,9 @@ export class Config {
   private readonly storage;
   private readonly audio;
 
-  constructor() {
+  constructor(audio: Audio) {
     this.storage = new Storage('config', defaults);
-    this.audio = Audio.getInstance();
+    this.audio = audio;
   }
 
   public setTheme(value: Theme): void {

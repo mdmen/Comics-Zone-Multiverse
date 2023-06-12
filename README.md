@@ -2,13 +2,9 @@
 
 # Comix Zone: Glitch
 
-[![Github lint status](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml/badge.svg)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml) [![License](https://img.shields.io/badge/License-!!!-orange.svg?style=flat)](#license)
+[![GitHub lint status](https://img.shields.io/github/actions/workflow/status/mdmen/comix-zone-glitch/lint.yaml?branch=main&label=Lint&logo=Github)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml) [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/mdmen/comix-zone-glitch?label=Maintainability&logo=Code%20climate)](https://codeclimate.com/github/mdmen/comix-zone-glitch/maintainability) [![License](https://img.shields.io/badge/License-!!!-orange.svg)](#license)
 
 Some description
-
-## Getting started
-
-[Start to play](https://en.wikipedia.org/wiki/Comix_Zone)
 
 ### Plot
 

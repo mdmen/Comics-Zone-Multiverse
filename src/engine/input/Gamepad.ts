@@ -1,9 +1,8 @@
 export class Gamepad {
-  private static instance: Gamepad;
   private gamepad: globalThis.Gamepad | null = null;
   private readonly gamepadScanTimeout = 500;
 
-  private constructor() {
+  constructor() {
     this.scanForGamepad = this.scanForGamepad.bind(this);
     this.handleConnected = this.handleConnected.bind(this);
     this.handleDisconnected = this.handleDisconnected.bind(this);
@@ -41,14 +40,6 @@ export class Gamepad {
 
   private handleDisconnected() {
     this.gamepad = null;
-  }
-
-  public static getInstance(): Gamepad {
-    if (!Gamepad.instance) {
-      Gamepad.instance = new Gamepad();
-    }
-
-    return Gamepad.instance;
   }
 
   public isPressed(code: number): boolean {

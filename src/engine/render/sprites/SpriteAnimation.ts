@@ -1,4 +1,3 @@
-import { Settings } from '../../Settings';
 import type { SpriteFrame } from './SpriteBase';
 
 interface AnimationOptions {
@@ -17,6 +16,7 @@ export class SpriteAnimation {
   private readonly infinite;
   private readonly onStart;
   private readonly onFinish;
+  private finished;
   private dirty;
   private frameIndex;
   private playing;
@@ -25,7 +25,7 @@ export class SpriteAnimation {
     frames,
     names,
     infinite = false,
-    frameDuration = Settings.getValue('spriteFrameDurationDefault'),
+    frameDuration = 200,
     onStart = () => {},
     onFinish = () => {},
   }: AnimationOptions) {
@@ -36,44 +36,52 @@ export class SpriteAnimation {
     this.frameDuration = frameDuration;
     this.infinite = infinite;
     this.dirty = false;
+    this.finished = false;
     this.onStart = onStart;
     this.onFinish = onFinish;
   }
 
-  private isStarted(): boolean {
-    return this.frameIndex === 0 && this.dirty === false;
+  private handleStarted(): void {
+    if (this.frameIndex > 0 || !this.dirty) return;
+
+    this.dirty = true;
+    this.onStart();
   }
 
-  private shouldFinish(): boolean {
-    return this.frameIndex >= this.names.length;
-  }
+  private handleFinish(): void {
+    if (this.frameIndex < this.names.length) return;
 
-  private shouldUpdateFrame(timeStamp: number): boolean {
-    const frame = this.getCurrentFrame();
-    const duration = frame.duration || this.frameDuration;
-
-    return performance.now() - timeStamp > duration;
-  }
-
-  public update(timeStamp: number): void {
-    if (!this.playing) return;
-
-    if (this.isStarted()) {
-      this.dirty = true;
-      this.onStart();
-    }
-
-    if (this.shouldFinish()) {
-      if (this.infinite) {
-        this.frameIndex = 0;
-        return;
-      }
-
-      this.finish();
+    if (this.infinite) {
+      this.frameIndex = 0;
       return;
     }
 
-    if (this.shouldUpdateFrame(timeStamp)) {
+    this.finish();
+  }
+
+  private shouldUpdateFrame(deltaTime: number): boolean {
+    if (this.finished) return false;
+
+    const frame = this.getCurrentFrame();
+    const duration = frame.duration || this.frameDuration;
+
+    return deltaTime > duration;
+  }
+
+  public reset(): void {
+    this.playing = false;
+    this.finished = false;
+    this.frameIndex = 0;
+    this.dirty = false;
+  }
+
+  public update(deltaTime: number): void {
+    if (!this.playing) return;
+
+    this.handleStarted();
+    this.handleFinish();
+
+    if (this.shouldUpdateFrame(deltaTime)) {
       this.frameIndex++;
     }
   }
@@ -87,14 +95,10 @@ export class SpriteAnimation {
   }
 
   public finish(): void {
-    this.reset();
-    this.onFinish();
-  }
-
-  public reset(): void {
     this.playing = false;
-    this.frameIndex = 0;
-    this.dirty = false;
+    this.finished = true;
+
+    this.onFinish();
   }
 
   public getCurrentFrame(): SpriteFrame {

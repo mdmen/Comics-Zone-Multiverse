@@ -1,4 +1,4 @@
-import { Audio } from './Audio';
+import type { Audio } from './Audio';
 import { SoundSprite } from './SoundSprite';
 import { Sound } from './Sound';
 import { Logger } from '../debug/Logger';
@@ -12,8 +12,8 @@ export class Sounds<
   private readonly audio;
   private sounds;
 
-  constructor(resources: Resources) {
-    this.audio = Audio.getInstance();
+  constructor(resources: Resources, audio: Audio) {
+    this.audio = audio;
     this.sounds = this.extract(resources);
   }
 

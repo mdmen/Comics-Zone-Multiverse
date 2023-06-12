@@ -7,7 +7,6 @@ const settings = {
   suppressProductionLogs: false,
   storagePrefix: 'czg_game_',
   renderEngine: 'canvas' as RenderEngine,
-  spriteFrameDurationDefault: 200, // ms
   fps: 60,
 
   canvasWidth: 1024,

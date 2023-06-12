@@ -18,7 +18,7 @@ export class Input {
   private readonly input;
 
   constructor() {
-    this.input = EngineInput.getInstance(controls);
+    this.input = new EngineInput(controls);
   }
 
   public isUp(): boolean {

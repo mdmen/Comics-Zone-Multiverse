@@ -8,17 +8,16 @@ type ControlsSet = [KeyboardKeyCode, GamepadButtonIndex];
 type Controls<Names extends string> = Record<Names, ControlsSet>;
 
 export class Input<Names extends string = string> {
-  private static instance: Input;
   private readonly keyboard;
   private readonly gamepad;
   private controls;
 
-  private constructor(controls: Controls<Names>) {
+  constructor(controls: Controls<Names>) {
     this.controls = controls;
-    this.keyboard = Keyboard.getInstance();
+    this.keyboard = new Keyboard();
 
     if (Settings.getValue('gamepadAllowed')) {
-      this.gamepad = Gamepad.getInstance();
+      this.gamepad = new Gamepad();
     }
   }
 
@@ -37,15 +36,5 @@ export class Input<Names extends string = string> {
 
   public setGamepadControl(control: Names, button: GamepadButtonIndex): void {
     this.controls[control][1] = button;
-  }
-
-  public static getInstance<Names extends string>(
-    controls: Controls<Names>
-  ): Input<Names> {
-    if (!Input.instance) {
-      Input.instance = new Input(controls);
-    }
-
-    return Input.instance;
   }
 }

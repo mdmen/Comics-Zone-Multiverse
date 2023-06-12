@@ -1,5 +1,4 @@
 export class Audio {
-  private static instance: Audio;
   private readonly context: AudioContext;
   private readonly gainNode: GainNode;
 
@@ -22,13 +21,5 @@ export class Audio {
 
   public getContext(): AudioContext {
     return this.context;
-  }
-
-  public static getInstance(): Audio {
-    if (!Audio.instance) {
-      Audio.instance = new Audio();
-    }
-
-    return Audio.instance;
   }
 }
