@@ -1,4 +1,4 @@
-import { isSafari } from '@/helpers';
+import { isSafari } from './browsers';
 import { createCanvas, createContext2D } from './canvas';
 
 export function getReversedImage(image: HTMLImageElement): HTMLImageElement {

@@ -1,7 +1,7 @@
 import type { Audio } from './Audio';
 import { SoundSprite } from './SoundSprite';
 import { Sound } from './Sound';
-import { Logger } from '../debug/Logger';
+import { Logger } from '../Logger';
 import type { AudioSpriteAsset, AudioAsset } from '../assets/AssetsAudio';
 
 type ResultSounds<T> = Record<keyof T, Sound | SoundSprite>;

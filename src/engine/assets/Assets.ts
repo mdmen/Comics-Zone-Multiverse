@@ -1,5 +1,5 @@
-import { Logger } from '../debug/Logger';
-import { isEmpty } from '@/helpers/utils';
+import { Logger } from '../Logger';
+import { isEmpty } from '../utils/common';
 
 type Sources = Record<string, unknown>;
 type Resources = Sources;

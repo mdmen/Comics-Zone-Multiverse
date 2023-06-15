@@ -1,4 +1,4 @@
-import { Logger } from '../debug/Logger';
+import { Logger } from '../Logger';
 import { Settings } from '../Settings';
 
 function getKey(key: string) {

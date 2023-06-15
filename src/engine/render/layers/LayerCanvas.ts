@@ -1,9 +1,9 @@
 import { Settings } from '../../Settings';
-import { Logger } from '../../debug/Logger';
+import { Logger } from '../../Logger';
 import { createCanvas, createContext2D } from '../../utils';
-import { LayerBase, type LayerOptions } from './LayerBase';
+import { Layer, type LayerOptions } from './Layer';
 
-export class LayerCanvas extends LayerBase {
+export class LayerCanvas extends Layer {
   private context: CanvasRenderingContext2D;
 
   constructor(options: LayerOptions) {

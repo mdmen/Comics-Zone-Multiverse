@@ -4,9 +4,8 @@
     "Comix",
     "contextlost",
     "contextrestored",
+    "corepack",
     "Gamepad",
-    "Renderable",
-    "Renderables",
     "webp"
   ],
   "livePreview.serverRoot": "./dist"

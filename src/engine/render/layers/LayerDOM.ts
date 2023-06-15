@@ -1,6 +1,6 @@
-import { LayerBase } from './LayerBase';
+import { Layer } from './Layer';
 
-export class LayerDOM extends LayerBase {
+export class LayerDOM extends Layer {
   protected create(): HTMLDivElement {
     const layer = document.createElement('div');
 

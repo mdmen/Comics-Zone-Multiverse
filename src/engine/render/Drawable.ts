@@ -1,21 +1,20 @@
 import { getReversedImage } from '../utils';
-import type { LayerBase } from './layers/LayerBase';
+import type { Layer } from './layers/Layer';
 
-export interface RenderableOptions {
-  layer: LayerBase;
+export interface DrawableOptions {
+  layer: Layer;
   image: HTMLImageElement;
   x?: number;
   y?: number;
   width?: number;
   height?: number;
-  selfClear?: boolean;
   canFlip?: boolean;
 }
 
 type ImagesType = 'straight' | 'reversed';
 type Images = Record<ImagesType, HTMLImageElement>;
 
-export abstract class Renderable {
+export abstract class Drawable {
   protected readonly layer;
   protected image;
   protected images: Images;
@@ -23,9 +22,8 @@ export abstract class Renderable {
   protected y;
   protected width;
   protected height;
-  private visible;
-  private dirty;
-  protected flipped;
+  private visible = true;
+  protected flipped = false;
 
   constructor({
     layer,
@@ -35,7 +33,7 @@ export abstract class Renderable {
     width = image.width,
     height = image.height,
     canFlip = false,
-  }: RenderableOptions) {
+  }: DrawableOptions) {
     this.layer = layer;
     this.image = image;
     this.x = x;
@@ -43,20 +41,12 @@ export abstract class Renderable {
     this.width = width;
     this.height = height;
 
-    this.visible = true;
-    this.dirty = true;
-    this.flipped = false;
-
     if (canFlip) {
       this.images = {
         straight: image,
         reversed: getReversedImage(image),
       };
     }
-  }
-
-  protected shouldDraw(): boolean {
-    return this.isVisible() && this.isDirty();
   }
 
   public hide(): void {
@@ -71,19 +61,9 @@ export abstract class Renderable {
     return this.visible;
   }
 
-  public setDirty(): void {
-    this.dirty = true;
-  }
-
-  public isDirty(): boolean {
-    return this.dirty;
-  }
-
   public flip(): void {
     this.image = this.flipped ? this.images.straight : this.images.reversed;
     this.flipped = !this.flipped;
-
-    this.setDirty();
   }
 
   public destroy(): void {
@@ -92,5 +72,5 @@ export abstract class Renderable {
 
   public abstract draw(): void;
 
-  public abstract update(timeStamp: number): void;
+  public abstract update(deltaTime: number): void;
 }

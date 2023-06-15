@@ -1,34 +1,11 @@
-import { SpriteBase, type SpriteOptions } from './SpriteBase';
+import { Sprite } from './Sprite';
 
-export class SpriteCanvas extends SpriteBase {
-  private readonly selfClear;
-  private readonly prevDrawCoords;
-
-  constructor(options: SpriteOptions) {
-    super(options);
-
-    const { selfClear, x, y, width, height } = options;
-    this.selfClear = selfClear;
-    this.prevDrawCoords = { x, y, width, height };
-  }
-
-  private updatePrevDrawCoords(): void {
-    this.prevDrawCoords.x = this.x;
-    this.prevDrawCoords.y = this.y;
-    this.prevDrawCoords.width = this.width;
-    this.prevDrawCoords.height = this.height;
-  }
-
+export class SpriteCanvas extends Sprite {
   public draw(): void {
-    if (!this.shouldDraw()) return;
+    if (!this.isVisible()) return;
 
-    if (this.selfClear) {
-      this.clear();
-    }
-
-    const { frame, offset } = this.animation.getCurrentFrame();
-    const offsetX = offset?.x || 0;
-    const offsetY = offset?.y || 0;
+    const offset = this.getOffset();
+    const { frame } = this.animation.getCurrentFrame();
 
     this.layer.draw(
       this.image,
@@ -36,19 +13,12 @@ export class SpriteCanvas extends SpriteBase {
       this.flipped ? this.image.height - frame.y : -frame.y,
       this.width,
       this.height,
-      this.flipped ? this.x + offsetX : -this.x + offsetX,
-      this.flipped ? this.y + offsetY : -this.y + offsetY
+      this.flipped ? this.x + offset.x : -this.x + offset.x,
+      this.flipped ? this.y + offset.y : -this.y + offset.y
     );
-
-    this.updatePrevDrawCoords();
   }
 
   public update(timeStamp: number): void {
     super.update(timeStamp);
-  }
-
-  public clear(): void {
-    const { x, y, width, height } = this.prevDrawCoords;
-    this.layer.clear(x, y, width, height);
   }
 }

@@ -1,6 +1,6 @@
-import { SpriteBase, type SpriteOptions } from './SpriteBase';
+import { Sprite, type SpriteOptions } from './Sprite';
 
-export class SpriteDOM extends SpriteBase {
+export class SpriteDOM extends Sprite {
   private readonly node;
 
   constructor(options: SpriteOptions) {
@@ -39,9 +39,10 @@ export class SpriteDOM extends SpriteBase {
   }
 
   public draw(): void {
-    const { frame, offset } = this.animation.getCurrentFrame();
-    const offsetX = offset?.x || 0;
-    const offsetY = offset?.y || 0;
+    if (!this.isVisible()) return;
+
+    const offset = this.getOffset();
+    const { frame } = this.animation.getCurrentFrame();
 
     this.layer.draw(
       this.node,
@@ -49,8 +50,8 @@ export class SpriteDOM extends SpriteBase {
       this.flipped ? -(this.image.height - frame.y) : -frame.y,
       this.width,
       this.height,
-      this.flipped ? this.x + offsetX : -this.x + offsetX,
-      this.flipped ? this.y + offsetY : -this.y + offsetY
+      this.flipped ? this.x + offset.x : -this.x + offset.x,
+      this.flipped ? this.y + offset.y : -this.y + offset.y
     );
   }
 

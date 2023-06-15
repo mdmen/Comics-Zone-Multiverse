@@ -1,4 +1,4 @@
-import type { SpriteFrame } from './SpriteBase';
+import type { SpriteFrame } from './Sprite';
 
 interface AnimationOptions {
   frames: Record<string, SpriteFrame>;
@@ -16,10 +16,9 @@ export class SpriteAnimation {
   private readonly infinite;
   private readonly onStart;
   private readonly onFinish;
-  private finished;
-  private dirty;
-  private frameIndex;
-  private playing;
+  private dirty = false;
+  private frameIndex = 0;
+  private playing = false;
 
   constructor({
     frames,
@@ -31,12 +30,8 @@ export class SpriteAnimation {
   }: AnimationOptions) {
     this.frames = frames;
     this.names = names;
-    this.playing = false;
-    this.frameIndex = 0;
     this.frameDuration = frameDuration;
     this.infinite = infinite;
-    this.dirty = false;
-    this.finished = false;
     this.onStart = onStart;
     this.onFinish = onFinish;
   }
@@ -60,8 +55,6 @@ export class SpriteAnimation {
   }
 
   private shouldUpdateFrame(deltaTime: number): boolean {
-    if (this.finished) return false;
-
     const frame = this.getCurrentFrame();
     const duration = frame.duration || this.frameDuration;
 
@@ -70,7 +63,6 @@ export class SpriteAnimation {
 
   public reset(): void {
     this.playing = false;
-    this.finished = false;
     this.frameIndex = 0;
     this.dirty = false;
   }
@@ -79,11 +71,12 @@ export class SpriteAnimation {
     if (!this.playing) return;
 
     this.handleStarted();
-    this.handleFinish();
 
     if (this.shouldUpdateFrame(deltaTime)) {
       this.frameIndex++;
     }
+
+    this.handleFinish();
   }
 
   public play(): void {
@@ -96,8 +89,7 @@ export class SpriteAnimation {
 
   public finish(): void {
     this.playing = false;
-    this.finished = true;
-
+    this.dirty = false;
     this.onFinish();
   }
 

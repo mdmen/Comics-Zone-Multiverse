@@ -22,15 +22,15 @@ export class GameLoop {
     const delta = timeStamp - this.previousTime;
 
     if (delta > this.frameDuration) {
-      this.previousTime = timeStamp;
       this.update(delta);
+      this.previousTime = timeStamp;
     }
 
     this.rafId = requestAnimationFrame(this.loop);
   }
 
   public start(): void {
-    this.loop(performance.now());
+    this.loop(0);
   }
 
   public stop(): void {

@@ -4,8 +4,7 @@ type SettingsMapKeys = keyof SettingsMap;
 
 const settings = {
   gamepadAllowed: false,
-  suppressProductionLogs: false,
-  storagePrefix: 'czg_game_',
+  storagePrefix: 'glitch_game_',
   renderEngine: 'canvas' as RenderEngine,
   fps: 60,
 

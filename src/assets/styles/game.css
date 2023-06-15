@@ -1,5 +1,7 @@
 .container {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   max-inline-size: 100%;
   inline-size: 1024px;
   aspect-ratio: 4 / 3;
