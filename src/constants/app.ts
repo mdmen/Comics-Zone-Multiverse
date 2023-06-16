@@ -1,1 +1,1 @@
-export const containerID = 'container';
+export const containerClass = 'container';

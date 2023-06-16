@@ -9,9 +9,10 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/test-utils": ["../tests/utils.ts"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/tests/setup.ts"],
   "exclude": ["node_modules"]
 }

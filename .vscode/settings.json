@@ -6,6 +6,7 @@
     "contextrestored",
     "corepack",
     "Gamepad",
+    "testid",
     "webp"
   ],
   "livePreview.serverRoot": "./dist"
