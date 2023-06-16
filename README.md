@@ -1,6 +1,6 @@
 <img src="./src/assets/images/readme/header.webp" width="100%" alt="Comix Zone">
 
-# Comix Zone: Glitch
+# Comics Zone: Glitch
 
 [![GitHub lint status](https://img.shields.io/github/actions/workflow/status/mdmen/comix-zone-glitch/lint.yaml?branch=main&label=Lint&logo=Github)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/lint.yaml) [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/mdmen/comix-zone-glitch?label=Maintainability&logo=Code%20climate)](https://codeclimate.com/github/mdmen/comix-zone-glitch/maintainability) [![License](https://img.shields.io/badge/License-!!!-orange.svg)](#license)
 

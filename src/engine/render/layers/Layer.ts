@@ -5,7 +5,7 @@ export interface LayerOptions {
   isTransparent?: boolean;
 }
 
-type AllowedProps = 'zIndex';
+type AllowedProps = 'zIndex' | 'position';
 type Styles = Pick<CSSStyleDeclaration, AllowedProps>;
 
 export abstract class Layer {

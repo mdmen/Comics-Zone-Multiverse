@@ -41,8 +41,9 @@ export class SpriteDOM extends Sprite {
   public draw(): void {
     if (!this.isVisible()) return;
 
-    const offset = this.getOffset();
-    const { frame } = this.animation.getCurrentFrame();
+    const { frame, offset } = this.animation.getCurrentFrame();
+    const offsetX = offset?.x || 0;
+    const offsetY = offset?.y || 0;
 
     this.layer.draw(
       this.node,
@@ -50,8 +51,8 @@ export class SpriteDOM extends Sprite {
       this.flipped ? -(this.image.height - frame.y) : -frame.y,
       this.width,
       this.height,
-      this.flipped ? this.x + offset.x : -this.x + offset.x,
-      this.flipped ? this.y + offset.y : -this.y + offset.y
+      this.flipped ? this.x + offsetX : -this.x + offsetX,
+      this.flipped ? this.y + offsetY : -this.y + offsetY
     );
   }
 

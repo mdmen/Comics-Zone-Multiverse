@@ -23,8 +23,6 @@ export interface SpriteOptions extends DrawableOptions {
   frames: Record<string, SpriteFrame>;
 }
 
-const defaultFrameOffset: SpriteOffset = { x: 0, y: 0 };
-
 export abstract class Sprite extends Drawable {
   private readonly frames;
   private readonly animations: Record<string, SpriteAnimation>;
@@ -60,11 +58,6 @@ export abstract class Sprite extends Drawable {
     this.animation.reset();
     this.animation = animation;
     this.animation.play();
-  }
-
-  public getOffset(): SpriteOffset {
-    const { offset } = this.animation.getCurrentFrame();
-    return offset || defaultFrameOffset;
   }
 
   public update(deltaTime: number): void {

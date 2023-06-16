@@ -8,14 +8,12 @@ interface LoopOptions {
 export class GameLoop {
   private readonly update;
   private readonly frameDuration;
-  private previousTime;
-  private rafId;
+  private previousTime = 0;
+  private rafId = -1;
 
   constructor({ update, fps = Settings.getValue('fps') }: LoopOptions) {
     this.update = update;
     this.frameDuration = 1000 / fps;
-    this.previousTime = 0;
-    this.rafId = -1;
   }
 
   private loop(timeStamp: number): void {
