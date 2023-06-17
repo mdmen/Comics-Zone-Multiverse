@@ -2,7 +2,7 @@
 
 # Comics Zone: Glitch
 
-[![GitHub CI status](https://img.shields.io/github/actions/workflow/status/mdmen/comix-zone-glitch/tests.yaml?branch=main&label=Tests&logo=Github)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/tests.yaml) [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/mdmen/comix-zone-glitch?label=Maintainability&logo=Code%20climate)](https://codeclimate.com/github/mdmen/comix-zone-glitch/maintainability) [![License](https://img.shields.io/badge/License-!!!-orange.svg)](#license)
+[![GitHub CI status](https://img.shields.io/github/actions/workflow/status/mdmen/comix-zone-glitch/ci.yaml?branch=main&label=CI&logo=Github)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/ci.yaml) [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/mdmen/comix-zone-glitch?label=Maintainability&logo=Code%20climate)](https://codeclimate.com/github/mdmen/comix-zone-glitch/maintainability) [![License](https://img.shields.io/badge/License-!!!-orange.svg)](#license)
 
 Some description
 

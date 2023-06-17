@@ -1,5 +1,5 @@
 import { Logger } from '../Logger';
-import { isEmpty } from '../utils/common';
+import { isEmpty } from '../utils';
 
 type Sources = Record<string, unknown>;
 type Resources = Sources;
@@ -7,13 +7,16 @@ type Resources = Sources;
 export abstract class Assets {
   private sources: Sources;
   private count: number;
-  protected assets: Resources;
 
   constructor(sources: Sources) {
     this.set(sources);
   }
 
-  private async load(): Promise<void> {
+  protected abstract loadAsset(src: unknown): Promise<unknown>;
+
+  public async load(): Promise<Resources> {
+    const assets = {} as Resources;
+
     try {
       const names = Object.keys(this.sources);
 
@@ -26,38 +29,18 @@ export abstract class Assets {
           const source = this.sources[key];
           const asset = await this.loadAsset(source);
 
-          this.assets[key] = asset;
+          assets[key] = asset;
         })
       );
     } catch (error) {
       Logger.error(error);
     }
+
+    return assets;
   }
-
-  private isEmpty(): boolean {
-    const keys = Object.keys(this.assets);
-    return isEmpty(keys);
-  }
-
-  protected async retrieve(): Promise<unknown> {
-    if (this.isEmpty()) {
-      await this.load();
-    }
-
-    return this.assets;
-  }
-
-  protected abstract loadAsset(src: unknown): Promise<unknown>;
 
   public set(sources: Sources): void {
     this.sources = sources;
-    this.assets = {};
     this.count = Object.keys(sources).length;
-  }
-
-  public clear(): void {
-    this.sources = {};
-    this.assets = {};
-    this.count = 0;
   }
 }

@@ -1,14 +1,13 @@
 import { Assets } from './Assets';
 import { type SoundSpriteData } from '../audio/SoundSprite';
-import { loadAudio, loadData } from '../utils/loaders';
-import { isString } from '../utils';
+import { loadAudio, loadData, isString } from '../utils';
 
 interface SpriteSource {
   src: string;
   data: string;
 }
 
-interface SpriteData {
+interface SpriteResource {
   src: string;
   data: SoundSpriteData;
 }
@@ -21,7 +20,7 @@ export interface AudioSpriteAsset<Names extends PrimitiveKeys = string> {
 }
 
 type ReturnAssets<Sources> = {
-  [Key in keyof Sources]: Sources[Key] extends SpriteData
+  [Key in keyof Sources]: Sources[Key] extends SpriteResource
     ? AudioSpriteAsset<keyof Sources[Key]['data']['map']>
     : ArrayBuffer;
 };
@@ -49,7 +48,7 @@ export class AssetsAudio<
     return { buffer, data };
   }
 
-  public async get(): Promise<ReturnAssets<Sources>> {
-    return (await this.retrieve()) as ReturnAssets<Sources>;
+  public async load(): Promise<ReturnAssets<Sources>> {
+    return (await super.load()) as ReturnAssets<Sources>;
   }
 }

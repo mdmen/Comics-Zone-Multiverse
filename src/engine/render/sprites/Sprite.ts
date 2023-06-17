@@ -9,8 +9,8 @@ interface Frame {
 }
 
 interface SpriteOffset {
-  readonly x: number;
-  readonly y: number;
+  x: number;
+  y: number;
 }
 
 export interface SpriteFrame {
@@ -19,9 +19,11 @@ export interface SpriteFrame {
   offset?: SpriteOffset;
 }
 
-export interface SpriteOptions extends DrawableOptions {
+export interface SpriteImageData {
   frames: Record<string, SpriteFrame>;
 }
+
+export interface SpriteOptions extends DrawableOptions, SpriteImageData {}
 
 export abstract class Sprite extends Drawable {
   private readonly frames;

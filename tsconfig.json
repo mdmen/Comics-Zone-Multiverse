@@ -4,15 +4,17 @@
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
+    // Exists solely for type definitions for the json files
+    // But these files are actually will be loaded by fetch
+    // and webpack when sees json import resolves it as url string
     "resolveJsonModule": true,
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["./*"],
-      "@/test-utils": ["../tests/utils.ts"]
+      "@/*": ["./*"]
     }
   },
-  "include": ["src/**/*", "src/tests/setup.ts"],
+  "include": ["src/**/*", "src/tests/setup/setup.ts"],
   "exclude": ["node_modules"]
 }
