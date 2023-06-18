@@ -23,31 +23,22 @@ export class LayerCanvas extends Layer {
   }
 
   protected create({ isTransparent }: LayerOptions): HTMLCanvasElement {
-    const canvas = createCanvas(
-      Settings.getValue('canvasWidth'),
-      Settings.getValue('canvasHeight')
-    );
+    const canvas = createCanvas();
     this.context = createContext2D(canvas, isTransparent);
-
-    const isAntialiasing = Settings.getValue('antialiasing');
-    this.context.imageSmoothingEnabled = isAntialiasing;
-    !isAntialiasing && (this.context.textRendering = 'optimizeSpeed');
 
     return canvas;
   }
 
   public draw(
     image: HTMLImageElement,
-    x = 0,
-    y = 0,
+    sx = 0,
+    sy = 0,
     width = image.width,
     height = image.height,
     dx = 0,
-    dy = 0,
-    dWidth = this.getWidth(),
-    dHeight = this.getHeight()
+    dy = 0
   ): void {
-    this.context.drawImage(image, x, y, width, height, dx, dy, dWidth, dHeight);
+    this.context.drawImage(image, sx, sy, width, height, dx, dy, width, height);
   }
 
   public clear(

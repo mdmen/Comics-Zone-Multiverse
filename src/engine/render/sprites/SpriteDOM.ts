@@ -41,23 +41,25 @@ export class SpriteDOM extends Sprite {
   public draw(): void {
     if (!this.isVisible()) return;
 
-    const { frame, offset } = this.animation.getCurrentFrame();
-    const offsetX = offset?.x || 0;
-    const offsetY = offset?.y || 0;
+    let sourceX = 0;
+    let sourceY = 0;
+
+    if (this.animation) {
+      const { frame } = this.animation.getCurrentFrame();
+
+      sourceX = -(this.flipped ? this.image.width - frame.x : frame.x);
+      sourceY = -frame.y;
+    }
 
     this.layer.draw(
       this.node,
-      this.flipped ? -(this.image.width - frame.x) : -frame.x,
-      this.flipped ? -(this.image.height - frame.y) : -frame.y,
+      sourceX,
+      sourceY,
       this.width,
       this.height,
-      this.flipped ? this.x + offsetX : -this.x + offsetX,
-      this.flipped ? this.y + offsetY : -this.y + offsetY
+      this.x,
+      this.y
     );
-  }
-
-  public update(timeStamp: number): void {
-    super.update(timeStamp);
   }
 
   public destroy(): void {

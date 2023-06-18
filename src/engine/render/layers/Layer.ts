@@ -28,9 +28,11 @@ export abstract class Layer {
       this.node.style.imageRendering = 'pixelated';
       this.node.style.textRendering = 'optimizeSpeed';
     }
+
+    this.mount();
   }
 
-  public mount(): void {
+  private mount(): void {
     this.container.appendChild(this.node);
   }
 

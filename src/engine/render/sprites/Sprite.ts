@@ -4,11 +4,11 @@ import { SpriteAnimation } from './SpriteAnimation';
 interface Frame {
   x: number;
   y: number;
-  w?: number;
-  h?: number;
+  w: number;
+  h: number;
 }
 
-interface SpriteOffset {
+interface Offset {
   x: number;
   y: number;
 }
@@ -16,36 +16,52 @@ interface SpriteOffset {
 export interface SpriteFrame {
   frame: Frame;
   duration?: number;
-  offset?: SpriteOffset;
+  offset?: Offset;
 }
 
 export interface SpriteImageData {
   frames: Record<string, SpriteFrame>;
 }
 
-export interface SpriteOptions extends DrawableOptions, SpriteImageData {}
+export interface SpriteOptions extends DrawableOptions {
+  data?: SpriteImageData;
+}
+
+interface AnimationOptions {
+  name: string;
+  frameNames: string[];
+  infinite?: boolean;
+}
 
 export abstract class Sprite extends Drawable {
-  private readonly frames;
+  private readonly data;
   private readonly animations: Record<string, SpriteAnimation>;
   protected animation: SpriteAnimation;
 
   constructor(options: SpriteOptions) {
     super(options);
 
-    const { frames } = options;
-    this.frames = frames;
+    const { data } = options;
+    this.data = data;
     this.animations = {};
   }
 
-  public addAnimation(
-    name: string,
-    frameNames: (keyof typeof this.frames)[]
-  ): Sprite {
+  public addAnimation({
+    name,
+    frameNames,
+    infinite = false,
+  }: AnimationOptions): Sprite {
+    if (!this.data) {
+      throw Error(`Sprite with "${name}" animation has no frames`);
+    }
+
     this.animations[name] = new SpriteAnimation({
-      frames: this.frames,
+      frames: this.data.frames,
       names: frameNames,
+      infinite,
     });
+
+    if (!this.animation) this.setAnimation(name);
 
     return this;
   }
@@ -57,16 +73,23 @@ export abstract class Sprite extends Drawable {
       throw Error(`Animation ${name} does not exists`);
     }
 
-    this.animation.reset();
+    this.animation?.reset();
     this.animation = animation;
     this.animation.play();
   }
 
-  public update(deltaTime: number): void {
-    this.animation.update(deltaTime);
+  public update(timeStamp: number): void {
+    if (!this.animation) return;
 
-    const { frame } = this.animation.getCurrentFrame();
-    frame.w && (this.width = frame.w);
-    frame.h && (this.height = frame.h);
+    this.animation.update(timeStamp);
+
+    const { frame, offset } = this.animation.getCurrentFrame();
+    const offsetX = offset?.x || 0;
+    const offsetY = offset?.y || 0;
+
+    this.x = this.flipped ? this.x - offsetX : this.x + offsetX;
+    this.y = this.flipped ? this.y - offsetY : this.y + offsetY;
+    this.width = frame.w;
+    this.height = frame.h;
   }
 }

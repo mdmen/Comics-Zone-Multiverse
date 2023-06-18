@@ -2,6 +2,8 @@ export * from './input/Input';
 export * from './storage/Storage';
 export * from './audio/Sounds';
 export * from './audio/Audio';
+export * from './assets/AssetsAudio';
+export * from './assets/AssetsImages';
 export * from './render/sprites/createSprite';
 export * from './render/layers/createLayer';
 export * from './Settings';

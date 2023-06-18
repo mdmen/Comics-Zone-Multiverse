@@ -1,4 +1,4 @@
-import { containerClass } from '@/constants';
+import { containerID } from '@/constants';
 
 export function onDOMReady(callback: () => unknown): void {
   window.addEventListener('DOMContentLoaded', () => {
@@ -13,9 +13,9 @@ export function onGlobalError(callback: (error: ErrorEvent) => unknown): void {
 }
 
 export function getAppContainer(): HTMLElement {
-  const container = document.getElementById(containerClass);
+  const container = document.getElementById(containerID);
 
-  if (!container) throw Error(`.${containerClass} not found`);
+  if (!container) throw Error(`#${containerID} not found`);
 
   return container;
 }

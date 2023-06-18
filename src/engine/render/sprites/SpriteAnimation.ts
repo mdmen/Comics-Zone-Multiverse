@@ -19,6 +19,7 @@ export class SpriteAnimation {
   private dirty = false;
   private frameIndex = 0;
   private playing = false;
+  private previousTime = 0;
 
   constructor({
     frames,
@@ -44,21 +45,25 @@ export class SpriteAnimation {
   }
 
   private handleFinish(): void {
-    if (this.frameIndex < this.names.length) return;
-
     if (this.infinite) {
       this.frameIndex = 0;
       return;
     }
 
-    this.finish();
+    this.reset();
+    this.onFinish();
   }
 
-  private shouldUpdateFrame(deltaTime: number): boolean {
+  private shouldFinish(): boolean {
+    return this.frameIndex === this.names.length - 1;
+  }
+
+  private shouldUpdateFrame(timeStamp: number): boolean {
+    const delta = timeStamp - this.previousTime;
     const frame = this.getCurrentFrame();
     const duration = frame.duration || this.frameDuration;
 
-    return deltaTime > duration;
+    return delta > duration;
   }
 
   public reset(): void {
@@ -67,16 +72,21 @@ export class SpriteAnimation {
     this.dirty = false;
   }
 
-  public update(deltaTime: number): void {
+  public update(timeStamp: number): void {
     if (!this.playing) return;
 
     this.handleStarted();
 
-    if (this.shouldUpdateFrame(deltaTime)) {
+    if (this.shouldUpdateFrame(timeStamp)) {
+      this.previousTime = timeStamp;
+
+      if (this.shouldFinish()) {
+        this.handleFinish();
+        return;
+      }
+
       this.frameIndex++;
     }
-
-    this.handleFinish();
   }
 
   public play(): void {
@@ -85,12 +95,6 @@ export class SpriteAnimation {
 
   public pause(): void {
     this.playing = false;
-  }
-
-  public finish(): void {
-    this.playing = false;
-    this.dirty = false;
-    this.onFinish();
   }
 
   public getCurrentFrame(): SpriteFrame {

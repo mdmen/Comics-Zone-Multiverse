@@ -1,4 +1,4 @@
-.container {
+#container {
   position: absolute;
   top: 0;
   left: 0;
@@ -7,8 +7,8 @@
   aspect-ratio: 4 / 3;
 }
 
-.container .layer {
-  display: absolute;
+.layer {
+  position: absolute;
   inline-size: 100%;
   block-size: 100%;
   top: 0;

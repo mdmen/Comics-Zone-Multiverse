@@ -72,5 +72,5 @@ export abstract class Drawable {
 
   public abstract draw(): void;
 
-  public abstract update(deltaTime: number): void;
+  public abstract update(timeStamp: number): void;
 }
