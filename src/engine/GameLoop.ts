@@ -1,31 +1,45 @@
 import { Settings } from './Settings';
 
 interface LoopOptions {
-  update(timeStamp: number): void;
+  update(deltaStep: number): void;
+  draw(): void;
   fps?: number;
 }
 
 export class GameLoop {
   private readonly update;
-  private readonly frameDuration;
+  private readonly draw;
+  private readonly deltaTime;
+  private readonly deltaStep;
   private previousTime = 0;
   private rafId = -1;
+  private accumulator = 0;
 
-  constructor({ update, fps = Settings.getValue('fps') }: LoopOptions) {
+  constructor({ update, draw, fps = Settings.getValue('fps') }: LoopOptions) {
     this.update = update;
-    this.frameDuration = 1000 / fps;
+    this.draw = draw;
+    this.deltaTime = 1000 / fps;
+    this.deltaStep = 1 / fps;
 
     this.loop = this.loop.bind(this);
   }
 
+  // with time based animation technique
   private loop(timeStamp: number): void {
-    const delta = timeStamp - this.previousTime;
+    let delta = timeStamp - this.previousTime;
 
-    if (delta > this.frameDuration) {
-      this.update(timeStamp);
-      this.previousTime = timeStamp;
+    // minimum ~ 30 fps
+    if (delta > 33) delta = 33;
+
+    this.previousTime = timeStamp;
+    this.accumulator += delta;
+
+    while (this.accumulator >= this.deltaTime) {
+      this.update(this.deltaStep);
+      this.accumulator -= this.deltaTime;
     }
 
+    this.draw();
     this.rafId = requestAnimationFrame(this.loop);
   }
 

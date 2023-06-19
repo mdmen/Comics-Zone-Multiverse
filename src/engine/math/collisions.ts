@@ -1,12 +1,5 @@
-interface Point {
-  x: number;
-  y: number;
-}
-
-interface Rectangle extends Point {
-  width: number;
-  height: number;
-}
+import type { Point } from './Point';
+import type { Rectangle } from './Rectangle';
 
 export function isPointRectangleIntersect(p: Point, r: Rectangle): boolean {
   return !(

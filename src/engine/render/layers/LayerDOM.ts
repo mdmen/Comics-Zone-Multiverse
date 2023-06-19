@@ -1,3 +1,4 @@
+import type { Vector } from '../../math';
 import { Layer } from './Layer';
 
 export class LayerDOM extends Layer {
@@ -15,13 +16,15 @@ export class LayerDOM extends Layer {
     sy = 0,
     width: number,
     height: number,
-    dx = 0,
-    dy = 0
+    position: Vector
   ): void {
+    const posX = Math.round(position.x);
+    const posY = Math.round(position.y);
+
     element.style.backgroundPosition = `${sx}px ${sy}px`;
     element.style.width = `${width}px`;
     element.style.height = `${height}px`;
-    element.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+    element.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
   }
 
   public clear(): void {

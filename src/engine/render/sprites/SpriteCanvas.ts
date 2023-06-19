@@ -2,7 +2,7 @@ import { Sprite } from './Sprite';
 
 export class SpriteCanvas extends Sprite {
   public draw(): void {
-    if (!this.isVisible()) return;
+    if (!this.visible) return;
 
     let sourceX = 0;
     let sourceY = 0;
@@ -20,8 +20,11 @@ export class SpriteCanvas extends Sprite {
       sourceY,
       this.width,
       this.height,
-      this.x,
-      this.y
+      this.position
     );
+  }
+
+  public destroy(): void {
+    return;
   }
 }

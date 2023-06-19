@@ -1,6 +1,7 @@
 import { Assets } from './Assets';
 import { type SoundSpriteData } from '../audio/SoundSprite';
-import { loadAudio, loadData, isString } from '../utils';
+import { isString } from '../utils';
+import { loadAudio, loadData } from './loaders';
 
 interface SpriteSource {
   src: string;

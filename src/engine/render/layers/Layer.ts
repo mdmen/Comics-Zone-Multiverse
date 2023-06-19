@@ -1,3 +1,4 @@
+import type { Vector } from '../../math';
 import { Settings } from '../../Settings';
 
 export interface LayerOptions {
@@ -64,12 +65,11 @@ export abstract class Layer {
 
   public abstract draw(
     element: HTMLDivElement | HTMLImageElement,
-    x: number,
-    y: number,
+    sx: number,
+    sy: number,
     width: number,
     height: number,
-    dx: number,
-    dy: number
+    position: Vector
   ): void;
 
   public abstract clear(...args: unknown[]): void;

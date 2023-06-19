@@ -72,13 +72,14 @@ export class SpriteAnimation {
     this.dirty = false;
   }
 
-  public update(timeStamp: number): void {
+  public update(): void {
     if (!this.playing) return;
 
+    const now = performance.now();
     this.handleStarted();
 
-    if (this.shouldUpdateFrame(timeStamp)) {
-      this.previousTime = timeStamp;
+    if (this.shouldUpdateFrame(now)) {
+      this.previousTime = now;
 
       if (this.shouldFinish()) {
         this.handleFinish();

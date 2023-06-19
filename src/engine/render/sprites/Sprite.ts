@@ -1,22 +1,11 @@
+import { Vector, type Point, type Rectangle } from '../../math';
 import { Drawable, type DrawableOptions } from '../Drawable';
 import { SpriteAnimation } from './SpriteAnimation';
 
-interface Frame {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-interface Offset {
-  x: number;
-  y: number;
-}
-
 export interface SpriteFrame {
-  frame: Frame;
+  frame: Rectangle;
   duration?: number;
-  offset?: Offset;
+  offset?: Point;
 }
 
 export interface SpriteImageData {
@@ -78,18 +67,30 @@ export abstract class Sprite extends Drawable {
     this.animation.play();
   }
 
-  public update(timeStamp: number): void {
-    if (!this.animation) return;
-
-    this.animation.update(timeStamp);
+  private updateAnimation(): void {
+    this.animation.update();
 
     const { frame, offset } = this.animation.getCurrentFrame();
-    const offsetX = offset?.x || 0;
-    const offsetY = offset?.y || 0;
 
-    this.x = this.flipped ? this.x - offsetX : this.x + offsetX;
-    this.y = this.flipped ? this.y - offsetY : this.y + offsetY;
-    this.width = frame.w;
-    this.height = frame.h;
+    this.width = frame.width;
+    this.height = frame.height;
+
+    if (!offset) return;
+
+    if (this.flipped) {
+      this.position.x -= offset.x;
+      this.position.y += offset.y;
+    } else {
+      this.position.add(offset);
+    }
+  }
+
+  public update(deltaStep: number): void {
+    this.animation && this.updateAnimation();
+
+    const velocity = new Vector(this.velocity.x, this.velocity.y);
+    velocity.multiply(deltaStep);
+
+    this.position.add(velocity);
   }
 }

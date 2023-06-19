@@ -1,3 +1,4 @@
+import { Vector } from '../math';
 import { getReversedImage } from '../utils';
 import type { Layer } from './layers/Layer';
 
@@ -18,12 +19,12 @@ export abstract class Drawable {
   protected readonly layer;
   protected image;
   protected images: Images;
-  protected x;
-  protected y;
+  protected position;
   protected width;
   protected height;
-  private visible = true;
+  protected velocity;
   protected flipped = false;
+  protected visible = true;
 
   constructor({
     layer,
@@ -36,8 +37,8 @@ export abstract class Drawable {
   }: DrawableOptions) {
     this.layer = layer;
     this.image = image;
-    this.x = x;
-    this.y = y;
+    this.position = new Vector(x, y);
+    this.velocity = new Vector(0, 0);
     this.width = width;
     this.height = height;
 
@@ -57,20 +58,14 @@ export abstract class Drawable {
     this.visible = true;
   }
 
-  public isVisible(): boolean {
-    return this.visible;
-  }
-
   public flip(): void {
     this.image = this.flipped ? this.images.straight : this.images.reversed;
     this.flipped = !this.flipped;
   }
 
-  public destroy(): void {
-    return;
-  }
+  public abstract destroy(): void;
 
   public abstract draw(): void;
 
-  public abstract update(timeStamp: number): void;
+  public abstract update(deltaStep: number): void;
 }

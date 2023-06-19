@@ -1,7 +1,7 @@
-import { Settings } from '../../Settings';
 import { Logger } from '../../Logger';
 import { createCanvas, createContext2D } from '../../utils';
 import { Layer, type LayerOptions } from './Layer';
+import type { Vector } from '../../math';
 
 export class LayerCanvas extends Layer {
   private context: CanvasRenderingContext2D;
@@ -35,10 +35,19 @@ export class LayerCanvas extends Layer {
     sy = 0,
     width = image.width,
     height = image.height,
-    dx = 0,
-    dy = 0
+    position: Vector
   ): void {
-    this.context.drawImage(image, sx, sy, width, height, dx, dy, width, height);
+    this.context.drawImage(
+      image,
+      sx,
+      sy,
+      width,
+      height,
+      Math.round(position.x),
+      Math.round(position.y),
+      width,
+      height
+    );
   }
 
   public clear(

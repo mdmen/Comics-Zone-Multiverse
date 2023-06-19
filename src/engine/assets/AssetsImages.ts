@@ -1,5 +1,6 @@
 import { Assets } from './Assets';
-import { loadImage, loadData, isString } from '../utils';
+import { isString } from '../utils';
+import { loadImage, loadData } from './loaders';
 import type { SpriteImageData } from '../render/sprites/Sprite';
 
 interface SpriteSource {

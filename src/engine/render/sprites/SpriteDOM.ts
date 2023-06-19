@@ -14,7 +14,7 @@ export class SpriteDOM extends Sprite {
     const node = document.createElement('div');
 
     node.style.position = 'absolute';
-    !this.isVisible() && (node.style.display = 'hidden');
+    !this.visible && (node.style.display = 'hidden');
     node.style.width = `${this.width}px`;
     node.style.height = `${this.height}px`;
     node.style.transform = 'translate3d(0, 0, 0)';
@@ -39,7 +39,7 @@ export class SpriteDOM extends Sprite {
   }
 
   public draw(): void {
-    if (!this.isVisible()) return;
+    if (!this.visible) return;
 
     let sourceX = 0;
     let sourceY = 0;
@@ -57,13 +57,11 @@ export class SpriteDOM extends Sprite {
       sourceY,
       this.width,
       this.height,
-      this.x,
-      this.y
+      this.position
     );
   }
 
   public destroy(): void {
-    super.destroy();
     this.layer.getNode().removeChild(this.node);
   }
 }
