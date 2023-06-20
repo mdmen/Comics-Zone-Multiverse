@@ -1,3 +1,5 @@
+import { Playable } from './Playable';
+
 interface Segment {
   start: number;
   end: number;
@@ -7,12 +9,14 @@ export interface SoundSpriteData<Names extends PrimitiveKeys = string> {
   map: Record<Names, Segment>;
 }
 
-export class SoundSprite<Names extends PrimitiveKeys = string> {
-  private readonly source;
+export class SoundSprite<
+  Names extends PrimitiveKeys = string
+> extends Playable {
   private readonly data;
 
   constructor(source: AudioBufferSourceNode, data: SoundSpriteData<Names>) {
-    this.source = source;
+    super(source);
+
     this.data = data;
   }
 
@@ -20,13 +24,5 @@ export class SoundSprite<Names extends PrimitiveKeys = string> {
     const { start, end } = this.data.map[name];
 
     this.source.start(0, start, end);
-  }
-
-  public stop(): void {
-    this.source.stop();
-  }
-
-  public getSource(): AudioBufferSourceNode {
-    return this.source;
   }
 }

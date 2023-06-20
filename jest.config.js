@@ -6,6 +6,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.(png|webp|woff2|mp3)$': '<rootDir>/tests/mocks/assets.ts',
     '\\.(css)$': '<rootDir>/tests/mocks/styles.ts',
+    '/loaders': '<rootDir>/tests/mocks/loaders.ts',
     '^@/(.*)': '<rootDir>/src/$1',
   },
 };

@@ -4,6 +4,8 @@ import { getPageBody } from './setup/utils';
 const containerTestId = 'container';
 document.body.innerHTML = getPageBody();
 
-test('Container element initially is empty', () => {
-  expect(screen.getByTestId(containerTestId)).toBeEmptyDOMElement();
+describe('App container', () => {
+  test('Container element initially is empty', () => {
+    expect(screen.getByTestId(containerTestId)).toBeEmptyDOMElement();
+  });
 });

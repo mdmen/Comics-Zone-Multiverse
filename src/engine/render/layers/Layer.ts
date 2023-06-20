@@ -11,16 +11,19 @@ type Styles = Pick<CSSStyleDeclaration, AllowedProps>;
 
 export abstract class Layer {
   private readonly container;
-  private readonly width = Settings.getValue('canvasWidth');
-  private readonly height = Settings.getValue('canvasHeight');
   protected readonly node;
+  protected readonly width = Settings.getValue('canvasWidth');
+  protected readonly height = Settings.getValue('canvasHeight');
 
   constructor(options: LayerOptions) {
     const { container } = options;
     this.container = container;
 
     this.node = this.create(options);
+    this.init();
+  }
 
+  private init(): void {
     this.node.classList.add(Settings.getValue('canvasClassName'));
     this.node.style.width = `${this.width}px`;
     this.node.style.height = `${this.height}px`;
@@ -30,27 +33,11 @@ export abstract class Layer {
       this.node.style.textRendering = 'optimizeSpeed';
     }
 
-    this.mount();
-  }
-
-  private mount(): void {
     this.container.appendChild(this.node);
   }
 
   public setStyle<T extends keyof Styles>(name: T, value: Styles[T]): void {
     this.node.style[name] = value;
-  }
-
-  public getNode(): HTMLElement {
-    return this.node;
-  }
-
-  public getWidth(): number {
-    return this.width;
-  }
-
-  public getHeight(): number {
-    return this.height;
   }
 
   public show(): void {

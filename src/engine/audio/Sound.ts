@@ -1,19 +1,7 @@
-export class Sound {
-  private readonly source;
+import { Playable } from './Playable';
 
-  constructor(source: AudioBufferSourceNode) {
-    this.source = source;
-  }
-
+export class Sound extends Playable {
   public play(): void {
     this.source.start();
-  }
-
-  public stop(): void {
-    this.source.stop();
-  }
-
-  public getSource(): AudioBufferSourceNode {
-    return this.source;
   }
 }

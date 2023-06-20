@@ -50,12 +50,7 @@ export class LayerCanvas extends Layer {
     );
   }
 
-  public clear(
-    x = 0,
-    y = 0,
-    width = this.getWidth(),
-    height = this.getHeight()
-  ): void {
+  public clear(x = 0, y = 0, width = this.width, height = this.height): void {
     this.context.clearRect(x, y, width, height);
   }
 }

@@ -5,14 +5,16 @@ export class Audio {
   private constructor() {
     this.context = new AudioContext();
     this.gainNode = new GainNode(this.context);
-
-    if (this.isSuspended()) {
-      this.context.resume();
-    }
   }
 
   private isSuspended(): boolean {
     return this.context.state === 'suspended';
+  }
+
+  public resumeContext(): void {
+    if (this.isSuspended()) {
+      this.context.resume();
+    }
   }
 
   public setMuted(value: boolean): void {

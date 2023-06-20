@@ -1,7 +1,7 @@
 import { Assets } from './Assets';
-import { type SoundSpriteData } from '../audio/SoundSprite';
 import { isString } from '../utils';
-import { loadAudio, loadData } from './loaders';
+import { loadImage, loadData } from './loaders';
+import type { SpriteImageData } from '../render/sprites/Sprite';
 
 interface SpriteSource {
   src: string;
@@ -10,23 +10,21 @@ interface SpriteSource {
 
 interface SpriteResource {
   src: string;
-  data: SoundSpriteData;
+  data: SpriteImageData;
 }
 
-export type AudioAsset = ArrayBuffer;
-
-export interface AudioSpriteAsset<Names extends PrimitiveKeys = string> {
-  buffer: AudioAsset;
-  data: SoundSpriteData<Names>;
+export interface SpriteImageAsset {
+  image: HTMLImageElement;
+  data: SpriteImageData;
 }
 
 type ReturnAssets<Sources> = {
   [Key in keyof Sources]: Sources[Key] extends SpriteResource
-    ? AudioSpriteAsset<keyof Sources[Key]['data']['map']>
-    : ArrayBuffer;
+    ? SpriteImageAsset
+    : HTMLImageElement;
 };
 
-export class AssetsAudio<
+export class ImageAssets<
   Sources extends Record<string, unknown>
 > extends Assets {
   constructor(sources: Sources) {
@@ -35,18 +33,18 @@ export class AssetsAudio<
 
   protected async loadAsset(
     source: string | SpriteSource
-  ): Promise<AudioAsset | AudioSpriteAsset> {
+  ): Promise<HTMLImageElement | SpriteImageAsset> {
     if (isString(source)) {
-      return await loadAudio(source);
+      return await loadImage(source);
     }
 
     const { src, data: spriteDataSrc } = source;
-    const [buffer, data] = await Promise.all([
-      loadAudio(src),
-      loadData(spriteDataSrc) as unknown as Promise<SoundSpriteData>,
+    const [image, data] = await Promise.all([
+      loadImage(src),
+      loadData(spriteDataSrc) as unknown as Promise<SpriteImageData>,
     ]);
 
-    return { buffer, data };
+    return { image, data };
   }
 
   public async load(): Promise<ReturnAssets<Sources>> {

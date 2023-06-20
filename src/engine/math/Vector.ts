@@ -9,19 +9,9 @@ export class Vector implements Point {
     this.y = y;
   }
 
-  public set(value: Vector | Point): void {
-    this.x = value.x;
-    this.y = value.y;
-  }
-
   public add(value: Vector | Point): void {
     this.x += value.x;
     this.y += value.y;
-  }
-
-  public subtract(value: Vector | Point): void {
-    this.x -= value.x;
-    this.y -= value.y;
   }
 
   public multiply(n: number): void {
