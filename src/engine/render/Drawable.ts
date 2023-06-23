@@ -1,5 +1,5 @@
 import { Rectangle, type RectangleOptions } from '../math/Rectangle';
-import { Vector, isRectanglesCollide } from '../math';
+import { Vector } from '../math';
 import { getReversedImage } from '../utils';
 import type { Layer } from './layers/Layer';
 
@@ -17,7 +17,8 @@ export abstract class Drawable extends Rectangle {
   protected image;
   protected images: Images;
   protected velocity = new Vector();
-  protected flipped = true;
+  protected source = new Vector();
+  protected flipped = false;
   protected visible = true;
 
   constructor({
@@ -52,7 +53,19 @@ export abstract class Drawable extends Rectangle {
   }
 
   public isVisible(): boolean {
-    return this.visible && isRectanglesCollide(this, this.layer);
+    return this.visible;
+  }
+
+  public getSource(): Vector {
+    return this.source;
+  }
+
+  public getLayer(): Layer {
+    return this.layer;
+  }
+
+  public getImage(): HTMLImageElement {
+    return this.image;
   }
 
   public flip(): void {
@@ -60,9 +73,16 @@ export abstract class Drawable extends Rectangle {
     this.flipped = !this.flipped;
   }
 
-  public abstract destroy(): void;
+  public update(step: number): void {
+    const velocity = new Vector(this.velocity.x, this.velocity.y);
+    velocity.multiply(step);
+
+    this.position.add(velocity);
+  }
+
+  public destroy(): void {
+    return;
+  }
 
   public abstract draw(): void;
-
-  public abstract update(): void;
 }

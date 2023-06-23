@@ -1,5 +1,5 @@
 import { Settings } from '../Settings';
-import { Rectangle, type RectangleOptions } from '../math/Rectangle';
+import { Rectangle, type RectangleOptions, isRectanglesCollide } from '../math';
 
 interface Options extends RectangleOptions {
   map: Rectangle;
@@ -36,47 +36,63 @@ export class Camera extends Rectangle {
     this.offsetY = offsetY;
   }
 
-  private getRightTargetBoundary(): number {
+  private getRightOffsetBoundary(): number {
     return this.position.x + this.width - this.offsetX;
   }
 
-  private getLeftTargetBoundary(): number {
+  private getLeftOffsetBoundary(): number {
     return this.position.x + this.offsetX;
   }
 
-  private getTopTargetBoundary(): number {
+  private getTopOffsetBoundary(): number {
     return this.position.x + this.offsetY;
   }
 
-  private getBottomTargetBoundary(): number {
+  private getBottomOffsetBoundary(): number {
     return this.position.x + this.height + this.offsetY;
+  }
+
+  private isTargetHitLeftBoundary(): boolean {
+    return this.target.getPosition().x < this.getLeftOffsetBoundary();
+  }
+
+  private isTargetHitRightBoundary(): boolean {
+    return (
+      this.target.getPosition().x + this.target.getWidth() >
+      this.getRightOffsetBoundary()
+    );
+  }
+
+  private isTargetHitTopBoundary(): boolean {
+    return this.target.getPosition().y < this.getTopOffsetBoundary();
+  }
+
+  private isTargetHitBottomBoundary(): boolean {
+    return (
+      this.target.getPosition().y + this.target.getHeight() >
+      this.getBottomOffsetBoundary()
+    );
   }
 
   private followTarget(): void {
     const targetPosition = this.target.getPosition();
 
-    if (targetPosition.x < this.getLeftTargetBoundary()) {
+    if (this.isTargetHitLeftBoundary()) {
       this.position.x = targetPosition.x - this.offsetX;
-    } else if (
-      this.position.x + this.target.getWidth() >
-      this.getRightTargetBoundary()
-    ) {
+    } else if (this.isTargetHitRightBoundary()) {
       this.position.x =
         targetPosition.x + this.target.getWidth() + this.offsetX;
     }
 
-    if (this.position.y < this.getTopTargetBoundary()) {
+    if (this.isTargetHitTopBoundary()) {
       this.position.y = targetPosition.y - this.offsetY;
-    } else if (
-      this.position.y + this.target.getHeight() >
-      this.getBottomTargetBoundary()
-    ) {
+    } else if (this.isTargetHitBottomBoundary()) {
       this.position.y =
         targetPosition.y + this.target.getHeight() + this.offsetY;
     }
   }
 
-  public stayOnTheMap(): void {
+  private stayOnTheMap(): void {
     const mapPosition = this.map.getPosition();
 
     if (this.position.x < mapPosition.x) {
@@ -95,5 +111,9 @@ export class Camera extends Rectangle {
   public update(): void {
     this.followTarget();
     this.stayOnTheMap();
+  }
+
+  public isWithinCamera(rectangle: Rectangle): boolean {
+    return isRectanglesCollide(this, rectangle);
   }
 }

@@ -1,7 +1,8 @@
 import { Logger } from '../../Logger';
 import { createCanvas, createContext2D } from '../../utils';
 import { Layer, type LayerOptions } from './Layer';
-import type { Vector } from '../../math';
+import type { Camera } from '../Camera';
+import type { Drawable } from '../Drawable';
 
 export class LayerCanvas extends Layer {
   private context: CanvasRenderingContext2D;
@@ -29,18 +30,33 @@ export class LayerCanvas extends Layer {
     return canvas;
   }
 
-  public draw(
-    image: HTMLImageElement,
-    sx = 0,
-    sy = 0,
-    width = image.width,
-    height = image.height,
-    position: Vector
-  ): void {
+  protected syncWithCamera(): void {
+    const position = (this.camera as Camera).getPosition();
+    const posX = -Math.floor(position.x);
+    const posY = -Math.floor(position.y);
+
+    this.context.translate(posX, posY);
+  }
+
+  public preDraw(): void {
+    this.context.clearRect(0, 0, this.width, this.height);
+    this.context.save();
+
+    super.preDraw();
+  }
+
+  public draw(drawable: Drawable): void {
+    if (!this.shouldDraw(drawable)) return;
+
+    const position = drawable.getPosition();
+    const source = drawable.getSource();
+    const width = drawable.getWidth();
+    const height = drawable.getHeight();
+
     this.context.drawImage(
-      image,
-      sx,
-      sy,
+      drawable.getImage(),
+      source.x,
+      source.y,
       width,
       height,
       Math.floor(position.x),
@@ -50,7 +66,7 @@ export class LayerCanvas extends Layer {
     );
   }
 
-  public clear(x = 0, y = 0, width = this.width, height = this.height): void {
-    this.context.clearRect(x, y, width, height);
+  public postDraw(): void {
+    this.context.restore();
   }
 }

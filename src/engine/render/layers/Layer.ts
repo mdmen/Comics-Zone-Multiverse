@@ -1,8 +1,11 @@
 import { Rectangle, Vector, type RectangleOptions } from '../../math';
 import { Settings } from '../../Settings';
+import type { Camera } from '../Camera';
+import type { Drawable } from '../Drawable';
 
 export interface LayerOptions extends RectangleOptions {
   container: HTMLElement;
+  camera?: Camera;
   isTransparent?: boolean;
 }
 
@@ -11,19 +14,23 @@ type Styles = Pick<CSSStyleDeclaration, AllowedProps>;
 
 export abstract class Layer extends Rectangle {
   private readonly container;
+  protected readonly camera;
   protected readonly node;
+  private prevPosition = new Vector();
 
   constructor(options: LayerOptions) {
     super(options);
 
     const {
       container,
+      camera,
       width = Settings.get('canvasWidth'),
       height = Settings.get('canvasHeight'),
     } = options;
 
     this.width = width;
     this.height = height;
+    this.camera = camera;
     this.container = container;
 
     this.node = this.create(options);
@@ -47,36 +54,41 @@ export abstract class Layer extends Rectangle {
     this.node.style[name] = value;
   }
 
-  public show(): void {
-    this.node.style.display = 'initial';
-  }
-
-  public hide(): void {
-    this.node.style.display = 'hidden';
-  }
-
   public getNode(): HTMLElement {
     return this.node;
   }
 
-  public getWidth(): number {
-    return this.width;
+  protected shouldDraw(drawable: Drawable): boolean {
+    if (!drawable.isVisible()) return false;
+
+    return !!this.camera?.isWithinCamera(drawable);
   }
 
-  public getHeight(): number {
-    return this.height;
+  private shouldSyncWithCamera(): boolean {
+    if (!this.camera) return false;
+
+    const cameraPosition = this.camera.getPosition();
+
+    return !cameraPosition.isEqualTo(this.prevPosition);
+  }
+
+  private updatePrevPosition(): void {
+    const cameraPosition = (this.camera as Camera).getPosition();
+    this.prevPosition.copy(cameraPosition);
+  }
+
+  public preDraw(): void {
+    if (!this.shouldSyncWithCamera()) return;
+
+    this.syncWithCamera();
+    this.updatePrevPosition();
   }
 
   protected abstract create(options: LayerOptions): HTMLElement;
 
-  public abstract draw(
-    element: HTMLDivElement | HTMLImageElement,
-    sx: number,
-    sy: number,
-    width: number,
-    height: number,
-    position: Vector
-  ): void;
+  protected abstract syncWithCamera(): void;
 
-  public abstract clear(...args: unknown[]): void;
+  public abstract draw(drawable: Drawable): void;
+
+  public abstract postDraw(): void;
 }

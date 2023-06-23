@@ -11,6 +11,7 @@ const settings = {
   canvasWidth: 1024,
   canvasHeight: 768,
   canvasClassName: 'layer',
+  canvasSubLayerClassName: 'sub-layer', // only DOM render
   antialiasing: false,
 
   cameraOffsetX: 50,

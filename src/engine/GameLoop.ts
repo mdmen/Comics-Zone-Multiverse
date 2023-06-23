@@ -10,7 +10,7 @@ export class GameLoop {
   private readonly update;
   private readonly draw;
   private readonly frameDuration;
-  private readonly deltaTime;
+  private readonly step;
   private readonly maxDeltaTime = 100;
   private previousTime = 0;
   private rafId = -1;
@@ -20,22 +20,20 @@ export class GameLoop {
     this.update = update;
     this.draw = draw;
     this.frameDuration = 1000 / fps;
-    this.deltaTime = 1 / fps;
+    this.step = 1 / fps;
 
     this.loop = this.loop.bind(this);
   }
 
   // with time based animation technique
   private loop(timeStamp: number): void {
-    let delta = timeStamp - this.previousTime;
-    this.previousTime = timeStamp;
-
-    if (delta > this.maxDeltaTime) delta = this.frameDuration;
+    const delta = Math.min(timeStamp - this.previousTime, this.frameDuration);
 
     this.accumulator += delta;
+    this.previousTime = timeStamp;
 
     while (this.accumulator >= this.frameDuration) {
-      this.update(this.deltaTime);
+      this.update(this.step);
       this.accumulator -= this.frameDuration;
     }
 

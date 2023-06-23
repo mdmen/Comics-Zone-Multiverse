@@ -6,6 +6,8 @@ export * from './assets/AudioAssets';
 export * from './assets/ImageAssets';
 export * from './render/sprites/createSprite';
 export * from './render/layers/createLayer';
+export * from './render/Scene';
+export * from './render/Camera';
 export * from './Settings';
 export * from './GameLoop';
 export * from './Logger';

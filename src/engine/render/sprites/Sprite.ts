@@ -1,11 +1,18 @@
-import { Vector, type Point, type Rectangle } from '../../math';
+import { Vector } from '../../math';
 import { Drawable, type DrawableOptions } from '../Drawable';
 import { SpriteAnimation } from './SpriteAnimation';
 
+interface FrameBoundaries {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export interface SpriteFrame {
-  frame: Rectangle;
+  frame: FrameBoundaries;
   duration?: number;
-  offset?: Point;
+  offset?: Vector;
 }
 
 export interface SpriteImageData {
@@ -25,7 +32,7 @@ interface AnimationOptions {
 export abstract class Sprite extends Drawable {
   private readonly data;
   private readonly animations: Record<string, SpriteAnimation>;
-  protected animation: SpriteAnimation;
+  private animation: SpriteAnimation;
 
   constructor(options: SpriteOptions) {
     super(options);
@@ -72,25 +79,28 @@ export abstract class Sprite extends Drawable {
 
     const { frame, offset } = this.animation.getCurrentFrame();
 
+    this.source.set(
+      this.flipped ? this.image.width - frame.x : frame.x,
+      frame.y
+    );
     this.width = frame.width;
     this.height = frame.height;
 
     if (!offset) return;
 
     if (this.flipped) {
-      this.position.x -= offset.x;
-      this.position.y += offset.y;
+      this.position.set(this.position.x - offset.x, this.position.y + offset.y);
     } else {
       this.position.add(offset);
     }
   }
 
   public update(deltaStep: number): void {
+    super.update(deltaStep);
     this.animation && this.updateAnimation();
+  }
 
-    const velocity = new Vector(this.velocity.x, this.velocity.y);
-    velocity.multiply(deltaStep);
-
-    this.position.add(velocity);
+  public draw(): void {
+    this.layer.draw(this);
   }
 }

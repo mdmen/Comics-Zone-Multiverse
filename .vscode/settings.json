@@ -5,9 +5,11 @@
     "contextlost",
     "contextrestored",
     "corepack",
+    "drawables",
     "flippable",
     "Gamepad",
     "testid",
+    "updatables",
     "webp"
   ],
   "livePreview.serverRoot": "./dist"

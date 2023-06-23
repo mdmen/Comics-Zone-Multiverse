@@ -7,7 +7,8 @@
   aspect-ratio: 4 / 3;
 }
 
-.layer {
+.layer,
+.sub-layer {
   position: absolute;
   max-inline-size: 100%;
   max-block-size: 100%;
