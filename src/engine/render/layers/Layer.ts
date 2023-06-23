@@ -1,7 +1,7 @@
-import type { Vector } from '../../math';
+import { Rectangle, Vector, type RectangleOptions } from '../../math';
 import { Settings } from '../../Settings';
 
-export interface LayerOptions {
+export interface LayerOptions extends RectangleOptions {
   container: HTMLElement;
   isTransparent?: boolean;
 }
@@ -9,14 +9,21 @@ export interface LayerOptions {
 type AllowedProps = 'zIndex' | 'position';
 type Styles = Pick<CSSStyleDeclaration, AllowedProps>;
 
-export abstract class Layer {
+export abstract class Layer extends Rectangle {
   private readonly container;
   protected readonly node;
-  protected readonly width = Settings.getValue('canvasWidth');
-  protected readonly height = Settings.getValue('canvasHeight');
 
   constructor(options: LayerOptions) {
-    const { container } = options;
+    super(options);
+
+    const {
+      container,
+      width = Settings.get('canvasWidth'),
+      height = Settings.get('canvasHeight'),
+    } = options;
+
+    this.width = width;
+    this.height = height;
     this.container = container;
 
     this.node = this.create(options);
@@ -24,11 +31,11 @@ export abstract class Layer {
   }
 
   private init(): void {
-    this.node.classList.add(Settings.getValue('canvasClassName'));
+    this.node.classList.add(Settings.get('canvasClassName'));
     this.node.style.width = `${this.width}px`;
     this.node.style.height = `${this.height}px`;
 
-    if (!Settings.getValue('antialiasing')) {
+    if (!Settings.get('antialiasing')) {
       this.node.style.imageRendering = 'pixelated';
       this.node.style.textRendering = 'optimizeSpeed';
     }
@@ -46,6 +53,18 @@ export abstract class Layer {
 
   public hide(): void {
     this.node.style.display = 'hidden';
+  }
+
+  public getNode(): HTMLElement {
+    return this.node;
+  }
+
+  public getWidth(): number {
+    return this.width;
+  }
+
+  public getHeight(): number {
+    return this.height;
   }
 
   protected abstract create(options: LayerOptions): HTMLElement;

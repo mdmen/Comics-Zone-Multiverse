@@ -4,7 +4,7 @@ import { SpriteCanvas } from './SpriteCanvas';
 import { SpriteDOM } from './SpriteDOM';
 
 export function createSprite(options: SpriteOptions): Sprite {
-  return Settings.getValue('renderEngine') === 'canvas'
+  return Settings.get('renderEngine') === 'canvas'
     ? new SpriteCanvas(options)
     : new SpriteDOM(options);
 }

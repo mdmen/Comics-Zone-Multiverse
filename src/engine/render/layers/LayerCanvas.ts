@@ -43,10 +43,10 @@ export class LayerCanvas extends Layer {
       sy,
       width,
       height,
-      Math.round(position.x),
-      Math.round(position.y),
-      width,
-      height
+      Math.floor(position.x),
+      Math.floor(position.y),
+      Math.floor(width),
+      Math.floor(height)
     );
   }
 

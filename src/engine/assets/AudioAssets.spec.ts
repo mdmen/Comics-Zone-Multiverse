@@ -17,7 +17,7 @@ interface SpriteSoundAsset {
   data: Record<string, unknown>;
 }
 
-describe('Audio assets', () => {
+describe('Audio assets (engine)', () => {
   test('Should load audio assets', async () => {
     const assets = new AudioAssets(sources);
     const soundAssets = await assets.load();

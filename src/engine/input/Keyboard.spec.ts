@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import { Keyboard } from './Keyboard';
 
-describe('Keyboard', () => {
+describe('Keyboard (engine)', () => {
   test('Should response to user input', async () => {
     const user = userEvent.setup();
     const keyboard = new Keyboard();

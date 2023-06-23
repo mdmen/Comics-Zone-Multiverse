@@ -16,7 +16,7 @@ export class Input<Names extends string = string> {
     this.controls = controls;
     this.keyboard = new Keyboard();
 
-    if (Settings.getValue('gamepadAllowed')) {
+    if (Settings.get('gamepadAllowed')) {
       this.gamepad = new Gamepad();
     }
   }

@@ -17,7 +17,7 @@ interface SpriteImageAsset {
   data: Record<string, unknown>;
 }
 
-describe('Image assets', () => {
+describe('Image assets (engine)', () => {
   test('Should load image assets', async () => {
     const assets = new ImageAssets(sources);
     const images = await assets.load();

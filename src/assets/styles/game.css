@@ -9,8 +9,8 @@
 
 .layer {
   position: absolute;
-  inline-size: 100%;
-  block-size: 100%;
+  max-inline-size: 100%;
+  max-block-size: 100%;
   top: 0;
   left: 0;
 }

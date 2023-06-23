@@ -13,7 +13,7 @@ interface ConfigValues {
 const defaults: ConfigValues = {
   theme: 'system',
   sound: 'on',
-  render: Settings.getValue('renderEngine'),
+  render: Settings.get('renderEngine'),
 } as const;
 
 export class Config {
@@ -47,7 +47,7 @@ export class Config {
   }
 
   public setRender(value: Render): void {
-    Settings.setValue('renderEngine', value);
+    Settings.set('renderEngine', value);
     this.storage.setValue('render', value);
   }
 }

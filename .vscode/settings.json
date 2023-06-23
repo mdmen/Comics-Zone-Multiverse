@@ -5,6 +5,7 @@
     "contextlost",
     "contextrestored",
     "corepack",
+    "flippable",
     "Gamepad",
     "testid",
     "webp"

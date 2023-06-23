@@ -6,6 +6,16 @@
 
 Some description
 
+### Roadmap
+
+- [ ] Game engine
+- [ ] Game mechanics
+- [ ] Playable version
+- [ ] Level 1
+- [ ] Level 2
+- [ ] Level 3
+- [ ] Completed
+
 ### Plot
 
 ...
@@ -24,9 +34,6 @@ Gamepad is also supported
 ### Available moves
 
 - **Uppercut** (↑ + J)  
-  ![Uppercut move](./src/assets/images/readme/uppercut_test.png)
-
-- **Sit**  
   ![Uppercut move](./src/assets/images/readme/uppercut_test.png)
 
 ### Technical features

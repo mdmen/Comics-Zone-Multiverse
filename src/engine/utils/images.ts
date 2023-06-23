@@ -18,8 +18,8 @@ export function getScaledImage(
 ): HTMLImageElement {
   if (scale === 1) return image;
 
-  const width = Math.round(image.width * scale);
-  const height = Math.round(image.height * scale);
+  const width = Math.floor(image.width * scale);
+  const height = Math.floor(image.height * scale);
   const canvas = createCanvas(width, height);
   const context = createContext2D(canvas);
 

@@ -1,6 +1,6 @@
 import { Gamepad } from './Gamepad';
 
-describe('Gamepad', () => {
+describe('Gamepad (engine)', () => {
   test('Should response to user input', async () => {
     const gamepad = new Gamepad();
     const faceButton1Code = 0;

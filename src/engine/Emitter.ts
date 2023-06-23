@@ -1,4 +1,4 @@
-import { isEmpty } from '@/engine/utils/common';
+import { isEmpty } from './utils';
 
 type Subscriber = (...args: unknown[]) => void;
 

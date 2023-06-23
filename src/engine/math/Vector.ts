@@ -1,6 +1,4 @@
-import type { Point } from './Point';
-
-export class Vector implements Point {
+export class Vector {
   public x;
   public y;
 
@@ -9,7 +7,7 @@ export class Vector implements Point {
     this.y = y;
   }
 
-  public add(value: Vector | Point): void {
+  public add(value: Vector): void {
     this.x += value.x;
     this.y += value.y;
   }

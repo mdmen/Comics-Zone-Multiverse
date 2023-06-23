@@ -2,7 +2,7 @@ import userEvent from '@testing-library/user-event';
 import { Settings } from '../Settings';
 import { Input } from './Input';
 
-describe('Input', () => {
+describe('Input (engine)', () => {
   const user = userEvent.setup();
   const controls = {
     A: ['KeyJ', 0],
@@ -10,7 +10,7 @@ describe('Input', () => {
   } satisfies Record<string, [string, number]>;
 
   test('Should response to keyboard input', async () => {
-    Settings.setValue('gamepadAllowed', false);
+    Settings.set('gamepadAllowed', false);
     const input = new Input(controls);
 
     expect(input.isPressed('A')).toBe(false);
@@ -25,7 +25,7 @@ describe('Input', () => {
   });
 
   test('Should response to gamepad input', async () => {
-    Settings.setValue('gamepadAllowed', true);
+    Settings.set('gamepadAllowed', true);
     const input = new Input(controls);
 
     expect(input.isPressed('A')).toBe(true);

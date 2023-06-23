@@ -39,7 +39,7 @@ export class SpriteDOM extends Sprite {
   }
 
   public draw(): void {
-    if (!this.visible) return;
+    if (!this.isVisible()) return;
 
     let sourceX = 0;
     let sourceY = 0;
@@ -62,6 +62,6 @@ export class SpriteDOM extends Sprite {
   }
 
   public destroy(): void {
-    this.layer.getNode().removeChild(this.node);
+    this.node.remove();
   }
 }

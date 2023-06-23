@@ -2,7 +2,7 @@ import { Logger } from '../Logger';
 import { Settings } from '../Settings';
 
 function getKey(key: string) {
-  return `${Settings.getValue('storagePrefix')}${key}`;
+  return `${Settings.get('storagePrefix')}${key}`;
 }
 
 interface LocalStorage {

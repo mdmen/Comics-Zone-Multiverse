@@ -9,17 +9,18 @@ interface LoopOptions {
 export class GameLoop {
   private readonly update;
   private readonly draw;
+  private readonly frameDuration;
   private readonly deltaTime;
-  private readonly deltaStep;
+  private readonly maxDeltaTime = 100;
   private previousTime = 0;
   private rafId = -1;
   private accumulator = 0;
 
-  constructor({ update, draw, fps = Settings.getValue('fps') }: LoopOptions) {
+  constructor({ update, draw, fps = Settings.get('fps') }: LoopOptions) {
     this.update = update;
     this.draw = draw;
-    this.deltaTime = 1000 / fps;
-    this.deltaStep = 1 / fps;
+    this.frameDuration = 1000 / fps;
+    this.deltaTime = 1 / fps;
 
     this.loop = this.loop.bind(this);
   }
@@ -27,19 +28,19 @@ export class GameLoop {
   // with time based animation technique
   private loop(timeStamp: number): void {
     let delta = timeStamp - this.previousTime;
-
-    // minimum ~ 30 fps
-    if (delta > 33) delta = 33;
-
     this.previousTime = timeStamp;
+
+    if (delta > this.maxDeltaTime) delta = this.frameDuration;
+
     this.accumulator += delta;
 
-    while (this.accumulator >= this.deltaTime) {
-      this.update(this.deltaStep);
-      this.accumulator -= this.deltaTime;
+    while (this.accumulator >= this.frameDuration) {
+      this.update(this.deltaTime);
+      this.accumulator -= this.frameDuration;
     }
 
     this.draw();
+
     this.rafId = requestAnimationFrame(this.loop);
   }
 
@@ -50,5 +51,7 @@ export class GameLoop {
   public stop(): void {
     cancelAnimationFrame(this.rafId);
     this.rafId = -1;
+    this.previousTime = 0;
+    this.accumulator = 0;
   }
 }

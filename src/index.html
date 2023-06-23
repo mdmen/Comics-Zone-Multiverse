@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
 
-    <title>Comix Zone: Glitch</title>
+    <title>Comics Zone: Glitch</title>
     <meta
       name="description"
       content="An attempt to create HTML5 spin-off for the great SEGA game called Comix Zone"
     />
 
-    <meta name="og:title" content="Comix Zone: Glitch" />
+    <meta name="og:title" content="Comics Zone: Glitch" />
     <meta
       name="og:description"
       content="An attempt to create HTML5 spin-off for the great SEGA game called Comix Zone"
@@ -35,13 +35,14 @@
 
       .wrapper {
         position: relative;
-        width: 100%;
-        height: 100%;
+        inline-size: 100%;
+        min-height: 100%;
+        padding: 30px;
         display: flex;
         justify-content: center;
         align-items: center;
         background-color: #fff;
-        /* https://www.transparenttextures.com */
+        /* Created by Adam Anlauf (https://www.transparenttextures.com/grunge-wall.html) */
         background-image: url("<%=require('./assets/images/ui/background.webp')%>");
         overflow: hidden;
         z-index: 0;
@@ -64,8 +65,8 @@
       .paper:before,
       .paper:after {
         content: '';
-        width: 100%;
-        height: 98%;
+        inline-size: 100%;
+        block-size: 98%;
         position: absolute;
         background-color: #fbfbfb;
         box-shadow: 1px 1px 3px 0 rgba(0 0 0 / 0.2);

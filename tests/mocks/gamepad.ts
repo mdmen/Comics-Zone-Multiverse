@@ -1,15 +1,6 @@
 if (!navigator.getGamepads) {
-  const faceButton1 = {
-    pressed: true,
-    touched: false,
-    value: 1,
-  } as GamepadButton;
-
-  const faceButton2 = {
-    pressed: false,
-    touched: false,
-    value: 0,
-  } as GamepadButton;
+  const faceButton1 = createButton(true);
+  const faceButton2 = createButton(false);
 
   const gamepad = {
     id: 'gamepad',
@@ -26,4 +17,8 @@ if (!navigator.getGamepads) {
   navigator.getGamepads = function () {
     return [gamepad];
   };
+}
+
+function createButton(pressed = false, touched = false): GamepadButton {
+  return { pressed, touched, value: +pressed };
 }

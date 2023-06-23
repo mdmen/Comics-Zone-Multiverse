@@ -4,7 +4,7 @@ import { LayerCanvas } from './LayerCanvas';
 import { LayerDOM } from './LayerDOM';
 
 export function createLayer(options: LayerOptions): Layer {
-  return Settings.getValue('renderEngine') === 'canvas'
+  return Settings.get('renderEngine') === 'canvas'
     ? new LayerCanvas(options)
     : new LayerDOM(options);
 }

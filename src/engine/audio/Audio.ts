@@ -2,7 +2,7 @@ export class Audio {
   private readonly context: AudioContext;
   private readonly gainNode: GainNode;
 
-  private constructor() {
+  constructor() {
     this.context = new AudioContext();
     this.gainNode = new GainNode(this.context);
   }

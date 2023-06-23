@@ -2,7 +2,7 @@ import { Sprite } from './Sprite';
 
 export class SpriteCanvas extends Sprite {
   public draw(): void {
-    if (!this.visible) return;
+    if (!this.isVisible()) return;
 
     let sourceX = 0;
     let sourceY = 0;

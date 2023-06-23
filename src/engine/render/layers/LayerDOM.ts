@@ -18,12 +18,12 @@ export class LayerDOM extends Layer {
     height: number,
     position: Vector
   ): void {
-    const posX = Math.round(position.x);
-    const posY = Math.round(position.y);
+    const posX = Math.floor(position.x);
+    const posY = Math.floor(position.y);
 
     element.style.backgroundPosition = `${sx}px ${sy}px`;
-    element.style.width = `${width}px`;
-    element.style.height = `${height}px`;
+    element.style.width = `${Math.floor(width)}px`;
+    element.style.height = `${Math.floor(height)}px`;
     element.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
   }
 
