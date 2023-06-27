@@ -24,7 +24,8 @@ export class LayerDOM extends Layer {
     layer.style.position = 'absolute';
     layer.style.transform = 'translate3d(0, 0, 0)';
     layer.style.minWidth = '100%';
-    layer.style.minHeight = '100%';
+    layer.style.top = '0';
+    layer.style.left = '0';
 
     return layer;
   }
@@ -56,5 +57,9 @@ export class LayerDOM extends Layer {
 
   public postDraw(): void {
     return;
+  }
+
+  public getSubnode(): HTMLDivElement {
+    return this.subnode;
   }
 }

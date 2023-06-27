@@ -1,39 +1,42 @@
-import { Rectangle, Vector, type RectangleOptions } from '../../math';
+import { Vector } from '../../math';
 import { Settings } from '../../Settings';
 import type { Camera } from '../Camera';
 import type { Drawable } from '../Drawable';
 
-export interface LayerOptions extends RectangleOptions {
+export interface LayerOptions {
   container: HTMLElement;
+  width?: number;
+  height?: number;
   camera?: Camera;
-  isTransparent?: boolean;
+  transparent?: boolean;
 }
 
 type AllowedProps = 'zIndex' | 'position';
 type Styles = Pick<CSSStyleDeclaration, AllowedProps>;
 
-export abstract class Layer extends Rectangle {
+export abstract class Layer {
   private readonly container;
   protected readonly camera;
   protected readonly node;
-  private prevPosition = new Vector();
+  protected readonly width;
+  protected readonly height;
+  protected readonly transparent;
+  private readonly prevPosition = new Vector();
 
-  constructor(options: LayerOptions) {
-    super(options);
-
-    const {
-      container,
-      camera,
-      width = Settings.get('canvasWidth'),
-      height = Settings.get('canvasHeight'),
-    } = options;
-
+  constructor({
+    container,
+    camera,
+    width = Settings.get('canvasWidth'),
+    height = Settings.get('canvasHeight'),
+    transparent = true,
+  }: LayerOptions) {
     this.width = width;
     this.height = height;
     this.camera = camera;
     this.container = container;
+    this.transparent = transparent;
 
-    this.node = this.create(options);
+    this.node = this.create();
     this.init();
   }
 
@@ -61,7 +64,7 @@ export abstract class Layer extends Rectangle {
   protected shouldDraw(drawable: Drawable): boolean {
     if (!drawable.isVisible()) return false;
 
-    return !!this.camera?.isWithinCamera(drawable);
+    return !!this.camera?.isCollidingWith(drawable);
   }
 
   private shouldSyncWithCamera(): boolean {
@@ -84,7 +87,7 @@ export abstract class Layer extends Rectangle {
     this.updatePrevPosition();
   }
 
-  protected abstract create(options: LayerOptions): HTMLElement;
+  protected abstract create(): HTMLElement;
 
   protected abstract syncWithCamera(): void;
 

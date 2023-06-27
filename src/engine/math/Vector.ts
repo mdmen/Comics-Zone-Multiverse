@@ -21,7 +21,7 @@ export class Vector {
     this.y += v.y;
   }
 
-  public multiply(n: number): void {
+  public scale(n: number): void {
     this.x *= n;
     this.y *= n;
   }

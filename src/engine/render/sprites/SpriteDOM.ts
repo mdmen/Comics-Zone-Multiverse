@@ -1,13 +1,15 @@
+import type { LayerDOM } from '../layers/LayerDOM';
 import { Sprite, type SpriteOptions } from './Sprite';
 
 export class SpriteDOM extends Sprite {
+  protected readonly layer: LayerDOM;
   private readonly node;
 
   constructor(options: SpriteOptions) {
     super(options);
 
     this.node = this.createNode();
-    this.layer.getNode().appendChild(this.node);
+    this.layer.getSubnode().appendChild(this.node);
   }
 
   private createNode(): HTMLDivElement {

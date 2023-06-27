@@ -1,38 +1,38 @@
-import { isEmpty } from './utils';
+import { Settings } from './Settings';
 
-type Subscriber = (...args: unknown[]) => void;
+interface CustomEventListener {
+  (event: CustomEvent): void;
+}
 
-export class Emitter {
-  private events = new Map<string, Set<Subscriber>>();
+export class Emitter<EventTypes extends string> {
+  private readonly emitter;
+  private readonly prefix;
 
-  public subscribe(type: string, subscriber: Subscriber): void {
-    let subscribers = this.events.get(type);
-
-    if (!subscribers) {
-      subscribers = new Set();
-      this.events.set(type, subscribers);
-    }
-
-    subscribers.add(subscriber);
+  constructor() {
+    this.emitter = new EventTarget();
+    this.prefix = Settings.get('eventsPrefix');
   }
 
-  public unsubscribe(type: string, subscriber: Subscriber): void {
-    const subscribers = this.events.get(type);
-
-    if (!subscribers) return;
-
-    subscribers.delete(subscriber);
-
-    if (isEmpty(subscribers)) {
-      this.events.delete(type);
-    }
+  private getEventType(type: EventTypes): string {
+    return `${this.prefix}${type}`;
   }
 
-  public emit(type: string, ...args: unknown[]): void {
-    const subscribers = this.events.get(type);
+  public subscribe(type: EventTypes, listener: CustomEventListener): void {
+    this.emitter.addEventListener(
+      this.getEventType(type),
+      listener as EventListener
+    );
+  }
 
-    if (subscribers) {
-      subscribers.forEach((fn) => fn(...args));
-    }
+  public unsubscribe(type: EventTypes, listener: CustomEventListener): void {
+    this.emitter.removeEventListener(
+      this.getEventType(type),
+      listener as EventListener
+    );
+  }
+
+  public emit(type: EventTypes, detail?: unknown): void {
+    const event = new CustomEvent(this.getEventType(type), { detail });
+    this.emitter.dispatchEvent(event);
   }
 }

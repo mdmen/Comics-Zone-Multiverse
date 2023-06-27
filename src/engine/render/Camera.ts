@@ -1,9 +1,13 @@
 import { Settings } from '../Settings';
-import { Rectangle, type RectangleOptions, isRectanglesCollide } from '../math';
+import { Rectangle } from '../math';
 
-interface Options extends RectangleOptions {
+interface Options {
   map: Rectangle;
   target: Rectangle;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
   offsetX?: number;
   offsetY?: number;
 }
@@ -15,20 +19,16 @@ export class Camera extends Rectangle {
   private offsetY;
 
   constructor({
+    x,
+    y,
     map,
     target,
+    width = Settings.get('canvasWidth'),
+    height = Settings.get('canvasHeight'),
     offsetX = Settings.get('cameraOffsetX'),
     offsetY = Settings.get('cameraOffsetY'),
-    ...options
   }: Options) {
-    super(options);
-
-    const {
-      width = Settings.get('canvasWidth'),
-      height = Settings.get('canvasHeight'),
-    } = options;
-    this.width = width;
-    this.height = height;
+    super(x, y, width, height);
 
     this.map = map;
     this.target = target;
@@ -111,9 +111,5 @@ export class Camera extends Rectangle {
   public update(): void {
     this.followTarget();
     this.stayOnTheMap();
-  }
-
-  public isWithinCamera(rectangle: Rectangle): boolean {
-    return isRectanglesCollide(this, rectangle);
   }
 }

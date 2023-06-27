@@ -23,9 +23,9 @@ export class LayerCanvas extends Layer {
     Logger.error(event);
   }
 
-  protected create({ isTransparent }: LayerOptions): HTMLCanvasElement {
+  protected create(): HTMLCanvasElement {
     const canvas = createCanvas();
-    this.context = createContext2D(canvas, isTransparent);
+    this.context = createContext2D(canvas, this.transparent);
 
     return canvas;
   }

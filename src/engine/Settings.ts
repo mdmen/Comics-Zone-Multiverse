@@ -5,13 +5,15 @@ type SettingsMapKeys = keyof SettingsMap;
 const settings = {
   gamepadAllowed: false,
   storagePrefix: 'glitch_game_',
+  eventsPrefix: 'GLITCH_GAME_',
 
   renderEngine: 'canvas' as RenderEngine,
   fps: 60,
   canvasWidth: 1024,
   canvasHeight: 768,
   canvasClassName: 'layer',
-  canvasSubLayerClassName: 'sub-layer', // only DOM render
+  // only DOM render
+  canvasSubLayerClassName: 'sub-layer',
   antialiasing: false,
 
   cameraOffsetX: 50,

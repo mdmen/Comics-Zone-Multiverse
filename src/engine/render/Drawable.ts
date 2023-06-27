@@ -1,11 +1,15 @@
-import { Rectangle, type RectangleOptions } from '../math/Rectangle';
+import { Rectangle } from '../math/Rectangle';
 import { Vector } from '../math';
 import { getReversedImage } from '../utils';
 import type { Layer } from './layers/Layer';
 
-export interface DrawableOptions extends RectangleOptions {
+export interface DrawableOptions {
   layer: Layer;
   image: HTMLImageElement;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
   flippable?: boolean;
 }
 
@@ -22,16 +26,15 @@ export abstract class Drawable extends Rectangle {
   protected visible = true;
 
   constructor({
+    x,
+    y,
     layer,
     image,
+    width = image.width,
+    height = image.height,
     flippable = false,
-    ...options
   }: DrawableOptions) {
-    super(options);
-
-    const { width = image.width, height = image.height } = options;
-    this.width = width;
-    this.height = height;
+    super(x, y, width, height);
 
     this.layer = layer;
     this.image = image;
@@ -75,7 +78,7 @@ export abstract class Drawable extends Rectangle {
 
   public update(step: number): void {
     const velocity = new Vector(this.velocity.x, this.velocity.y);
-    velocity.multiply(step);
+    velocity.scale(step);
 
     this.position.add(velocity);
   }
