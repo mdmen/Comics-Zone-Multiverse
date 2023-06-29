@@ -19,8 +19,8 @@ interface SpriteImageAsset {
 
 describe('Image assets (engine)', () => {
   test('Should load image assets', async () => {
-    const assets = new ImageAssets(sources);
-    const images = await assets.load();
+    const assets = new ImageAssets();
+    const images = await assets.load(sources);
 
     expect(images.firstImage).toBeInstanceOf(Image);
     expect(images.secondImage).toBeInstanceOf(Image);

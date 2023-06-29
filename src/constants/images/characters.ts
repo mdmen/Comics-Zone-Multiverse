@@ -1,5 +1,9 @@
-import header from '@/assets/images/readme/header.webp';
+import sketchImage from '@/assets/images/characters/sketch/sketch.webp';
+import sketchData from '@/assets/images/characters/sketch/sketch.json';
 
-export const charactersImages = {
-  header,
+export const globalImages = {
+  sketch: {
+    src: sketchImage,
+    data: sketchData,
+  },
 };

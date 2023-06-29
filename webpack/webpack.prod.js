@@ -2,6 +2,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const JsonMinimizerPlugin = require('json-minimizer-webpack-plugin');
 const { sourceFolder, distFolder } = require('./helpers');
 
 module.exports = {
@@ -19,11 +20,13 @@ module.exports = {
     minimizer: [
       new CssMinimizerPlugin(),
       new TerserPlugin(),
+      new JsonMinimizerPlugin(),
       new ImageMinimizerPlugin({
         minimizer: {
           implementation: ImageMinimizerPlugin.sharpMinify,
           options: {
             encodeOptions: {
+              webp: { lossless: true },
               png: { quality: 90 },
             },
           },

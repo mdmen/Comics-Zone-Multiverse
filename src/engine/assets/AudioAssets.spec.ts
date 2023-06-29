@@ -19,8 +19,8 @@ interface SpriteSoundAsset {
 
 describe('Audio assets (engine)', () => {
   test('Should load audio assets', async () => {
-    const assets = new AudioAssets(sources);
-    const soundAssets = await assets.load();
+    const assets = new AudioAssets();
+    const soundAssets = await assets.load(sources);
 
     expect(soundAssets.firstSound).toBeInstanceOf(ArrayBuffer);
     expect(soundAssets.secondSound).toBeInstanceOf(ArrayBuffer);

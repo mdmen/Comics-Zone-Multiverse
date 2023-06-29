@@ -5,20 +5,11 @@ type Sources = Record<string, unknown>;
 type Resources = Sources;
 
 export abstract class Assets {
-  private sources: Sources;
-  private count: number;
-
-  constructor(sources: Sources) {
-    this.set(sources);
-  }
-
-  protected abstract loadAsset(src: unknown): Promise<unknown>;
-
-  public async load(): Promise<Resources> {
+  public async load(sources: Sources): Promise<Resources> {
     const assets = {} as Resources;
 
     try {
-      const names = Object.keys(this.sources);
+      const names = Object.keys(sources);
 
       if (isEmpty(names)) {
         throw Error('There is nothing to load');
@@ -26,7 +17,7 @@ export abstract class Assets {
 
       await Promise.all(
         names.map(async (key) => {
-          const source = this.sources[key];
+          const source = sources[key];
           const asset = await this.loadAsset(source);
 
           assets[key] = asset;
@@ -39,8 +30,5 @@ export abstract class Assets {
     return assets;
   }
 
-  public set(sources: Sources): void {
-    this.sources = sources;
-    this.count = Object.keys(sources).length;
-  }
+  protected abstract loadAsset(src: unknown): Promise<unknown>;
 }

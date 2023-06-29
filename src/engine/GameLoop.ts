@@ -13,6 +13,7 @@ export class GameLoop {
   private readonly step;
   private readonly maxDeltaTime = 100;
   private previousTime = 0;
+  private previousDrawTime = 0;
   private rafId = -1;
   private accumulator = 0;
 
@@ -27,17 +28,22 @@ export class GameLoop {
 
   // with time based animation technique
   private loop(timeStamp: number): void {
-    const delta = Math.min(timeStamp - this.previousTime, this.frameDuration);
-
-    this.accumulator += delta;
+    this.accumulator += timeStamp - this.previousTime;
     this.previousTime = timeStamp;
+
+    if (this.accumulator > this.maxDeltaTime) {
+      this.accumulator = this.frameDuration;
+    }
 
     while (this.accumulator >= this.frameDuration) {
       this.update(this.step);
       this.accumulator -= this.frameDuration;
     }
 
-    this.draw();
+    if (timeStamp - this.previousDrawTime >= (this.frameDuration | 0)) {
+      this.draw();
+      this.previousDrawTime = timeStamp;
+    }
 
     this.rafId = requestAnimationFrame(this.loop);
   }
@@ -48,7 +54,6 @@ export class GameLoop {
 
   public stop(): void {
     cancelAnimationFrame(this.rafId);
-    this.rafId = -1;
     this.previousTime = 0;
     this.accumulator = 0;
   }

@@ -1,54 +1,60 @@
-import type { Drawable } from './Drawable';
 import type { Layer } from './layers/Layer';
 
+interface Updatable {
+  update(step: number): void;
+  draw(): void;
+  destroy(): void;
+  getLayer(): Layer;
+}
+
 export class Scene {
-  private readonly drawables: Map<Drawable, Drawable> = new Map();
+  private readonly updatables: Map<Updatable, Updatable> = new Map();
   private readonly layers: Map<Layer, Layer> = new Map();
 
-  public add(drawable: Drawable): Scene {
-    this.drawables.set(drawable, drawable);
+  public add(updatable: Updatable): Scene {
+    this.updatables.set(updatable, updatable);
 
-    const layer = drawable.getLayer();
+    const layer = updatable.getLayer();
     this.layers.set(layer, layer);
 
     return this;
   }
 
-  public remove(drawable: Drawable): Scene {
-    drawable.destroy();
-    this.drawables.delete(drawable);
+  public remove(updatable: Updatable): Scene {
+    updatable.destroy();
+    this.updatables.delete(updatable);
 
-    const layer = drawable.getLayer();
-    if (!this.countDrawablesUsingLayer(layer)) {
+    const layer = updatable.getLayer();
+    if (!this.countUpdatablesUsingLayer(layer)) {
       this.layers.delete(layer);
     }
 
     return this;
   }
 
-  private countDrawablesUsingLayer(layer: Layer): number {
+  private countUpdatablesUsingLayer(layer: Layer): number {
     let count = 0;
 
-    this.drawables.forEach((drawable) => {
-      drawable.getLayer() === layer && count++;
+    this.updatables.forEach((updatable) => {
+      updatable.getLayer() === layer && count++;
     });
 
     return count;
   }
 
   public clear(): Scene {
-    this.drawables.forEach((drawable) => {
-      drawable.destroy();
+    this.updatables.forEach((updatable) => {
+      updatable.destroy();
     });
-    this.drawables.clear();
+    this.updatables.clear();
     this.layers.clear();
 
     return this;
   }
 
   public update(step: number): void {
-    this.drawables.forEach((drawable) => {
-      drawable.update(step);
+    this.updatables.forEach((updatable) => {
+      updatable.update(step);
     });
   }
 
@@ -57,8 +63,8 @@ export class Scene {
       layer.preDraw();
     });
 
-    this.drawables.forEach((drawable) => {
-      drawable.draw();
+    this.updatables.forEach((updatable) => {
+      updatable.draw();
     });
 
     this.layers.forEach((layer) => {

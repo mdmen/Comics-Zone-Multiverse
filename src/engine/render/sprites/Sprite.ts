@@ -1,18 +1,18 @@
-import { Vector } from '../../math';
+import { Point, Vector } from '../../math';
 import { Drawable, type DrawableOptions } from '../Drawable';
 import { SpriteAnimation } from './SpriteAnimation';
 
 interface FrameBoundaries {
   x: number;
   y: number;
-  width: number;
-  height: number;
+  w: number;
+  h: number;
 }
 
 export interface SpriteFrame {
   frame: FrameBoundaries;
   duration?: number;
-  offset?: Vector;
+  offset?: Point;
 }
 
 export interface SpriteImageData {
@@ -32,6 +32,7 @@ interface AnimationOptions {
 export abstract class Sprite extends Drawable {
   private readonly data;
   private readonly animations: Record<string, SpriteAnimation>;
+  private readonly offset = new Vector();
   private animation: SpriteAnimation;
 
   constructor(options: SpriteOptions) {
@@ -74,24 +75,46 @@ export abstract class Sprite extends Drawable {
     this.animation.play();
   }
 
+  private resetAnimationOffset(): void {
+    if (this.flipped) {
+      const posOffsetX = this.position.x + this.offset.x;
+      const posOffsetY = this.position.y - this.offset.y;
+
+      this.position.set(posOffsetX, posOffsetY);
+    } else {
+      this.position.subtract(this.offset);
+    }
+  }
+
+  private updateAnimationOffset(offset: Point): void {
+    if (this.flipped) {
+      const posOffsetX = this.position.x - offset.x;
+      const posOffsetY = this.position.y + offset.y;
+
+      this.position.set(posOffsetX, posOffsetY);
+    } else {
+      this.position.add(offset);
+    }
+
+    this.offset.copy(offset);
+  }
+
   private updateAnimation(): void {
     this.animation.update();
 
     const { frame, offset } = this.animation.getCurrentFrame();
 
-    this.source.set(
-      this.flipped ? this.image.width - frame.x : frame.x,
-      frame.y
-    );
-    this.width = frame.width;
-    this.height = frame.height;
+    const sourceX = this.flipped
+      ? this.image.width - (frame.x + frame.w)
+      : frame.x;
+    this.source.set(sourceX, frame.y);
 
-    if (!offset) return;
+    this.width = frame.w;
+    this.height = frame.h;
 
-    if (this.flipped) {
-      this.position.set(this.position.x - offset.x, this.position.y + offset.y);
-    } else {
-      this.position.add(offset);
+    if (offset && !this.offset.isEqualTo(offset)) {
+      this.resetAnimationOffset();
+      this.updateAnimationOffset(offset);
     }
   }
 

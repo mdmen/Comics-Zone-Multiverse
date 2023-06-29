@@ -64,7 +64,7 @@ export abstract class Layer {
   protected shouldDraw(drawable: Drawable): boolean {
     if (!drawable.isVisible()) return false;
 
-    return !!this.camera?.isCollidingWith(drawable);
+    return !this.camera || this.camera.isCollidingWith(drawable);
   }
 
   private shouldSyncWithCamera(): boolean {

@@ -1,4 +1,6 @@
-export class Vector {
+import type { Point } from './Point';
+
+export class Vector implements Point {
   public x: number;
   public y: number;
 
@@ -11,14 +13,19 @@ export class Vector {
     this.y = y;
   }
 
-  public copy(v: Vector): void {
+  public copy(v: Point): void {
     this.x = v.x;
     this.y = v.y;
   }
 
-  public add(v: Vector): void {
+  public add(v: Point): void {
     this.x += v.x;
     this.y += v.y;
+  }
+
+  public subtract(v: Point): void {
+    this.x -= v.x;
+    this.y -= v.y;
   }
 
   public scale(n: number): void {
@@ -26,7 +33,7 @@ export class Vector {
     this.y *= n;
   }
 
-  public isEqualTo(v: Vector): boolean {
+  public isEqualTo(v: Point): boolean {
     return this.x === v.x && this.y === v.y;
   }
 }

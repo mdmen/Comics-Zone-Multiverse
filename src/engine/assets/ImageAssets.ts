@@ -24,13 +24,7 @@ type ReturnAssets<Sources> = {
     : HTMLImageElement;
 };
 
-export class ImageAssets<
-  Sources extends Record<string, unknown>
-> extends Assets {
-  constructor(sources: Sources) {
-    super(sources);
-  }
-
+export class ImageAssets extends Assets {
   protected async loadAsset(
     source: string | SpriteSource
   ): Promise<HTMLImageElement | SpriteImageAsset> {
@@ -47,7 +41,9 @@ export class ImageAssets<
     return { image, data };
   }
 
-  public async load(): Promise<ReturnAssets<Sources>> {
-    return (await super.load()) as ReturnAssets<Sources>;
+  public async load<Sources extends Record<string, unknown>>(
+    sources: Sources
+  ): Promise<ReturnAssets<Sources>> {
+    return (await super.load(sources)) as ReturnAssets<Sources>;
   }
 }

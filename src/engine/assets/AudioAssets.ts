@@ -26,13 +26,7 @@ type ReturnAssets<Sources> = {
     : ArrayBuffer;
 };
 
-export class AudioAssets<
-  Sources extends Record<string, unknown>
-> extends Assets {
-  constructor(sources: Sources) {
-    super(sources);
-  }
-
+export class AudioAssets extends Assets {
   protected async loadAsset(
     source: string | SpriteSource
   ): Promise<AudioAsset | AudioSpriteAsset> {
@@ -49,7 +43,9 @@ export class AudioAssets<
     return { buffer, data };
   }
 
-  public async load(): Promise<ReturnAssets<Sources>> {
-    return (await super.load()) as ReturnAssets<Sources>;
+  public async load<Sources extends Record<string, unknown>>(
+    sources: Sources
+  ): Promise<ReturnAssets<Sources>> {
+    return (await super.load(sources)) as ReturnAssets<Sources>;
   }
 }

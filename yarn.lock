@@ -5582,6 +5582,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json-minimizer-webpack-plugin@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "json-minimizer-webpack-plugin@npm:4.0.0"
+  dependencies:
+    schema-utils: ^4.0.0
+  peerDependencies:
+    webpack: ^5.1.0
+  checksum: 12e623edb80f014aab92f5688a2e9243367737b39841abb72f1ed3dc119afed8df7585cbd7991f9ee3b7c7d2ac43bc8c6dd38a00b5cedc467ca20aa8672b7646
+  languageName: node
+  linkType: hard
+
 "json-parse-even-better-errors@npm:^2.3.0, json-parse-even-better-errors@npm:^2.3.1":
   version: 2.3.1
   resolution: "json-parse-even-better-errors@npm:2.3.1"
@@ -7512,6 +7523,7 @@ __metadata:
     image-minimizer-webpack-plugin: ^3.8.2
     jest: ^29.5.0
     jest-environment-jsdom: ^29.5.0
+    json-minimizer-webpack-plugin: ^4.0.0
     lint-staged: ^11.1.2
     mini-css-extract-plugin: ^2.7.5
     prettier: ^2.3.2

@@ -71,6 +71,10 @@ export abstract class Drawable extends Rectangle {
     return this.image;
   }
 
+  public setVelocity(x: number, y: number): void {
+    this.velocity.set(x, y);
+  }
+
   public flip(): void {
     this.image = this.flipped ? this.images.straight : this.images.reversed;
     this.flipped = !this.flipped;
