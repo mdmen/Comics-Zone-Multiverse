@@ -5,8 +5,8 @@ export function createCanvas(
   height = Settings.get('canvasHeight')
 ): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
+  canvas.width = Math.floor(width);
+  canvas.height = Math.floor(height);
 
   return canvas;
 }

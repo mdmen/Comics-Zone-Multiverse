@@ -4,7 +4,7 @@ import type { SpriteDOM } from '../sprites/SpriteDOM';
 import { Layer } from './Layer';
 
 export class LayerDOM extends Layer {
-  private subnode: HTMLDivElement;
+  private subnode!: HTMLDivElement;
 
   protected create(): HTMLDivElement {
     const layer = document.createElement('div');
@@ -31,7 +31,7 @@ export class LayerDOM extends Layer {
   }
 
   protected syncWithCamera(): void {
-    const position = (this.camera as Camera).getPosition();
+    const position = this.camera!.getPosition();
     const posX = -Math.floor(position.x);
     const posY = -Math.floor(position.y);
 

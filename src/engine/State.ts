@@ -1,21 +1,21 @@
 export interface State {
-  onUpdate: (timeElapsed: number) => void;
-  onEnter?: (...args: unknown[]) => void;
-  onLeave?: (...args: unknown[]) => void;
+  onUpdate: (...args: unknown[]) => void;
+  onEnter: (...args: unknown[]) => void;
+  onLeave: () => void;
 }
 
-export class StateMachine {
-  private currentState: State;
+export abstract class StateMachine {
+  protected readonly states: Record<string, State>;
+  protected currentState!: State;
 
-  constructor(initialState: State, ...enterArgs: unknown[]) {
-    this.currentState = initialState;
-    this.currentState.onEnter?.(...enterArgs);
+  constructor(initialState = {}) {
+    this.states = initialState;
   }
 
-  public setState(newState: State, ...enterArgs: unknown[]): void {
-    this.currentState.onLeave?.();
-    this.currentState = newState;
-    this.currentState.onEnter?.(...enterArgs);
+  public setState(state: string, ...args: unknown[]): void {
+    this.currentState.onLeave();
+    this.currentState = this.states[state];
+    this.currentState.onEnter(...args);
   }
 
   public getState(): State {

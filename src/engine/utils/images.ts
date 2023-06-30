@@ -14,7 +14,7 @@ export function getReversedImage(image: HTMLImageElement): HTMLImageElement {
 
 export function getScaledImage(
   image: HTMLImageElement,
-  scale = 1
+  scale: number
 ): HTMLImageElement {
   if (scale === 1) return image;
 

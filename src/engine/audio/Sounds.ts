@@ -3,6 +3,7 @@ import { SoundSprite } from './SoundSprite';
 import { Sound } from './Sound';
 import { Logger } from '../Logger';
 import type { AudioSpriteAsset, AudioAsset } from '../assets/AudioAssets';
+import { isEmpty } from '../utils';
 
 type ResultSounds<T> = Record<keyof T, Sound | SoundSprite>;
 
@@ -21,7 +22,13 @@ export class Sounds<
     const sounds = {} as ResultSounds<Resources>;
 
     try {
-      Object.keys(resources).forEach(async (name: keyof Resources) => {
+      const names = Object.keys(resources);
+
+      if (isEmpty(names)) {
+        throw Error('There are no sounds');
+      }
+
+      names.forEach(async (name: keyof Resources) => {
         const resource = resources[name];
 
         if (resource instanceof ArrayBuffer) {

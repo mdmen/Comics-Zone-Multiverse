@@ -8,7 +8,6 @@
     // But these files are actually will be loaded by fetch
     // and webpack when sees json import resolves it as url string
     "resolveJsonModule": true,
-    "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {

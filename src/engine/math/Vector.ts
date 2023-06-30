@@ -1,11 +1,12 @@
 import type { Point } from './Point';
 
 export class Vector implements Point {
-  public x: number;
-  public y: number;
+  public x;
+  public y;
 
   constructor(x = 0, y = 0) {
-    this.set(x, y);
+    this.x = x;
+    this.y = y;
   }
 
   public set(x: number, y: number): void {

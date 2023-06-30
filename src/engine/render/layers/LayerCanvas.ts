@@ -5,7 +5,7 @@ import type { Camera } from '../Camera';
 import type { Drawable } from '../Drawable';
 
 export class LayerCanvas extends Layer {
-  private context: CanvasRenderingContext2D;
+  private context!: CanvasRenderingContext2D;
 
   constructor(options: LayerOptions) {
     super(options);
@@ -31,7 +31,7 @@ export class LayerCanvas extends Layer {
   }
 
   protected syncWithCamera(): void {
-    const position = (this.camera as Camera).getPosition();
+    const position = this.camera!.getPosition();
     const posX = -Math.floor(position.x);
     const posY = -Math.floor(position.y);
 

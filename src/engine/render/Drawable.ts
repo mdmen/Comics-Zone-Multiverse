@@ -1,6 +1,6 @@
 import { Rectangle } from '../math/Rectangle';
 import { Vector } from '../math';
-import { getReversedImage } from '../utils';
+import { getReversedImage, getScaledImage } from '../utils';
 import type { Layer } from './layers/Layer';
 
 export interface DrawableOptions {
@@ -11,6 +11,7 @@ export interface DrawableOptions {
   width?: number;
   height?: number;
   flippable?: boolean;
+  scale?: number;
 }
 
 type ImagesType = 'straight' | 'reversed';
@@ -19,17 +20,19 @@ type Images = Record<ImagesType, HTMLImageElement>;
 export abstract class Drawable extends Rectangle {
   protected readonly layer;
   protected image;
-  protected images: Images;
+  protected images!: Images;
   protected velocity = new Vector();
   protected source = new Vector();
   protected flipped = false;
   protected visible = true;
+  protected scale = 1;
 
   constructor({
     x,
     y,
     layer,
     image,
+    scale = 1,
     width = image.width,
     height = image.height,
     flippable = false,
@@ -37,12 +40,13 @@ export abstract class Drawable extends Rectangle {
     super(x, y, width, height);
 
     this.layer = layer;
-    this.image = image;
+    this.scale = scale;
+    this.image = getScaledImage(image, scale);
 
     if (flippable) {
       this.images = {
-        straight: image,
-        reversed: getReversedImage(image),
+        straight: this.image,
+        reversed: getReversedImage(this.image),
       };
     }
   }

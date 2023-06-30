@@ -1,6 +1,9 @@
-import { onDOMReady } from './helpers/dom';
+import { onDOMReady, onGlobalError } from './helpers';
 
 import './assets/styles/index.css';
-onDOMReady(async () => {
-  console.log('yeah');
+
+onDOMReady(() => {});
+
+onGlobalError(() => {
+  console.error('Something went wrong');
 });

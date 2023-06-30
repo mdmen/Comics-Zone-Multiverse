@@ -2,7 +2,7 @@ import type { LayerDOM } from '../layers/LayerDOM';
 import { Sprite, type SpriteOptions } from './Sprite';
 
 export class SpriteDOM extends Sprite {
-  protected readonly layer: LayerDOM;
+  protected readonly layer!: LayerDOM;
   private readonly node;
 
   constructor(options: SpriteOptions) {

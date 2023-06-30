@@ -23,7 +23,7 @@ export interface SpriteOptions extends DrawableOptions {
   data?: SpriteImageData;
 }
 
-interface AnimationOptions {
+export interface AnimationOptions {
   name: string;
   frameNames: string[];
   infinite?: boolean;
@@ -33,7 +33,7 @@ export abstract class Sprite extends Drawable {
   private readonly data;
   private readonly animations: Record<string, SpriteAnimation>;
   private readonly offset = new Vector();
-  private animation: SpriteAnimation;
+  private animation!: SpriteAnimation;
 
   constructor(options: SpriteOptions) {
     super(options);
@@ -118,8 +118,8 @@ export abstract class Sprite extends Drawable {
     }
   }
 
-  public update(deltaStep: number): void {
-    super.update(deltaStep);
+  public update(step: number): void {
+    super.update(step);
     this.animation && this.updateAnimation();
   }
 

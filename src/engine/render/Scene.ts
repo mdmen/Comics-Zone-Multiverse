@@ -25,21 +25,19 @@ export class Scene {
     this.updatables.delete(updatable);
 
     const layer = updatable.getLayer();
-    if (!this.countUpdatablesUsingLayer(layer)) {
+    if (!this.hasUpdatablesUsingLayer(layer)) {
       this.layers.delete(layer);
     }
 
     return this;
   }
 
-  private countUpdatablesUsingLayer(layer: Layer): number {
-    let count = 0;
+  private hasUpdatablesUsingLayer(layer: Layer): boolean {
+    for (const [updatable] of this.updatables) {
+      if (updatable.getLayer() === layer) return true;
+    }
 
-    this.updatables.forEach((updatable) => {
-      updatable.getLayer() === layer && count++;
-    });
-
-    return count;
+    return false;
   }
 
   public clear(): Scene {

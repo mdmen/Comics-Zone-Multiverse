@@ -15,6 +15,10 @@ export class Rectangle {
     return this.position;
   }
 
+  public setPosition(x: number, y: number): void {
+    this.position.set(x, y);
+  }
+
   public getWidth(): number {
     return this.width;
   }
