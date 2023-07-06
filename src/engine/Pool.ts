@@ -16,7 +16,7 @@ export class Pool {
   private readonly objects: Map<number, PoolObject> = new Map();
   private readonly nonActiveObjects: Set<number> = new Set();
   private readonly resetInterval = 10000;
-  private resetTimer: NodeJS.Timeout;
+  private resetTimer!: NodeJS.Timeout;
   private lastId = 0;
 
   constructor({ create, maxSize = 100, initialSize = 5 }: Options) {

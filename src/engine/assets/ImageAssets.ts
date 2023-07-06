@@ -18,7 +18,7 @@ export interface SpriteImageAsset {
   data: SpriteImageData;
 }
 
-type ReturnAssets<Sources> = {
+export type ReturnImageAssets<Sources> = {
   [Key in keyof Sources]: Sources[Key] extends SpriteResource
     ? SpriteImageAsset
     : HTMLImageElement;
@@ -43,7 +43,7 @@ export class ImageAssets extends Assets {
 
   public async load<Sources extends Record<string, unknown>>(
     sources: Sources
-  ): Promise<ReturnAssets<Sources>> {
-    return (await super.load(sources)) as ReturnAssets<Sources>;
+  ): Promise<ReturnImageAssets<Sources>> {
+    return (await super.load(sources)) as ReturnImageAssets<Sources>;
   }
 }

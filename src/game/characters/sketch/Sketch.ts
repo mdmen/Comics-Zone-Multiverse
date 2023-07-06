@@ -1,16 +1,30 @@
-import { type GameObjectOptions } from '@/engine';
-import { Character } from '../Character';
-import { IdleState, RunState } from './states';
+import { type Sounds, type ReturnAudioAssets } from '@/engine';
+import { Character, type CharacterOptions } from '../Character';
+import { SketchIdleState } from './states';
+import { sketchSounds } from '@/constants';
+
+type SketchSounds = Sounds<ReturnAudioAssets<typeof sketchSounds>>;
+
+interface SketchOptions extends CharacterOptions {
+  sounds: SketchSounds;
+}
 
 export class Sketch extends Character {
-  constructor(options: GameObjectOptions) {
+  protected readonly sounds;
+
+  constructor({ sounds, ...options }: SketchOptions) {
     super(options);
+
+    this.sounds = sounds;
 
     this.addStates();
   }
 
   private addStates(): void {
-    this.states['idle'] = new IdleState({ game: {}, character: this });
-    this.states['run'] = new RunState({ game: {}, character: this });
+    this.moveStates.addState('idle', new SketchIdleState({ character: this }));
+  }
+
+  public getSounds(): SketchSounds {
+    return this.sounds;
   }
 }

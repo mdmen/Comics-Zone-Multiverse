@@ -1,3 +1,4 @@
+import { Settings } from '../../Settings';
 import type { SpriteFrame } from './Sprite';
 
 interface AnimationOptions {
@@ -25,7 +26,7 @@ export class SpriteAnimation {
     frames,
     names,
     infinite = false,
-    frameDuration = 200,
+    frameDuration = Settings.get('animationFrameDuration'),
     onStart = () => {},
     onFinish = () => {},
   }: AnimationOptions) {

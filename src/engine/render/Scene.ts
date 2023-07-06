@@ -1,28 +1,24 @@
 import type { Layer } from './layers/Layer';
+import { type GroupUpdatable, Group } from './Group';
 
-interface Updatable {
-  update(step: number): void;
-  draw(): void;
-  destroy(): void;
+interface Updatable extends GroupUpdatable {
   getLayer(): Layer;
 }
 
-export class Scene {
-  private readonly updatables: Map<Updatable, Updatable> = new Map();
-  private readonly layers: Map<Layer, Layer> = new Map();
+export class Scene extends Group<Updatable> {
+  private readonly layers: Set<Layer> = new Set();
 
   public add(updatable: Updatable): Scene {
-    this.updatables.set(updatable, updatable);
+    super.add(updatable);
 
     const layer = updatable.getLayer();
-    this.layers.set(layer, layer);
+    this.layers.add(layer);
 
     return this;
   }
 
   public remove(updatable: Updatable): Scene {
-    updatable.destroy();
-    this.updatables.delete(updatable);
+    super.remove(updatable);
 
     const layer = updatable.getLayer();
     if (!this.hasUpdatablesUsingLayer(layer)) {
@@ -33,7 +29,7 @@ export class Scene {
   }
 
   private hasUpdatablesUsingLayer(layer: Layer): boolean {
-    for (const [updatable] of this.updatables) {
+    for (const updatable of this.updatables) {
       if (updatable.getLayer() === layer) return true;
     }
 
@@ -41,19 +37,10 @@ export class Scene {
   }
 
   public clear(): Scene {
-    this.updatables.forEach((updatable) => {
-      updatable.destroy();
-    });
-    this.updatables.clear();
+    super.clear();
     this.layers.clear();
 
     return this;
-  }
-
-  public update(step: number): void {
-    this.updatables.forEach((updatable) => {
-      updatable.update(step);
-    });
   }
 
   public draw(): void {
@@ -61,9 +48,7 @@ export class Scene {
       layer.preDraw();
     });
 
-    this.updatables.forEach((updatable) => {
-      updatable.draw();
-    });
+    super.draw();
 
     this.layers.forEach((layer) => {
       layer.postDraw();

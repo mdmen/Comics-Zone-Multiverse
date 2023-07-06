@@ -8,7 +8,10 @@ import { isEmpty } from '../utils';
 type ResultSounds<T> = Record<keyof T, Sound | SoundSprite>;
 
 export class Sounds<
-  Resources extends Record<string, AudioAsset | AudioSpriteAsset>
+  Resources extends Record<string, AudioAsset | AudioSpriteAsset> = Record<
+    string,
+    AudioAsset | AudioSpriteAsset
+  >
 > {
   private readonly audio;
   private sounds;

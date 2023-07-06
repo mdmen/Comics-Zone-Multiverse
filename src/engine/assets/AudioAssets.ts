@@ -20,7 +20,7 @@ export interface AudioSpriteAsset<Names extends PrimitiveKeys = string> {
   data: SoundSpriteData<Names>;
 }
 
-type ReturnAssets<Sources> = {
+export type ReturnAudioAssets<Sources> = {
   [Key in keyof Sources]: Sources[Key] extends SpriteResource
     ? AudioSpriteAsset<keyof Sources[Key]['data']['map']>
     : ArrayBuffer;
@@ -45,7 +45,7 @@ export class AudioAssets extends Assets {
 
   public async load<Sources extends Record<string, unknown>>(
     sources: Sources
-  ): Promise<ReturnAssets<Sources>> {
-    return (await super.load(sources)) as ReturnAssets<Sources>;
+  ): Promise<ReturnAudioAssets<Sources>> {
+    return (await super.load(sources)) as ReturnAudioAssets<Sources>;
   }
 }

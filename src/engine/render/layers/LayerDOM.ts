@@ -1,5 +1,4 @@
 import { Settings } from '../../Settings';
-import type { Camera } from '../Camera';
 import type { SpriteDOM } from '../sprites/SpriteDOM';
 import { Layer } from './Layer';
 

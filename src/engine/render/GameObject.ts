@@ -5,16 +5,13 @@ import {
 } from './sprites/Sprite';
 import type { Layer } from './layers/Layer';
 import { createSprite } from './sprites/createSprite';
-import { StateMachine } from '../State';
 
 export type GameObjectOptions = SpriteOptions;
 
-export class GameObject extends StateMachine {
+export class GameObject {
   protected readonly sprite;
 
   constructor(options: GameObjectOptions) {
-    super();
-
     this.sprite = createSprite(options);
   }
 

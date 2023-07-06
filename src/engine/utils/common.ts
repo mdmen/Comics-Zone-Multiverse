@@ -1,5 +1,7 @@
+import type { LinkedList } from '../LinkedList';
+
 export function isEmpty(
-  value: unknown[] | Set<unknown> | Map<unknown, unknown>
+  value: unknown[] | Set<unknown> | Map<unknown, unknown> | LinkedList
 ): boolean {
   return Array.isArray(value) ? !value.length : !value.size;
 }

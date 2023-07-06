@@ -1,7 +1,6 @@
 import { Logger } from '../../Logger';
 import { createCanvas, createContext2D } from '../../utils';
 import { Layer, type LayerOptions } from './Layer';
-import type { Camera } from '../Camera';
 import type { Drawable } from '../Drawable';
 
 export class LayerCanvas extends Layer {

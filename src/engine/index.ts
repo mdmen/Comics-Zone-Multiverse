@@ -8,5 +8,5 @@ export * from './QuadTree';
 export * from './Pool';
 export * from './GameLoop';
 export * from './Logger';
-export * from './State';
+export * from './StateMachine';
 export * from './Emitter';
