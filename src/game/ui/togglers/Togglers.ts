@@ -1,9 +1,4 @@
-interface Toggler {
-  defaultState: 'on' | 'off';
-  onContent: Node;
-  offContent: Node;
-  onToggle(): void;
-}
+import { type Toggler } from './Toggler';
 
 interface Options {
   container: HTMLElement;
@@ -26,9 +21,12 @@ export class Togglers {
 
     wrapper.classList.add('togglers');
 
-    this.items.map(() => {
-      const toggler = this.createToggler();
-      wrapper.append(toggler);
+    this.items.map((toggler) => {
+      const node = toggler.getNode();
+
+      node.classList.add('togglers-item');
+
+      wrapper.append(node);
     });
 
     return wrapper;
@@ -37,13 +35,5 @@ export class Togglers {
   private mount(): void {
     const togglers = this.create();
     this.container.append(togglers);
-  }
-
-  private createToggler(): HTMLElement {
-    const toggler = document.createElement('button');
-
-    toggler.type = 'button';
-
-    return toggler;
   }
 }

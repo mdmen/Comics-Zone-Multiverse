@@ -1,7 +1,7 @@
 import { Settings } from './Settings';
 
 interface LoopOptions {
-  update(deltaStep: number): void;
+  update(step: number): void;
   draw(): void;
   fps?: number;
 }
@@ -26,6 +26,10 @@ export class GameLoop {
     this.loop = this.loop.bind(this);
   }
 
+  private shouldDraw(timeStamp: number): boolean {
+    return timeStamp - this.previousDrawTime >= Math.floor(this.frameDuration);
+  }
+
   // with time based animation technique
   private loop(timeStamp: number): void {
     this.accumulator += timeStamp - this.previousTime;
@@ -40,7 +44,7 @@ export class GameLoop {
       this.accumulator -= this.frameDuration;
     }
 
-    if (timeStamp - this.previousDrawTime >= (this.frameDuration | 0)) {
+    if (this.shouldDraw(timeStamp)) {
       this.draw();
       this.previousDrawTime = timeStamp;
     }
@@ -55,6 +59,7 @@ export class GameLoop {
   public stop(): void {
     cancelAnimationFrame(this.rafId);
     this.previousTime = 0;
+    this.previousDrawTime = 0;
     this.accumulator = 0;
   }
 }

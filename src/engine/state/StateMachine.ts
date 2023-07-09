@@ -1,11 +1,6 @@
-import { LinkedList } from './LinkedList';
-import { isEmpty } from './utils';
-
-export interface State {
-  onUpdate: (...args: unknown[]) => void;
-  onEnter: (...args: unknown[]) => void;
-  onLeave: () => void;
-}
+import { LinkedList } from '../list/LinkedList';
+import { isEmpty } from '../utils';
+import { type State } from './State';
 
 const defaultState: State = {
   onUpdate() {},

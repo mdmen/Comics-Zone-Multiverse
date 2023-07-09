@@ -10,9 +10,9 @@ interface Options {
 
 export class Toggler {
   private state;
-  private activeContent;
-  private inactiveContent;
-  private node;
+  private readonly activeContent;
+  private readonly inactiveContent;
+  private readonly node: HTMLButtonElement;
 
   constructor({
     defaultState,
@@ -24,21 +24,21 @@ export class Toggler {
     this.state = defaultState;
     this.activeContent = activeContent;
     this.inactiveContent = inactiveContent;
-    this.node = document.createElement('button');
 
-    this.init(classNames);
+    this.node = this.create(classNames);
+    this.setContent();
+    this.setAria();
     this.bindEvents(onToggle);
   }
 
-  private init(classNames?: string[]): void {
-    this.node = document.createElement('button');
+  private create(classNames?: string[]): HTMLButtonElement {
+    const node = document.createElement('button');
 
-    this.node.type = 'button';
-    this.node.classList.add('toggler', ...(classNames ? classNames : []));
-    this.setContent();
+    node.type = 'button';
+    node.classList.add('toggler', ...(classNames ? classNames : []));
+    node.setAttribute('role', 'switch');
 
-    this.node.setAttribute('role', 'switch');
-    this.setAria();
+    return node;
   }
 
   private bindEvents(onToggle: (toggler: Toggler) => void): void {

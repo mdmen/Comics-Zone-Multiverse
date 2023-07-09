@@ -1,22 +1,12 @@
-type NodeType<Value> = Node<Value> | null;
-
-class Node<Value> {
-  public value;
-  public next: NodeType<Value> = null;
-  public prev: NodeType<Value> = null;
-
-  constructor(value: Value) {
-    this.value = value;
-  }
-}
+import { LinkedListNode, type NodeType } from './LinkedListNode';
 
 export class LinkedList<Value = unknown> {
   private head: NodeType<Value> = null;
   private tail: NodeType<Value> = null;
   private length = 0;
 
-  prepend(value: Value): void {
-    const node = new Node(value);
+  public prepend(value: Value): void {
+    const node = new LinkedListNode(value);
 
     if (this.head) this.head.prev = node;
     this.head = node;
@@ -26,7 +16,9 @@ export class LinkedList<Value = unknown> {
   }
 
   public append(value: Value): void {
-    const node = new Node(value);
+    const node = new LinkedListNode(value);
+
+    this.length++;
 
     if (!this.tail) {
       this.head = node;
@@ -37,8 +29,6 @@ export class LinkedList<Value = unknown> {
     this.tail.next = node;
     node.prev = this.tail;
     this.tail = node;
-
-    this.length++;
   }
 
   public shift(): Value | null {
@@ -59,7 +49,7 @@ export class LinkedList<Value = unknown> {
     return head.value;
   }
 
-  pop(): Value | null {
+  public pop(): Value | null {
     if (!this.tail) return null;
 
     const tail = this.tail;

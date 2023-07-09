@@ -1,4 +1,4 @@
-import type { LinkedList } from '../LinkedList';
+import type { LinkedList } from '../list/LinkedList';
 
 export function isEmpty(
   value: unknown[] | Set<unknown> | Map<unknown, unknown> | LinkedList

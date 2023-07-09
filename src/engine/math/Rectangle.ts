@@ -1,4 +1,4 @@
-import { Vector } from '../math';
+import { type Point, Vector } from '../math';
 
 export class Rectangle {
   protected position;
@@ -35,6 +35,15 @@ export class Rectangle {
       this.position.x + this.width < targetPosition.x ||
       this.position.y > target.getHeight() + targetPosition.y ||
       this.position.y + this.height < targetPosition.y
+    );
+  }
+
+  public isCollidingWithPoint(point: Point): boolean {
+    return (
+      point.x >= this.position.x &&
+      point.x <= this.position.x + this.width &&
+      point.y >= this.position.y &&
+      point.y <= this.position.y + this.height
     );
   }
 }

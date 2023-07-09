@@ -1,7 +1,7 @@
 import { Rectangle } from '../math/Rectangle';
 import { Vector } from '../math';
 import { getReversedImage, getScaledImage } from '../utils';
-import type { Layer } from './layers/Layer';
+import { type Layer } from './layers/Layer';
 
 export interface DrawableOptions {
   layer: Layer;
@@ -91,9 +91,11 @@ export abstract class Drawable extends Rectangle {
     this.position.add(velocity);
   }
 
+  public draw(): void {
+    this.layer.draw(this);
+  }
+
   public destroy(): void {
     return;
   }
-
-  public abstract draw(): void;
 }

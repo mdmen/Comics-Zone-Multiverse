@@ -1,12 +1,18 @@
-import type { Layer } from './layers/Layer';
-import { type GroupUpdatable, Group } from './Group';
+import type { Layer } from './render/layers/Layer';
+import { type GroupUpdatable, Group } from './render/Group';
 
 interface Updatable extends GroupUpdatable {
   getLayer(): Layer;
 }
 
-export class Scene extends Group<Updatable> {
+export abstract class Scene extends Group<Updatable> {
   private readonly layers: Set<Layer> = new Set();
+
+  constructor(...args: unknown[]) {
+    super();
+
+    this.setup(...args);
+  }
 
   public add(updatable: Updatable): Scene {
     super.add(updatable);
@@ -54,4 +60,6 @@ export class Scene extends Group<Updatable> {
       layer.postDraw();
     });
   }
+
+  protected abstract setup(...args: unknown[]): void;
 }

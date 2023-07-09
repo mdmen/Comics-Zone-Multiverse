@@ -122,8 +122,4 @@ export abstract class Sprite extends Drawable {
     super.update(step);
     this.animation && this.updateAnimation();
   }
-
-  public draw(): void {
-    this.layer.draw(this);
-  }
 }

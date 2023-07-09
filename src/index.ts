@@ -1,9 +1,12 @@
-import { onDOMReady, onGlobalError } from './helpers';
+import { onDOMReady, onGlobalError } from '@/engine';
+import { startGame } from './game/startGame';
+import { Modal } from './game/ui/Modal';
 
 import './assets/styles/index.css';
 
-onDOMReady(() => {});
+onDOMReady(startGame);
 
 onGlobalError(() => {
-  console.error('Something went wrong');
+  const modal = new Modal();
+  modal.show();
 });

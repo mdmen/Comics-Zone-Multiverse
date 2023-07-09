@@ -21,7 +21,7 @@ export class Config {
   private readonly audio;
 
   constructor(audio: Audio) {
-    this.storage = new Storage('config', defaults);
+    this.storage = new Storage('config', { ...defaults });
     this.audio = audio;
   }
 
