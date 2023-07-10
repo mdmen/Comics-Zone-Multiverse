@@ -1,7 +1,17 @@
-.dark .wrapper {
-  background-color: var(--ui-background-color-dark);
-  color: var(--ui-text-color-light);
+.wrapper {
+  background-color: var(--ui-background-color);
+  color: var(--ui-text-color);
 }
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* * * * * * * * * *
+* Togglers
+* * * * * * * * * */
 
 .toggler {
   border: 0;
@@ -9,17 +19,16 @@
   margin: 0;
   padding: 0;
   cursor: pointer;
+  user-select: none;
 }
 
-.togglers {
+.settings {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  display: flex;
-  gap: 5px;
 }
 
-.togglers-item {
+.settings-item {
   font-size: 2.5rem;
   font-size: 2.5rem;
   transition: transform 0.3s, opacity 0.3s, filter 0.2s;
@@ -28,15 +37,76 @@
   filter: drop-shadow(1px 1px 1px #444);
 }
 
-.togglers-item:hover,
-.togglers-item:focus-visible {
-  transform: scale(1.1);
+.settings-item:hover,
+.settings-item:focus-visible {
   opacity: 1;
-  filter: drop-shadow(3px 3px 3px #888);
 }
 
-.modal {
-}
+/* * * * * * * * * *
+* Tooltip
+* * * * * * * * * */
 
 .tooltip {
+  position: relative;
+}
+
+.tooltip-popup {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translate(-50%, 0);
+  font-size: 0.9rem;
+  background-color: var(--ui-tooltip-background-color);
+  border-radius: 0.3rem;
+  color: var(--ui-tooltip-text-color);
+  margin-bottom: 5px;
+  max-width: 300px;
+  padding: 0.4rem 0.6rem;
+  text-align: center;
+}
+
+.tooltip-popup.right {
+  left: inherit;
+  right: 0;
+  transform: translate(0, 0);
+}
+
+.tooltip-popup:after {
+  position: absolute;
+  display: inline-block;
+  border: inset 7px;
+  content: '';
+  height: 0;
+  width: 0;
+  border-color: var(--ui-tooltip-background-color) transparent transparent
+    transparent;
+  border-top-style: solid;
+  left: 50%;
+  bottom: -14px;
+  transform-origin: center top;
+  transform: translate(-50%, 0);
+}
+
+.tooltip-popup.right:after {
+  left: inherit;
+  right: 16px;
+  transform: translate(0, 0);
+}
+
+.tooltip:hover .tooltip-popup {
+  opacity: 1;
+}
+
+.settings .flex-container-item:last-child .tooltip-popup {
+  min-width: 90px;
+}
+
+/* * * * * * * * * *
+* Modal
+* * * * * * * * * */
+
+.modal {
 }

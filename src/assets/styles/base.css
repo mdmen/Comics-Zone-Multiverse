@@ -1,21 +1,34 @@
 :root {
-  --ui-background-color: #fff;
+  --ui-background-color-light: #fff;
   --ui-background-color-dark: #000;
-  --ui-text-color: #121212;
+  --ui-text-color-dark: #121212;
   --ui-text-color-light: #fff;
+
+  --ui-background-color: var(--ui-background-color-light);
+  --ui-text-color: var(--ui-text-color-dark);
+  --ui-tooltip-text-color: var(--ui-text-color-light);
+  --ui-tooltip-background-color: var(--ui-background-color-dark);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --ui-background-color: var(--ui-background-color-dark);
     --ui-text-color: var(--ui-text-color-light);
+    --ui-tooltip-text-color: var(--ui-text-color-dark);
+    --ui-tooltip-background-color: var(--ui-background-color-light);
   }
 }
 
-/* @font-face {
-  font-family: '';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../fonts/font.woff2') format('woff2');
-} */
+.light {
+  --ui-background-color: var(--ui-background-color-light);
+  --ui-text-color: var(--ui-text-color-dark);
+  --ui-tooltip-text-color: var(--ui-text-color-light);
+  --ui-tooltip-background-color: var(--ui-background-color-dark);
+}
+
+.dark {
+  --ui-background-color: var(--ui-background-color-dark);
+  --ui-text-color: var(--ui-text-color-light);
+  --ui-tooltip-text-color: var(--ui-text-color-dark);
+  --ui-tooltip-background-color: var(--ui-background-color-light);
+}

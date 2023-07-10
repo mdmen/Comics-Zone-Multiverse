@@ -5,14 +5,21 @@ export class Audio {
   constructor() {
     this.context = new AudioContext();
     this.gainNode = new GainNode(this.context);
+
+    this.bindResumeContext();
   }
 
-  private isSuspended(): boolean {
-    return this.context.state === 'suspended';
+  private bindResumeContext(): void {
+    const resume = () => {
+      this.resumeContext();
+    };
+
+    window.addEventListener('keydown', resume, { once: true });
+    window.addEventListener('mousedown', resume, { once: true });
   }
 
-  public resumeContext(): void {
-    if (this.isSuspended()) {
+  private resumeContext(): void {
+    if (this.context.state === 'suspended') {
       this.context.resume();
     }
   }

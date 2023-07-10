@@ -1,8 +1,12 @@
 import { getAppContainer } from '@/helpers';
-import { mountTogglers } from './ui/togglers/mountTogglers';
+import { UISettings } from './ui/UISettings';
+import { Config } from './Config';
+import { Audio } from '@/engine';
 
 export function startGame(): void {
   const container = getAppContainer();
+  const audio = new Audio();
+  const config = new Config(audio);
 
-  mountTogglers({ container });
+  new UISettings({ container, config });
 }

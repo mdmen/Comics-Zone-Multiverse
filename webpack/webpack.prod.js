@@ -43,7 +43,6 @@ module.exports = {
   },
   plugins: [
     require('./plugins/html')(),
-    require('./plugins/preload')(),
     require('./plugins/copy')(),
     new MiniCssExtractPlugin({
       filename: 'css/[contenthash].css',

@@ -1,18 +1,19 @@
+import { Node } from './Node';
+
 type State = 'on' | 'off';
 
 interface Options {
   onToggle(toggler: Toggler): void;
   defaultState: State;
-  activeContent: string;
-  inactiveContent: string;
+  activeContent: Node | HTMLElement | string;
+  inactiveContent: Node | HTMLElement | string;
   classNames?: string[];
 }
 
-export class Toggler {
+export class Toggler extends Node {
   private state;
   private readonly activeContent;
   private readonly inactiveContent;
-  private readonly node: HTMLButtonElement;
 
   constructor({
     defaultState,
@@ -21,6 +22,8 @@ export class Toggler {
     classNames,
     onToggle,
   }: Options) {
+    super();
+
     this.state = defaultState;
     this.activeContent = activeContent;
     this.inactiveContent = inactiveContent;
@@ -31,12 +34,15 @@ export class Toggler {
     this.bindEvents(onToggle);
   }
 
-  private create(classNames?: string[]): HTMLButtonElement {
+  protected create(classNames?: string[]): HTMLButtonElement {
     const node = document.createElement('button');
 
     node.type = 'button';
-    node.classList.add('toggler', ...(classNames ? classNames : []));
     node.setAttribute('role', 'switch');
+
+    const classes = classNames ? classNames : [];
+    this.isActive() && classes.push('active');
+    node.classList.add('toggler', ...classes);
 
     return node;
   }
@@ -46,6 +52,8 @@ export class Toggler {
       this.toggleState();
       this.setAria();
       this.setContent();
+
+      this.node.classList.toggle('active');
 
       onToggle(this);
     });
@@ -61,16 +69,13 @@ export class Toggler {
   }
 
   private setContent(): void {
-    this.node.innerHTML = this.isActive()
-      ? this.activeContent
-      : this.inactiveContent;
+    this.node.innerHTML = '';
+
+    const node = this.isActive() ? this.activeContent : this.inactiveContent;
+    this.node.append(node instanceof Node ? node.getNode() : node);
   }
 
   public isActive(): boolean {
     return this.state === 'on';
-  }
-
-  public getNode(): HTMLButtonElement {
-    return this.node;
   }
 }

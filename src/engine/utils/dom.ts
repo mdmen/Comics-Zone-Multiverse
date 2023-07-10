@@ -1,4 +1,4 @@
-export function isPageActive(): boolean {
+export function isPageInactive(): boolean {
   return document.visibilityState === 'hidden';
 }
 
@@ -10,7 +10,7 @@ export function onPageInactive(callback: () => void): void {
   window.addEventListener('beforeunload', func);
   window.addEventListener('pagehide', func);
   document.onvisibilitychange = () => {
-    isPageActive() && func();
+    isPageInactive() && func();
   };
 }
 
