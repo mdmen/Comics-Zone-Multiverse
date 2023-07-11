@@ -32,3 +32,17 @@
   --ui-tooltip-text-color: var(--ui-text-color-dark);
   --ui-tooltip-background-color: var(--ui-background-color-light);
 }
+
+.visually-hidden {
+  clip-path: inset(100%);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.hidden {
+  display: none !important;
+}

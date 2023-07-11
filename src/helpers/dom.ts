@@ -18,3 +18,12 @@ export function setTheme(theme: 'dark' | 'light'): void {
   html.classList.remove('dark', 'light');
   html.classList.add(theme);
 }
+
+export function createHiddenLabel(content: HTMLElement | string): HTMLElement {
+  const label = document.createElement('span');
+
+  label.classList.add('visually-hidden');
+  label.append(content);
+
+  return label;
+}

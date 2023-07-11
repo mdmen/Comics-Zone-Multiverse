@@ -4,8 +4,8 @@ type SettingsMapKeys = keyof SettingsMap;
 
 const settings = {
   gamepadAllowed: false,
-  storagePrefix: 'glitch_game_',
-  eventsPrefix: 'GLITCH_GAME_',
+  storagePrefix: 'comics-zone-',
+  eventsPrefix: 'COMICS_ZONE_',
 
   renderEngine: 'canvas' as RenderEngine,
   fps: 60,

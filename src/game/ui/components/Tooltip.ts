@@ -1,11 +1,11 @@
-import { Node } from './Node';
-
-type Content = Node | HTMLElement | string;
+import { Node, type NodeContent } from './Node';
 
 interface Options {
-  content: Content;
-  tooltip: Content;
+  content: NodeContent;
+  tooltip: NodeContent;
   right?: boolean;
+  classNames?: string[];
+  tooltipId?: string;
 }
 
 export class Tooltip extends Node {
@@ -17,9 +17,14 @@ export class Tooltip extends Node {
     this.node = this.create(options);
   }
 
-  protected create({ content, tooltip, right = false }: Options): HTMLElement {
+  protected create({
+    content,
+    tooltip,
+    classNames = [],
+    right = false,
+  }: Options): HTMLElement {
     const node = document.createElement('div');
-    node.classList.add('tooltip');
+    node.classList.add('tooltip', ...classNames);
 
     const nodeContent = document.createElement('div');
     nodeContent.classList.add('tooltip-content');
@@ -28,7 +33,9 @@ export class Tooltip extends Node {
 
     const nodeTooltip = document.createElement('span');
     nodeTooltip.classList.add('tooltip-popup');
+    nodeTooltip.setAttribute('role', 'tooltip');
     nodeTooltip.append(tooltip instanceof Node ? tooltip.getNode() : tooltip);
+
     node.append(nodeTooltip);
 
     if (right) {
@@ -40,15 +47,11 @@ export class Tooltip extends Node {
     return node;
   }
 
-  public setTooltip(content: Content): void {
+  public setTooltip(content: NodeContent): void {
     this.tooltipNode.innerHTML = '';
 
     this.tooltipNode.append(
       content instanceof Node ? content.getNode() : content
     );
-  }
-
-  public getNode(): HTMLElement {
-    return this.node;
   }
 }

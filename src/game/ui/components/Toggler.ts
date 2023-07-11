@@ -1,3 +1,4 @@
+import { createHiddenLabel } from '@/helpers';
 import { Node } from './Node';
 
 type State = 'on' | 'off';
@@ -7,11 +8,13 @@ interface Options {
   defaultState: State;
   activeContent: Node | HTMLElement | string;
   inactiveContent: Node | HTMLElement | string;
+  label?: string;
   classNames?: string[];
 }
 
 export class Toggler extends Node {
   private state;
+  private label;
   private readonly activeContent;
   private readonly inactiveContent;
 
@@ -19,7 +22,8 @@ export class Toggler extends Node {
     defaultState,
     activeContent,
     inactiveContent,
-    classNames,
+    label = '',
+    classNames = [],
     onToggle,
   }: Options) {
     super();
@@ -27,6 +31,7 @@ export class Toggler extends Node {
     this.state = defaultState;
     this.activeContent = activeContent;
     this.inactiveContent = inactiveContent;
+    this.label = label;
 
     this.node = this.create(classNames);
     this.setContent();
@@ -34,13 +39,11 @@ export class Toggler extends Node {
     this.bindEvents(onToggle);
   }
 
-  protected create(classNames?: string[]): HTMLButtonElement {
+  protected create(classNames: string[]): HTMLButtonElement {
     const node = document.createElement('button');
-
     node.type = 'button';
-    node.setAttribute('role', 'switch');
 
-    const classes = classNames ? classNames : [];
+    const classes = [...classNames];
     this.isActive() && classes.push('active');
     node.classList.add('toggler', ...classes);
 
@@ -65,14 +68,17 @@ export class Toggler extends Node {
 
   private setAria(): void {
     const value = this.isActive().toString();
-    this.node.setAttribute('aria-checked', value);
+    this.node.setAttribute('aria-pressed', value);
   }
 
-  private setContent(): void {
-    this.node.innerHTML = '';
-
+  public setContent(): void {
     const node = this.isActive() ? this.activeContent : this.inactiveContent;
-    this.node.append(node instanceof Node ? node.getNode() : node);
+    super.setContent(node);
+
+    if (this.label) {
+      const label = createHiddenLabel(this.label);
+      this.node.append(label);
+    }
   }
 
   public isActive(): boolean {

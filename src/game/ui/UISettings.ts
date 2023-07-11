@@ -1,13 +1,13 @@
 import { Config } from '../Config';
-import { Toggler } from './Toggler';
-import { FlexContainer } from './FlexContainer';
-import { Tooltip } from './Tooltip';
-import { type Node } from './Node';
+import { Toggler, FlexContainer, type Node, Tooltip } from './components';
 
 interface Options {
   container: HTMLElement;
   config: Config;
 }
+
+const containerClassNames = ['settings'];
+const tooltipClassNames = ['settings-item'];
 
 export class UISettings {
   private readonly config;
@@ -21,7 +21,7 @@ export class UISettings {
         this.createThemeToggler(),
         this.createEngineToggler(),
       ],
-      classNames: ['settings'],
+      classNames: containerClassNames,
     });
 
     container.append(togglers.getNode());
@@ -37,11 +37,10 @@ export class UISettings {
         defaultState: soundState,
         activeContent: '🔊',
         inactiveContent: '🔈',
-        classNames: ['settings-item'],
+        label: 'Mute/unmute',
+        classNames: tooltipClassNames,
         onToggle: (toggler: Toggler) => {
-          const state = toggler.isActive() ? 'on' : 'off';
-          this.config.setSound(state);
-
+          this.config.setSound(toggler.isActive() ? 'on' : 'off');
           tooltip.setTooltip(toggler.isActive() ? onTooltip : offTooltip);
         },
       }),
@@ -61,11 +60,10 @@ export class UISettings {
         defaultState: dark ? 'on' : 'off',
         activeContent: '🌃',
         inactiveContent: '🌆',
-        classNames: ['settings-item'],
+        label: 'Change theme',
+        classNames: tooltipClassNames,
         onToggle: (toggler: Toggler) => {
-          const theme = toggler.isActive() ? 'dark' : 'light';
-          this.config.setTheme(theme);
-
+          this.config.setTheme(toggler.isActive() ? 'dark' : 'light');
           tooltip.setTooltip(
             toggler.isActive() ? darkThemeTooltip : lightThemeTooltip
           );
@@ -79,21 +77,24 @@ export class UISettings {
 
   private createEngineToggler(): Node {
     const canvas = this.config.getRender() === 'canvas';
-    const canvasTooltip = 'Change render to DOM';
-    const domTooltip = 'Change render to CANVAS';
+    const canvasTooltip = 'Change render engine to DOM';
+    const domTooltip = 'Change render engine to canvas';
 
     const tooltip = new Tooltip({
       content: new Toggler({
         defaultState: canvas ? 'on' : 'off',
-        activeContent: '⚙️',
-        inactiveContent: '⚙️',
-        classNames: ['settings-item'],
+        activeContent: '🖥️',
+        inactiveContent: '📺',
+        label: 'Change render engine',
+        classNames: tooltipClassNames,
         onToggle: (toggler: Toggler) => {
+          this.config.setRender(toggler.isActive() ? 'canvas' : 'dom');
           tooltip.setTooltip(toggler.isActive() ? canvasTooltip : domTooltip);
         },
       }),
       tooltip: canvas ? canvasTooltip : domTooltip,
       right: true,
+      classNames: ['tooltip-engine'],
     });
 
     return tooltip;

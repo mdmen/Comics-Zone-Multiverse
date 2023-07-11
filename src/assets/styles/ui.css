@@ -26,6 +26,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
+  z-index: 20;
 }
 
 .settings-item {
@@ -100,13 +101,59 @@
   opacity: 1;
 }
 
-.settings .flex-container-item:last-child .tooltip-popup {
-  min-width: 90px;
+.tooltip-engine .tooltip-popup {
+  min-width: 9rem;
 }
 
 /* * * * * * * * * *
 * Modal
 * * * * * * * * * */
 
+.modal-overlay {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  z-index: 10;
+}
+
 .modal {
+  position: relative;
+  max-width: 100%;
+  overscroll-behavior: contain;
+  background-color: var(--ui-background-color);
+  border-radius: 0.3rem;
+  padding: 1rem;
+  width: 400px;
+  box-shadow: 2px 2px 7px -2px #222;
+}
+
+.modal-caption {
+  font-size: 1.3rem;
+  margin: 0 0 1rem;
+}
+
+.modal-close {
+  background: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  position: absolute;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0.4rem;
+  top: 5px;
+  right: 5px;
+  color: currentColor;
+}
+
+.modal-content {
+  margin: 0;
 }

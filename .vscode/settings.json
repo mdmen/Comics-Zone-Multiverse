@@ -8,6 +8,7 @@
     "drawables",
     "flippable",
     "Gamepad",
+    "labelledby",
     "testid",
     "updatables",
     "webp"
