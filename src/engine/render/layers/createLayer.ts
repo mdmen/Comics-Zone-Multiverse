@@ -1,10 +1,8 @@
-import { Settings } from '../../Settings';
+import { isDOMEngine } from '../../utils';
 import { type Layer, type LayerOptions } from './Layer';
 import { LayerCanvas } from './LayerCanvas';
 import { LayerDOM } from './LayerDOM';
 
 export function createLayer(options: LayerOptions): Layer {
-  return Settings.get('renderEngine') === 'canvas'
-    ? new LayerCanvas(options)
-    : new LayerDOM(options);
+  return isDOMEngine() ? new LayerDOM(options) : new LayerCanvas(options);
 }

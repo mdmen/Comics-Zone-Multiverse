@@ -1,13 +1,21 @@
 import { Logger } from '../../Logger';
 import { createCanvas, createContext2D } from '../../utils';
 import { Layer, type LayerOptions } from './Layer';
-import type { Drawable } from '../Drawable';
+import { type Image } from '../Image';
+import { type RectShape } from '../RectShape';
+
+interface LayerCanvasOptions extends LayerOptions {
+  transparent?: boolean;
+}
 
 export class LayerCanvas extends Layer {
   private context!: CanvasRenderingContext2D;
+  private transparent;
 
-  constructor(options: LayerOptions) {
+  constructor({ transparent, ...options }: LayerCanvasOptions) {
     super(options);
+
+    this.transparent = transparent;
 
     this.onContextChange = this.onContextChange.bind(this);
     this.bindEvents();
@@ -44,16 +52,16 @@ export class LayerCanvas extends Layer {
     super.preDraw();
   }
 
-  public draw(drawable: Drawable): void {
-    if (!this.shouldDraw(drawable)) return;
+  public drawImage(image: Image): void {
+    if (!this.shouldDraw(image)) return;
 
-    const position = drawable.getPosition();
-    const source = drawable.getSource();
-    const width = drawable.getWidth();
-    const height = drawable.getHeight();
+    const position = image.getPosition();
+    const source = image.getSource();
+    const width = image.getWidth();
+    const height = image.getHeight();
 
     this.context.drawImage(
-      drawable.getImage(),
+      image.getImage(),
       source.x,
       source.y,
       width,
@@ -66,6 +74,21 @@ export class LayerCanvas extends Layer {
   }
 
   public postDraw(): void {
+    this.context.restore();
+  }
+
+  public drawRect(shape: RectShape): void {
+    this.context.save();
+    this.context.fillStyle = shape.getColor();
+
+    const position = shape.getPosition();
+    this.context.fillRect(
+      Math.floor(position.x),
+      Math.floor(position.y),
+      Math.floor(shape.getWidth()),
+      Math.floor(shape.getHeight())
+    );
+
     this.context.restore();
   }
 }

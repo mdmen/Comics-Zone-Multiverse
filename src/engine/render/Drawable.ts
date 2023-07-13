@@ -1,101 +1,36 @@
-import { Rectangle } from '../math/Rectangle';
-import { Vector } from '../math';
-import { getReversedImage, getScaledImage } from '../utils';
+import { isDOMEngine } from '../utils';
 import { type Layer } from './layers/Layer';
+import { type DrawableNode } from './nodes';
+import { Updatable, type UpdatableOptions } from './Updatable';
 
-export interface DrawableOptions {
+export interface DrawableOptions extends UpdatableOptions {
   layer: Layer;
-  image: HTMLImageElement;
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  flippable?: boolean;
-  scale?: number;
 }
 
-type ImagesType = 'straight' | 'reversed';
-type Images = Record<ImagesType, HTMLImageElement>;
-
-export abstract class Drawable extends Rectangle {
+export abstract class Drawable extends Updatable {
   protected readonly layer;
-  protected image;
-  protected images!: Images;
-  protected velocity = new Vector();
-  protected source = new Vector();
-  protected flipped = false;
-  protected visible = true;
-  protected scale = 1;
+  protected readonly domNode;
 
-  constructor({
-    x,
-    y,
-    layer,
-    image,
-    scale = 1,
-    width = image.width,
-    height = image.height,
-    flippable = false,
-  }: DrawableOptions) {
-    super(x, y, width, height);
+  constructor({ layer, ...options }: DrawableOptions) {
+    super(options);
 
     this.layer = layer;
-    this.scale = scale;
-    this.image = getScaledImage(image, scale);
-
-    if (flippable) {
-      this.images = {
-        straight: this.image,
-        reversed: getReversedImage(this.image),
-      };
-    }
-  }
-
-  public hide(): void {
-    this.visible = false;
-  }
-
-  public show(): void {
-    this.visible = true;
-  }
-
-  public isVisible(): boolean {
-    return this.visible;
-  }
-
-  public getSource(): Vector {
-    return this.source;
+    this.domNode = isDOMEngine() ? this.createDomNode() : null;
   }
 
   public getLayer(): Layer {
     return this.layer;
   }
 
-  public getImage(): HTMLImageElement {
-    return this.image;
-  }
-
-  public setVelocity(x: number, y: number): void {
-    this.velocity.set(x, y);
-  }
-
-  public flip(): void {
-    this.image = this.flipped ? this.images.straight : this.images.reversed;
-    this.flipped = !this.flipped;
-  }
-
-  public update(step: number): void {
-    const velocity = new Vector(this.velocity.x, this.velocity.y);
-    velocity.scale(step);
-
-    this.position.add(velocity);
-  }
-
-  public draw(): void {
-    this.layer.draw(this);
+  public getDomNode(): DrawableNode | null {
+    return this.domNode;
   }
 
   public destroy(): void {
     return;
   }
+
+  protected abstract createDomNode(): DrawableNode;
+
+  public abstract draw(): void;
 }

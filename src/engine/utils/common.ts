@@ -1,3 +1,4 @@
+import { Settings } from '../Settings';
 import type { LinkedList } from '../list/LinkedList';
 
 export function isEmpty(
@@ -22,4 +23,8 @@ export function generateUniqueId(): string {
   return Math.floor(Math.random() * Date.now())
     .toString(36)
     .slice(0, 10);
+}
+
+export function isDOMEngine(): boolean {
+  return Settings.get('renderEngine') === 'dom';
 }

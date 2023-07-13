@@ -1,6 +1,8 @@
 import { Settings } from '../../Settings';
-import type { SpriteDOM } from '../sprites/SpriteDOM';
 import { Layer } from './Layer';
+import { type Image } from '../Image';
+import { type RectShape } from '../RectShape';
+import { type Updatable } from '../Updatable';
 
 export class LayerDOM extends Layer {
   private subnode!: HTMLDivElement;
@@ -37,21 +39,42 @@ export class LayerDOM extends Layer {
     this.subnode.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
   }
 
-  public draw(sprite: SpriteDOM): void {
-    if (!this.shouldDraw(sprite)) return;
+  public drawImage(image: Image): void {
+    const node = image.getDomNode();
 
-    const node = sprite.getNode();
-    const position = sprite.getPosition();
+    if (!node) throw Error('There is no Node within Image');
+    if (!this.shouldDraw(image)) return;
+
+    const domNode = node.getNode();
+    this.setDomNodePosition(domNode, image);
+
+    const source = image.getSource();
+    domNode.style.backgroundPosition = `${-source.x}px ${-source.y}px`;
+  }
+
+  public drawRect(shape: RectShape): void {
+    const node = shape.getDomNode();
+
+    if (!node) throw Error('There is no Node within Shape');
+    if (!this.shouldDraw(shape)) return;
+
+    const domNode = node.getNode();
+    this.setDomNodePosition(domNode, shape);
+
+    domNode.style.backgroundColor = shape.getColor();
+  }
+
+  private setDomNodePosition(node: HTMLElement, drawable: Updatable): void {
+    const position = drawable.getPosition();
     const posX = Math.floor(position.x);
     const posY = Math.floor(position.y);
-    const width = Math.floor(sprite.getWidth());
-    const height = Math.floor(sprite.getHeight());
-    const source = sprite.getSource();
+    const width = Math.floor(drawable.getWidth());
+    const height = Math.floor(drawable.getHeight());
 
-    node.style.backgroundPosition = `${-source.x}px ${-source.y}px`;
     node.style.width = `${width}px`;
     node.style.height = `${height}px`;
     node.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
+    node.hidden = drawable.isVisible();
   }
 
   public postDraw(): void {

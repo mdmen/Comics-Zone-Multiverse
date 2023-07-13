@@ -1,5 +1,5 @@
 import { Point, Vector } from '../../math';
-import { Drawable, type DrawableOptions } from '../Drawable';
+import { Image, type ImageOptions } from '../Image';
 import { SpriteAnimation } from './SpriteAnimation';
 
 interface FrameBoundaries {
@@ -19,7 +19,7 @@ export interface SpriteImageData {
   frames: Record<string, SpriteFrame>;
 }
 
-export interface SpriteOptions extends DrawableOptions {
+export interface SpriteOptions extends ImageOptions {
   data?: SpriteImageData;
 }
 
@@ -29,7 +29,7 @@ export interface AnimationOptions {
   infinite?: boolean;
 }
 
-export abstract class Sprite extends Drawable {
+export abstract class Sprite extends Image {
   private readonly data;
   private readonly animations: Record<string, SpriteAnimation>;
   private readonly offset = new Vector();

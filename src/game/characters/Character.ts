@@ -1,18 +1,18 @@
 import {
-  GameObject,
   StateMachine,
-  type GameObjectOptions,
   type Sounds,
+  Sprite,
+  type SpriteOptions,
 } from '@/engine';
 
-export interface CharacterOptions extends GameObjectOptions {
+export interface CharacterOptions extends SpriteOptions {
   sounds?: Sounds;
   strength?: number;
   speed?: number;
   health?: number;
 }
 
-export abstract class Character extends GameObject {
+export abstract class Character extends Sprite {
   protected readonly moveStates = new StateMachine();
   protected readonly sounds;
   protected strength;

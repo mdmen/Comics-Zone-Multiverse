@@ -37,4 +37,8 @@ export class Vector implements Point {
   public isEqualTo(v: Point): boolean {
     return this.x === v.x && this.y === v.y;
   }
+
+  public isZero(): boolean {
+    return this.x === 0 && this.y === 0;
+  }
 }
