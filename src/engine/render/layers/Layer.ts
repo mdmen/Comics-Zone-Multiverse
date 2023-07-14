@@ -4,6 +4,7 @@ import type { Camera } from '../Camera';
 import type { Image } from '../Image';
 import { Node } from '../nodes/Node';
 import { type RectShape } from '../RectShape';
+import { type SpriteText } from '../sprites';
 import { type Updatable } from '../Updatable';
 
 export interface LayerOptions {
@@ -84,7 +85,7 @@ export abstract class Layer extends Node {
 
   protected abstract syncWithCamera(): void;
 
-  public abstract drawImage(drawable: Image): void;
+  public abstract drawImage(drawable: Image | SpriteText): void;
 
   public abstract postDraw(): void;
 

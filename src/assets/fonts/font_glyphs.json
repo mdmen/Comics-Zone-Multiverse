@@ -1,0 +1,281 @@
+{
+  "rows": ["dark", "light", "yellow"],
+  "rowHeight": 6,
+  "glyphs": {
+    "!": {
+      "offset": 0,
+      "x": 0,
+      "width": 5
+    },
+    "\"": {
+      "offset": 0,
+      "x": 5,
+      "width": 6
+    },
+    "#": {
+      "offset": 0,
+      "x": 11,
+      "width": 8
+    },
+    "%": {
+      "offset": 0,
+      "x": 19,
+      "width": 8
+    },
+    "&": {
+      "offset": 0,
+      "x": 27,
+      "width": 8
+    },
+    "'": {
+      "offset": 0,
+      "x": 35,
+      "width": 2
+    },
+    "(": {
+      "offset": 0,
+      "x": 37,
+      "width": 3
+    },
+    ")": {
+      "offset": 0,
+      "x": 40,
+      "width": 4
+    },
+    ",": {
+      "offset": 0,
+      "x": 44,
+      "width": 2
+    },
+    "-": {
+      "offset": 0,
+      "x": 46,
+      "width": 4
+    },
+    ".": {
+      "offset": 1,
+      "x": 50,
+      "width": 2
+    },
+    "/": {
+      "offset": 0,
+      "x": 52,
+      "width": 4
+    },
+    "0": {
+      "offset": 0,
+      "x": 56,
+      "width": 8
+    },
+    "1": {
+      "offset": 0,
+      "x": 64,
+      "width": 4
+    },
+    "2": {
+      "offset": 0,
+      "x": 68,
+      "width": 7
+    },
+    "3": {
+      "offset": 0,
+      "x": 75,
+      "width": 7
+    },
+    "4": {
+      "offset": 0,
+      "x": 82,
+      "width": 7
+    },
+    "5": {
+      "offset": 0,
+      "x": 89,
+      "width": 7
+    },
+    "6": {
+      "offset": 0,
+      "x": 96,
+      "width": 7
+    },
+    "7": {
+      "offset": 0,
+      "x": 103,
+      "width": 6
+    },
+    "8": {
+      "offset": 0,
+      "x": 109,
+      "width": 7
+    },
+    "9": {
+      "offset": 0,
+      "x": 116,
+      "width": 6
+    },
+    ":": {
+      "offset": 0,
+      "x": 122,
+      "width": 4
+    },
+    ";": {
+      "offset": 0,
+      "x": 126,
+      "width": 4
+    },
+    "=": {
+      "offset": 0,
+      "x": 130,
+      "width": 5
+    },
+    "—": {
+      "offset": 0,
+      "x": 135,
+      "width": 7
+    },
+    "?": {
+      "offset": 0,
+      "x": 142,
+      "width": 5
+    },
+    "@": {
+      "offset": 0,
+      "x": 147,
+      "width": 9
+    },
+    "A": {
+      "offset": 0,
+      "x": 156,
+      "width": 6
+    },
+    "B": {
+      "offset": 0,
+      "x": 162,
+      "width": 8
+    },
+    "C": {
+      "offset": 0,
+      "x": 170,
+      "width": 7
+    },
+    "D": {
+      "offset": 0,
+      "x": 177,
+      "width": 8
+    },
+    "E": {
+      "offset": 0,
+      "x": 185,
+      "width": 7
+    },
+    "F": {
+      "offset": 0,
+      "x": 192,
+      "width": 7
+    },
+    "G": {
+      "offset": 0,
+      "x": 199,
+      "width": 8
+    },
+    "H": {
+      "offset": 0,
+      "x": 207,
+      "width": 8
+    },
+    "I": {
+      "offset": 0,
+      "x": 215,
+      "width": 4
+    },
+    "J": {
+      "offset": 0,
+      "x": 219,
+      "width": 7
+    },
+    "K": {
+      "offset": 0,
+      "x": 226,
+      "width": 7
+    },
+    "L": {
+      "offset": 0,
+      "x": 233,
+      "width": 5
+    },
+    "M": {
+      "offset": 0,
+      "x": 238,
+      "width": 11
+    },
+    "N": {
+      "offset": 0,
+      "x": 249,
+      "width": 10
+    },
+    "O": {
+      "offset": 0,
+      "x": 259,
+      "width": 8
+    },
+    "P": {
+      "offset": 0,
+      "x": 267,
+      "width": 8
+    },
+    "Q": {
+      "offset": 0,
+      "x": 275,
+      "width": 8
+    },
+    "R": {
+      "offset": 0,
+      "x": 283,
+      "width": 9
+    },
+    "S": {
+      "offset": 0,
+      "x": 292,
+      "width": 7
+    },
+    "T": {
+      "offset": 1,
+      "x": 299,
+      "width": 5
+    },
+    "U": {
+      "offset": 0,
+      "x": 304,
+      "width": 9
+    },
+    "V": {
+      "offset": 0,
+      "x": 313,
+      "width": 7
+    },
+    "W": {
+      "offset": 1,
+      "x": 320,
+      "width": 10
+    },
+    "X": {
+      "offset": -1,
+      "x": 330,
+      "width": 9
+    },
+    "Y": {
+      "offset": 0,
+      "x": 339,
+      "width": 7
+    },
+    "Z": {
+      "offset": 0,
+      "x": 346,
+      "width": 7
+    },
+    " ": {
+      "offset": 0,
+      "x": 353,
+      "width": 7
+    }
+  }
+}

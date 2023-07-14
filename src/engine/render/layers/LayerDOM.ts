@@ -3,6 +3,7 @@ import { Layer } from './Layer';
 import { type Image } from '../Image';
 import { type RectShape } from '../RectShape';
 import { type Updatable } from '../Updatable';
+import { type SpriteText } from '../sprites';
 
 export class LayerDOM extends Layer {
   private subnode!: HTMLDivElement;
@@ -39,7 +40,7 @@ export class LayerDOM extends Layer {
     this.subnode.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
   }
 
-  public drawImage(image: Image): void {
+  public drawImage(image: Image | SpriteText): void {
     const node = image.getDomNode();
 
     if (!node) throw Error('There is no Node within Image');
@@ -71,10 +72,10 @@ export class LayerDOM extends Layer {
     const width = Math.floor(drawable.getWidth());
     const height = Math.floor(drawable.getHeight());
 
+    node.hidden = drawable.isVisible();
     node.style.width = `${width}px`;
     node.style.height = `${height}px`;
     node.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
-    node.hidden = drawable.isVisible();
   }
 
   public postDraw(): void {

@@ -28,3 +28,7 @@ export function generateUniqueId(): string {
 export function isDOMEngine(): boolean {
   return Settings.get('renderEngine') === 'dom';
 }
+
+export function squashSpaces(str: string): string {
+  return str.replace(/\s\s+/g, ' ');
+}

@@ -2,16 +2,9 @@ import { Assets } from './Assets';
 import { type SoundSpriteData } from '../audio/SoundSprite';
 import { isString } from '../utils';
 import { loadAudio, loadData } from './loaders';
+import { type SpriteSource, type SpriteResource } from './types';
 
-interface SpriteSource {
-  src: string;
-  data: string;
-}
-
-interface SpriteResource {
-  src: string;
-  data: SoundSpriteData;
-}
+type SoundSpriteResource = SpriteResource<SoundSpriteData>;
 
 export type AudioAsset = ArrayBuffer;
 
@@ -21,7 +14,7 @@ export interface AudioSpriteAsset<Names extends PrimitiveKeys = string> {
 }
 
 export type ReturnAudioAssets<Sources> = {
-  [Key in keyof Sources]: Sources[Key] extends SpriteResource
+  [Key in keyof Sources]: Sources[Key] extends SoundSpriteResource
     ? AudioSpriteAsset<keyof Sources[Key]['data']['map']>
     : ArrayBuffer;
 };

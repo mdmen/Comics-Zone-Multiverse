@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
 
-    <title>Comics Zone: Glitch</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
     <meta
       name="description"
-      content="An attempt to create HTML5 spin-off for the great SEGA game called Comix Zone"
+      content="<%= htmlWebpackPlugin.options.description %>"
     />
 
-    <meta name="og:title" content="Comics Zone: Glitch" />
+    <meta name="og:title" content="<%= htmlWebpackPlugin.options.title %>" />
     <meta
       name="og:description"
-      content="An attempt to create HTML5 spin-off for the great SEGA game called Comix Zone"
+      content="<%= htmlWebpackPlugin.options.description %>"
     />
     <meta name="og:url" content="" />
     <meta
@@ -25,12 +25,23 @@
     <link
       rel="preload"
       as="image"
-      href="<%=require('./assets/images/scense/loading_start.webp')%>"
+      href="<%=require('./assets/images/scenes/loading_start.webp')%>"
     />
     <link
       rel="preload"
       as="image"
-      href="<%=require('./assets/images/scense/loading_finish.webp')%>"
+      href="<%=require('./assets/images/scenes/loading_finish.webp')%>"
+    />
+
+    <link
+      rel="preload"
+      as="image"
+      href="<%=require('./assets/fonts/font_bitmap.webp')%>"
+    />
+    <link
+      rel="preload"
+      as="fetch"
+      href="<%=require('./assets/fonts/font_glyphs.json')%>"
     />
 
     <link rel="icon" href="/favicons/favicon.png" sizes="any" />

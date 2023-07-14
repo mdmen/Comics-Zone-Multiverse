@@ -19,6 +19,9 @@ const settings = {
 
   cameraOffsetX: 50,
   cameraOffsetY: 50,
+
+  spriteFontScale: 3,
+  spriteFontRowGap: 5,
 };
 
 interface Settings {

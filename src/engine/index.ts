@@ -12,3 +12,4 @@ export * from './Logger';
 export * from './state';
 export * from './Emitter';
 export * from './utils';
+export * from './render/sprites/SpriteText';

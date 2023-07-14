@@ -38,7 +38,9 @@ export function getScaledImage(
   return extractImageFromCanvas(canvas);
 }
 
-function extractImageFromCanvas(canvas: HTMLCanvasElement): HTMLImageElement {
+export function extractImageFromCanvas(
+  canvas: HTMLCanvasElement
+): HTMLImageElement {
   const image = new Image();
 
   const type = isSafari() ? 'png' : 'webp';

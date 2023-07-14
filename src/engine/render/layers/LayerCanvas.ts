@@ -3,6 +3,7 @@ import { createCanvas, createContext2D } from '../../utils';
 import { Layer, type LayerOptions } from './Layer';
 import { type Image } from '../Image';
 import { type RectShape } from '../RectShape';
+import { type SpriteText } from '../sprites';
 
 interface LayerCanvasOptions extends LayerOptions {
   transparent?: boolean;
@@ -52,7 +53,7 @@ export class LayerCanvas extends Layer {
     super.preDraw();
   }
 
-  public drawImage(image: Image): void {
+  public drawImage(image: Image | SpriteText): void {
     if (!this.shouldDraw(image)) return;
 
     const position = image.getPosition();
@@ -78,6 +79,8 @@ export class LayerCanvas extends Layer {
   }
 
   public drawRect(shape: RectShape): void {
+    if (!this.shouldDraw(shape)) return;
+
     this.context.save();
     this.context.fillStyle = shape.getColor();
 

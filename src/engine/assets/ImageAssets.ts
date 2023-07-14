@@ -1,25 +1,18 @@
 import { Assets } from './Assets';
 import { isString } from '../utils';
 import { loadImage, loadData } from './loaders';
-import type { SpriteImageData } from '../render/sprites/Sprite';
+import { type SpriteImageData } from '../render/sprites/Sprite';
+import {
+  type SpriteSource,
+  type SpriteResource,
+  type SpriteAsset,
+} from './types';
 
-interface SpriteSource {
-  src: string;
-  data: string;
-}
-
-interface SpriteResource {
-  src: string;
-  data: SpriteImageData;
-}
-
-export interface SpriteImageAsset {
-  image: HTMLImageElement;
-  data: SpriteImageData;
-}
+type ImageSpriteResource = SpriteResource<SpriteImageData>;
+type SpriteImageAsset = SpriteAsset<SpriteImageData>;
 
 export type ReturnImageAssets<Sources> = {
-  [Key in keyof Sources]: Sources[Key] extends SpriteResource
+  [Key in keyof Sources]: Sources[Key] extends ImageSpriteResource
     ? SpriteImageAsset
     : HTMLImageElement;
 };
