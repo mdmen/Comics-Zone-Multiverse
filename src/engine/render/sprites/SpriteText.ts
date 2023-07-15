@@ -6,20 +6,26 @@ import {
   createCanvas,
   createContext2D,
   extractImageFromCanvas,
+  getScaledImage,
   squashSpaces,
 } from '../../utils';
 import { type SpriteAsset } from '../../assets/types';
 import { Settings } from '../../Settings';
 import { Vector } from '../../math';
 
-interface PrepareCallback {
+interface TransformCallback {
   (text: string): string;
+}
+
+interface GlyphOffset {
+  left: number;
+  right: number;
 }
 
 export interface ImageFontGlyph {
   x: number;
   width: number;
-  offset: number;
+  offset: GlyphOffset;
 }
 
 export interface ImageFontData {
@@ -39,16 +45,17 @@ interface Options extends Omit<DrawableOptions, 'layer'> {
 interface GlobalOptions {
   layer: Layer;
   font: SpriteAsset<ImageFontData>;
-  prepare?: PrepareCallback;
+  transform?: TransformCallback;
 }
 
 export class SpriteText extends Drawable {
   protected static layer: Layer;
-  private static image: HTMLImageElement;
+  private static spriteImage: HTMLImageElement;
   private static data: ImageFontData;
-  private static prepareCallback: PrepareCallback;
+  private static transform: TransformCallback;
 
-  private spriteImage;
+  private image!: HTMLImageElement;
+  private loaded = false;
   private text;
   private scale;
   private rowIndex;
@@ -63,22 +70,27 @@ export class SpriteText extends Drawable {
 
     SpriteText.checkSetup();
 
-    const prepared = SpriteText.prepareCallback(text);
-    this.text = squashSpaces(prepared);
-
+    this.text = squashSpaces(SpriteText.transform(text));
     this.maxWidth = maxWidth;
     this.rowIndex = this.getRowIndex(row);
     this.scale = scale || Settings.get('spriteFontScale');
     this.rowGap = rowGap || Settings.get('spriteFontRowGap');
 
-    const [width, height] = this.calculateTextImageSize();
-    this.width = width;
-    this.height = height;
-    this.spriteImage = this.createTextImage();
+    [this.width, this.height] = this.normalizeSizes(
+      this.calculateTextImageSize()
+    );
+
+    this.createTextImage();
   }
 
   private static checkSetup(): void {
-    if (![SpriteText.layer, SpriteText.data, SpriteText.image].every(Boolean)) {
+    const requiredProps = [
+      SpriteText.layer,
+      SpriteText.data,
+      SpriteText.spriteImage,
+    ];
+
+    if (!requiredProps.every(Boolean)) {
       throw Error('You must setup Text component');
     }
 
@@ -100,104 +112,142 @@ export class SpriteText extends Drawable {
   }
 
   private calculateWordWidth(word: string): number {
-    const { glyphs } = SpriteText.data;
-    let width = 0;
+    return word.split('').reduce((acc, char, index) => {
+      const { width, offset } = SpriteText.data.glyphs[char];
 
-    for (const glyph of word) {
-      width += glyphs[glyph].width * this.scale + glyphs[glyph].offset;
+      return acc + (index > 0 ? offset.left : 0) + width + offset.right;
+    }, 0);
+  }
+
+  private getSpaceWidth(): number {
+    return SpriteText.data.glyphs[' '].width;
+  }
+
+  private normalizeSizes(sizes: number[]): number[] {
+    return sizes.map((value) => Math.floor(value * this.scale));
+  }
+
+  private calculateTextImageSize(): number[] {
+    const words = this.text.split(' ');
+
+    if (words.length === 1) {
+      const rowWidth = this.calculateWordWidth(words[0]);
+      const { rowHeight } = SpriteText.data;
+      return [rowWidth, rowHeight];
     }
 
-    return Math.floor(width);
-  }
-
-  private calculateSpaceWidth(): number {
-    const { width, offset } = SpriteText.data.glyphs[' '];
-
-    return Math.floor(width * this.scale + offset);
-  }
-
-  private calculateTextImageSize(): [number, number] {
-    const words = this.text.split(' ');
-    const spaceWidth = this.calculateSpaceWidth();
-
-    let maxWidth = 0;
-    let width = 0;
-    let height = SpriteText.data.rowHeight * this.scale;
+    const spaceWidth = this.getSpaceWidth();
+    let { rowHeight } = SpriteText.data;
+    let rowWidth = 0;
+    let maxRowWidth = 0;
 
     words.forEach((word, index) => {
       const wordWidth = this.calculateWordWidth(word);
-      const space = index < words.length - 1 ? spaceWidth : 0;
 
-      width += wordWidth + space;
-      maxWidth = Math.max(width, maxWidth);
-
-      if (this.maxWidth && width + wordWidth + space > this.maxWidth) {
-        width = 0;
-        height = (height + this.rowGap) * this.scale;
+      if (
+        this.maxWidth &&
+        index > 0 &&
+        rowWidth + spaceWidth + wordWidth > this.maxWidth
+      ) {
+        rowWidth = 0;
+        rowHeight += SpriteText.data.rowHeight + this.rowGap;
       }
+
+      rowWidth += wordWidth + (rowWidth > 0 ? spaceWidth : 0);
+      maxRowWidth = Math.max(rowWidth, maxRowWidth);
     });
 
-    return [maxWidth, Math.floor(height)];
+    return [maxRowWidth, rowHeight];
   }
 
-  private createTextImage(): HTMLImageElement {
-    const words = this.text.split(' ');
-    const { glyphs, rowHeight } = SpriteText.data;
-    const spaceWidth = this.calculateSpaceWidth();
-    const canvas = createCanvas(this.width, this.height);
+  private drawGlyph(
+    context: CanvasRenderingContext2D,
+    glyph: ImageFontGlyph,
+    dx: number,
+    dy: number
+  ): void {
+    const { rowHeight } = SpriteText.data;
+
+    context.drawImage(
+      SpriteText.spriteImage,
+      glyph.x,
+      this.rowIndex * rowHeight,
+      glyph.width,
+      rowHeight,
+      Math.floor(dx),
+      Math.floor(dy),
+      Math.floor(glyph.width),
+      Math.floor(rowHeight)
+    );
+  }
+
+  private async createTextImage(): Promise<void> {
+    const canvas = createCanvas(...this.calculateTextImageSize());
     const context = createContext2D(canvas);
 
-    let width = 0;
+    // TODO remove
+    context.save();
+    context.fillStyle = 'lightgrey';
+    context.fillRect(0, 0, this.width, this.height);
+    context.restore();
+
+    const words = this.text.split(' ');
+    const { glyphs, rowHeight } = SpriteText.data;
+    const spaceWidth = this.getSpaceWidth();
+
+    let rowWidth = 0;
     let glyphPosX = 0;
     let glyphPosY = 0;
 
     words.forEach((word, wordIndex) => {
-      for (let i = 0; i < word.length; i++) {
-        const char = word[i];
+      const wordWidth = this.calculateWordWidth(word);
+      const lineBreak =
+        this.maxWidth &&
+        wordIndex > 0 &&
+        rowWidth > 0 &&
+        rowWidth + wordWidth > this.maxWidth;
 
-        glyphPosX += glyphs[char].offset * this.scale;
-
-        context.drawImage(
-          SpriteText.image,
-          glyphs[char].x,
-          this.rowIndex * rowHeight,
-          glyphs[char].width,
-          rowHeight,
-          Math.floor(glyphPosX),
-          Math.floor(glyphPosY * this.scale),
-          Math.floor(glyphs[char].width * this.scale),
-          Math.floor(rowHeight * this.scale)
-        );
-
-        glyphPosX += glyphs[char].width * this.scale;
-
-        const space = wordIndex < words.length - 1 ? spaceWidth : 0;
-        const wordWidth = this.calculateWordWidth(word);
-
-        if (this.maxWidth && width + wordWidth + space > this.maxWidth) {
-          glyphPosY += this.rowGap + rowHeight;
-          width = 0;
-          glyphPosX = 0;
-        }
+      if (lineBreak) {
+        rowWidth = 0;
+        glyphPosX = 0;
+        glyphPosY += this.rowGap + rowHeight;
       }
+
+      for (let i = 0; i < word.length; i++) {
+        const glyph = glyphs[word[i]];
+        const hasOffset = rowWidth > 0 || i > 0;
+
+        glyphPosX += hasOffset ? glyph.offset.left : 0;
+
+        this.drawGlyph(context, glyph, glyphPosX, glyphPosY);
+
+        glyphPosX += glyph.width + glyph.offset.right;
+      }
+
+      this.drawGlyph(context, glyphs[' '], glyphPosX, glyphPosY);
+      glyphPosX += spaceWidth;
+      rowWidth += spaceWidth + wordWidth;
     });
 
-    return extractImageFromCanvas(canvas);
+    const image = await extractImageFromCanvas(canvas);
+    this.image = await getScaledImage(image, this.scale);
+
+    this.loaded = true;
   }
 
   public static setup({
     layer,
     font,
-    prepare = (str) => str,
+    transform = (str) => str,
   }: GlobalOptions): void {
     SpriteText.layer = layer;
-    SpriteText.image = font.image;
+    SpriteText.spriteImage = font.image;
     SpriteText.data = font.data;
-    SpriteText.prepareCallback = prepare;
+    SpriteText.transform = transform;
   }
 
   public getImage(): HTMLImageElement {
-    return this.spriteImage;
+    return this.image;
   }
 
   public getSource(): Vector {
@@ -205,6 +255,6 @@ export class SpriteText extends Drawable {
   }
 
   public draw(): void {
-    this.layer.drawImage(this);
+    this.loaded && this.layer.drawImage(this);
   }
 }

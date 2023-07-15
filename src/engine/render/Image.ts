@@ -14,12 +14,13 @@ type ImagesType = 'straight' | 'reversed';
 type Images = Record<ImagesType, HTMLImageElement>;
 
 export abstract class Image extends Drawable {
-  protected image;
+  protected image!: HTMLImageElement;
   protected images!: Images;
   protected domNode!: ImageNode;
   protected source = new Vector();
   protected flipped = false;
   protected scale = 1;
+  private loaded = false;
 
   constructor({
     x,
@@ -34,22 +35,28 @@ export abstract class Image extends Drawable {
     super({ x, y, width, height, layer });
 
     this.scale = scale;
-    this.image = getScaledImage(image, scale);
-
-    if (flippable) {
-      this.images = this.createImages();
-    }
+    this.setImages(image, flippable);
   }
 
   protected createDomNode(): ImageNode {
     return new ImageNode({ layer: this.layer as LayerDOM, drawable: this });
   }
 
-  private createImages(): Images {
-    return {
-      straight: this.image,
-      reversed: getReversedImage(this.image),
-    };
+  private async setImages(
+    image: HTMLImageElement,
+    flippable: boolean
+  ): Promise<void> {
+    this.image = await getScaledImage(image, this.scale);
+
+    if (flippable) {
+      const reversed = await getReversedImage(this.image);
+      this.images = {
+        straight: this.image,
+        reversed,
+      };
+    }
+
+    this.loaded = true;
   }
 
   public getSource(): Vector {
@@ -68,6 +75,6 @@ export abstract class Image extends Drawable {
   }
 
   public draw(): void {
-    this.layer.drawImage(this);
+    this.loaded && this.layer.drawImage(this);
   }
 }

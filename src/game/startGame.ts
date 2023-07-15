@@ -23,9 +23,12 @@ export async function startGame(): Promise<void> {
   SpriteText.setup({
     layer,
     font: spriteFonts.basic,
-    prepare: (str) => str.toLocaleUpperCase(),
+    transform: (str) => str.toUpperCase(),
   });
-  const text = new SpriteText({ text: 'Hello guys! Common...' });
+  const text = new SpriteText({
+    text: 'AWLAWL ABCD ....... common guys !!!',
+    maxWidth: 50,
+  });
 
   function update(step: number) {
     text.update(step);
