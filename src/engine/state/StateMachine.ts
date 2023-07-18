@@ -3,20 +3,22 @@ import { isEmpty } from '../utils';
 import { type State } from './State';
 
 const defaultState: State = {
-  onUpdate() {},
-  onEnter() {},
-  onLeave() {},
+  update() {},
+  enter() {},
+  leave() {},
 };
 
 export class StateMachine {
-  private readonly states: Record<string, State>;
+  protected readonly states: Record<string, State>;
   private readonly stack = new LinkedList<string>();
   private readonly stackMaxSize = 15;
+  private readonly stacked;
   private currentState = defaultState;
   private prevStateKey!: string;
 
-  constructor(initialStates = {}) {
+  constructor(initialStates = {}, stacked = false) {
     this.states = initialStates;
+    this.stacked = stacked;
   }
 
   public addState(key: string, state: State): StateMachine {
@@ -26,11 +28,11 @@ export class StateMachine {
   }
 
   public setState(key: string, ...args: unknown[]): void {
-    this.currentState.onLeave();
+    this.currentState.leave();
     this.currentState = this.states[key];
-    this.currentState.onEnter(...args);
+    this.currentState.enter(...args);
 
-    this.updateStateStack(key);
+    this.stacked && this.updateStateStack(key);
   }
 
   public updateStateStack(newStateKey: string): void {
@@ -50,9 +52,9 @@ export class StateMachine {
 
     const key = this.stack.pop() as string;
 
-    this.currentState.onLeave();
+    this.currentState.leave();
     this.currentState = this.states[key];
-    this.currentState.onEnter();
+    this.currentState.enter();
   }
 
   public getState(): State {

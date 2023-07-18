@@ -13,7 +13,7 @@ export interface ImageOptions extends DrawableOptions {
 type ImagesType = 'straight' | 'reversed';
 type Images = Record<ImagesType, HTMLImageElement>;
 
-export abstract class Image extends Drawable {
+export class Image extends Drawable {
   protected image!: HTMLImageElement;
   protected images!: Images;
   protected domNode!: ImageNode;

@@ -5,14 +5,8 @@ interface Updatable extends GroupUpdatable {
   getLayer(): Layer;
 }
 
-export abstract class Scene extends Group<Updatable> {
+export class Scene extends Group<Updatable> {
   private readonly layers: Set<Layer> = new Set();
-
-  constructor(...args: unknown[]) {
-    super();
-
-    this.setup(...args);
-  }
 
   public add(updatable: Updatable): Scene {
     super.add(updatable);
@@ -60,6 +54,4 @@ export abstract class Scene extends Group<Updatable> {
       layer.postDraw();
     });
   }
-
-  protected abstract setup(...args: unknown[]): void;
 }

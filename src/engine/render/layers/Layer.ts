@@ -11,20 +11,20 @@ export interface LayerOptions {
   container: HTMLElement;
   width?: number;
   height?: number;
-  camera?: Camera;
+  camera?: Camera | null;
 }
 
 export abstract class Layer extends Node {
   private readonly container;
-  protected readonly camera;
   protected readonly node;
   protected readonly width;
   protected readonly height;
+  protected camera;
   private readonly prevPosition = new Vector();
 
   constructor({
     container,
-    camera,
+    camera = null,
     width = Settings.get('canvasWidth'),
     height = Settings.get('canvasHeight'),
   }: LayerOptions) {
@@ -79,6 +79,14 @@ export abstract class Layer extends Node {
 
     this.syncWithCamera();
     this.updatePrevPosition();
+  }
+
+  public setCamera(camera: Camera): void {
+    this.camera = camera;
+  }
+
+  public unsetCamera(): void {
+    this.camera = null;
   }
 
   protected abstract create(): HTMLElement;

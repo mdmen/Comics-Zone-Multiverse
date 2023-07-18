@@ -40,7 +40,7 @@ export abstract class Character extends Sprite {
 
   public update(step: number): void {
     const moveState = this.moveStates.getState();
-    moveState.onUpdate(step);
+    moveState.update(step);
     super.update(step);
   }
 

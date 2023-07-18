@@ -11,5 +11,7 @@ export * from './GameLoop';
 export * from './Logger';
 export * from './state';
 export * from './Emitter';
+export * from './Timer';
+export * from './Progress';
 export * from './utils';
 export * from './render/sprites/SpriteText';

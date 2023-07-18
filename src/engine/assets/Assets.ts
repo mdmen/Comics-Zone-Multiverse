@@ -5,7 +5,10 @@ type Sources = Record<string, unknown>;
 type Resources = Sources;
 
 export abstract class Assets {
-  public async load(sources: Sources): Promise<Resources> {
+  public async load(
+    sources: Sources,
+    onProgress = () => {}
+  ): Promise<Resources> {
     const assets = {} as Resources;
 
     try {
@@ -19,6 +22,8 @@ export abstract class Assets {
         names.map(async (key) => {
           const source = sources[key];
           const asset = await this.loadAsset(source);
+
+          onProgress();
 
           assets[key] = asset;
         })

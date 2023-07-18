@@ -1,9 +1,9 @@
 import { type Sounds, type ReturnAudioAssets } from '@/engine';
 import { Character, type CharacterOptions } from '../Character';
 import { SketchIdleState } from './states';
-import { sketchSounds } from '@/constants';
+import { globalSounds } from '@/constants';
 
-type SketchSounds = Sounds<ReturnAudioAssets<typeof sketchSounds>>;
+type SketchSounds = Sounds<ReturnAudioAssets<typeof globalSounds>>;
 
 interface SketchOptions extends CharacterOptions {
   sounds: SketchSounds;

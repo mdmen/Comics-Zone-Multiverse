@@ -44,8 +44,8 @@
     },
     "'": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": 1,
+        "right": 1
       },
       "x": 35,
       "width": 2
@@ -69,15 +69,15 @@
     ",": {
       "offset": {
         "left": -1,
-        "right": 1
+        "right": 2
       },
       "x": 44,
       "width": 2
     },
     "-": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": 1,
+        "right": 1
       },
       "x": 46,
       "width": 4
@@ -93,7 +93,7 @@
     "/": {
       "offset": {
         "left": -1,
-        "right": 0
+        "right": 1
       },
       "x": 52,
       "width": 4
@@ -108,7 +108,7 @@
     },
     "1": {
       "offset": {
-        "left": -1,
+        "left": 0,
         "right": 0
       },
       "x": 64,
@@ -165,7 +165,7 @@
     "8": {
       "offset": {
         "left": -1,
-        "right": 0
+        "right": 1
       },
       "x": 109,
       "width": 7
@@ -180,16 +180,16 @@
     },
     ":": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": 0,
+        "right": 1
       },
       "x": 122,
       "width": 4
     },
     ";": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": 0,
+        "right": 1
       },
       "x": 126,
       "width": 4
@@ -204,16 +204,16 @@
     },
     "—": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": 1,
+        "right": 1
       },
       "x": 135,
       "width": 7
     },
     "?": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": 0,
+        "right": 1
       },
       "x": 142,
       "width": 5
@@ -292,7 +292,7 @@
     },
     "I": {
       "offset": {
-        "left": -1,
+        "left": 0,
         "right": 0
       },
       "x": 215,
@@ -380,7 +380,7 @@
     },
     "T": {
       "offset": {
-        "left": -1,
+        "left": 1,
         "right": 0
       },
       "x": 299,
@@ -396,7 +396,7 @@
     },
     "V": {
       "offset": {
-        "left": -1,
+        "left": 1,
         "right": 0
       },
       "x": 313,

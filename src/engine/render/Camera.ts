@@ -13,8 +13,8 @@ interface Options {
 }
 
 export class Camera extends Rectangle {
-  private map;
-  private target;
+  private map!: Rectangle;
+  private target!: Rectangle;
   private offsetX;
   private offsetY;
 

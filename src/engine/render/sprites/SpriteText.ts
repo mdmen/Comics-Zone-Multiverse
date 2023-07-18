@@ -55,8 +55,8 @@ export class SpriteText extends Drawable {
   private static transform: TransformCallback;
 
   private image!: HTMLImageElement;
+  private text!: string;
   private loaded = false;
-  private text;
   private scale;
   private rowIndex;
   private maxWidth;
@@ -70,17 +70,16 @@ export class SpriteText extends Drawable {
 
     SpriteText.checkSetup();
 
-    this.text = squashSpaces(SpriteText.transform(text));
     this.maxWidth = maxWidth;
     this.rowIndex = this.getRowIndex(row);
     this.scale = scale || Settings.get('spriteFontScale');
     this.rowGap = rowGap || Settings.get('spriteFontRowGap');
 
-    [this.width, this.height] = this.normalizeSizes(
-      this.calculateTextImageSize()
-    );
+    this.setText(text);
+  }
 
-    this.createTextImage();
+  private prepareText(text: string): string {
+    return squashSpaces(SpriteText.transform(text));
   }
 
   private static checkSetup(): void {
@@ -184,13 +183,6 @@ export class SpriteText extends Drawable {
   private async createTextImage(): Promise<void> {
     const canvas = createCanvas(...this.calculateTextImageSize());
     const context = createContext2D(canvas);
-
-    // TODO remove
-    context.save();
-    context.fillStyle = 'lightgrey';
-    context.fillRect(0, 0, this.width, this.height);
-    context.restore();
-
     const words = this.text.split(' ');
     const { glyphs, rowHeight } = SpriteText.data;
     const spaceWidth = this.getSpaceWidth();
@@ -233,6 +225,16 @@ export class SpriteText extends Drawable {
     this.image = await getScaledImage(image, this.scale);
 
     this.loaded = true;
+  }
+
+  public setText(text: string): void {
+    this.text = this.prepareText(text);
+
+    [this.width, this.height] = this.normalizeSizes(
+      this.calculateTextImageSize()
+    );
+
+    this.createTextImage();
   }
 
   public static setup({

@@ -2,9 +2,9 @@ import { StateMachine } from './StateMachine';
 import { type State } from './State';
 
 class BaseState implements State {
-  onEnter() {}
-  onLeave() {}
-  onUpdate() {}
+  enter() {}
+  leave() {}
+  update() {}
 }
 
 class State1 extends BaseState {}
@@ -33,7 +33,7 @@ describe('State machine (engine)', () => {
   });
 
   test('Should set previous state', () => {
-    const fsm = new StateMachine();
+    const fsm = new StateMachine({}, true);
     const state1 = new State1();
     const state2 = new State2();
 

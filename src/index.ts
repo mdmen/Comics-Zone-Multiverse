@@ -1,6 +1,6 @@
 import { onDOMReady } from '@/engine';
-import { startGame } from './game/startGame';
+import { start } from './game/start';
 
 import './assets/styles/index.css';
 
-onDOMReady(startGame);
+onDOMReady(start);

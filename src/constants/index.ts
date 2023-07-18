@@ -1,4 +1,4 @@
 export * from './app';
 export * from './fonts';
-export * from './images/characters';
-export * from './sounds/characters';
+export * from './images';
+export * from './sounds';

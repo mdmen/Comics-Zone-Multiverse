@@ -47,7 +47,7 @@ export async function extractImageFromCanvas(
     const image = new Image();
 
     const type = isSafari() ? 'png' : 'webp';
-    image.src = canvas.toDataURL(`image/${type}`);
+    image.src = canvas.toDataURL(`image/${type}`, 1);
 
     image.addEventListener('load', () => {
       resolve(image);
