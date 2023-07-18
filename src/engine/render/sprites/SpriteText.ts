@@ -40,6 +40,7 @@ interface Options extends Omit<DrawableOptions, 'layer'> {
   scale?: number;
   maxWidth?: number;
   rowGap?: number;
+  center?: boolean;
 }
 
 interface GlobalOptions {
@@ -61,11 +62,20 @@ export class SpriteText extends Drawable {
   private rowIndex;
   private maxWidth;
   private rowGap;
+  private center;
 
   // for compatibility reason
   private readonly source = new Vector();
 
-  constructor({ text, scale, row, rowGap, maxWidth = 0, ...options }: Options) {
+  constructor({
+    text,
+    center,
+    scale,
+    row,
+    rowGap,
+    maxWidth = 0,
+    ...options
+  }: Options) {
     super({ ...options, layer: SpriteText.layer });
 
     SpriteText.checkSetup();
@@ -74,6 +84,7 @@ export class SpriteText extends Drawable {
     this.rowIndex = this.getRowIndex(row);
     this.scale = scale || Settings.get('spriteFontScale');
     this.rowGap = rowGap || Settings.get('spriteFontRowGap');
+    this.center = center || Settings.get('spriteFontCenter');
 
     this.setText(text);
   }
@@ -180,12 +191,49 @@ export class SpriteText extends Drawable {
     );
   }
 
+  private findPosXForCenteredRow(
+    words: string[],
+    currentIndex: number
+  ): number {
+    if (!this.maxWidth) return 0;
+
+    const spaceWidth = this.getSpaceWidth();
+    let rowWidth = 0;
+
+    for (let i = currentIndex; i < words.length; i++) {
+      const wordWidth = this.calculateWordWidth(words[i]);
+
+      rowWidth += wordWidth + spaceWidth;
+
+      const posX = Math.floor(this.maxWidth / 2 - rowWidth / 2);
+      const nextWord = words[i + 1];
+
+      if (!nextWord) {
+        return posX;
+      }
+
+      const nextWordWidth = this.calculateWordWidth(nextWord);
+      const overallWidth = rowWidth + spaceWidth + nextWordWidth;
+
+      if (overallWidth >= this.maxWidth) {
+        return posX;
+      }
+    }
+
+    return 0;
+  }
+
   private async createTextImage(): Promise<void> {
     const canvas = createCanvas(...this.calculateTextImageSize());
     const context = createContext2D(canvas);
     const words = this.text.split(' ');
     const { glyphs, rowHeight } = SpriteText.data;
     const spaceWidth = this.getSpaceWidth();
+
+    context.save();
+    context.fillStyle = 'lightgrey';
+    context.fillRect(0, 0, this.width, this.height);
+    context.restore();
 
     let rowWidth = 0;
     let glyphPosX = 0;
@@ -200,9 +248,13 @@ export class SpriteText extends Drawable {
         rowWidth + wordWidth > this.maxWidth;
 
       if (lineBreak) {
-        rowWidth = 0;
         glyphPosX = 0;
+        rowWidth = 0;
         glyphPosY += this.rowGap + rowHeight;
+      }
+
+      if (glyphPosX === 0 && this.center) {
+        glyphPosX = this.findPosXForCenteredRow(words, wordIndex);
       }
 
       for (let i = 0; i < word.length; i++) {

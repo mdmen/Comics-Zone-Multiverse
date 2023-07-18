@@ -22,6 +22,7 @@ const settings = {
 
   spriteFontScale: 2,
   spriteFontRowGap: 3,
+  spriteFontCenter: true,
 };
 
 interface Settings {

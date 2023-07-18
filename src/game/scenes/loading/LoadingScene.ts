@@ -33,7 +33,11 @@ export class LoadingScene extends Scene {
     }).length;
     const progress = new Progress(total);
 
-    const loadingText = new SpriteText({ text: 'Loading...0%' });
+    const loadingText = new SpriteText({
+      text: "Common guys! Let's do it together. Ahh that gross but fun !!! But why...",
+      scale: 2,
+      maxWidth: 200,
+    });
 
     this.scene.add(loadingText);
   }

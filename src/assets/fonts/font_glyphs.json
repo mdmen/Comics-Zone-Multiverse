@@ -68,7 +68,7 @@
     },
     ",": {
       "offset": {
-        "left": -1,
+        "left": 0,
         "right": 2
       },
       "x": 44,
@@ -84,7 +84,7 @@
     },
     ".": {
       "offset": {
-        "left": -1,
+        "left": 0,
         "right": 2
       },
       "x": 50,
@@ -253,7 +253,7 @@
     "D": {
       "offset": {
         "left": -1,
-        "right": 0
+        "right": 1
       },
       "x": 177,
       "width": 8
