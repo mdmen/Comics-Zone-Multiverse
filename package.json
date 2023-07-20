@@ -21,7 +21,6 @@
     "pre-push": "yarn lint"
   },
   "devDependencies": {
-    "@principalstudio/html-webpack-inject-preload": "^1.2.7",
     "@testing-library/dom": "^9.3.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^14.4.3",

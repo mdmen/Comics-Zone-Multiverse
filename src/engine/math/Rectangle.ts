@@ -27,6 +27,14 @@ export class Rectangle {
     return this.height;
   }
 
+  public setWidth(width: number): void {
+    this.width = width;
+  }
+
+  public setHeight(height: number): void {
+    this.height = height;
+  }
+
   public isCollidingWith(target: Rectangle): boolean {
     const targetPosition = target.getPosition();
 

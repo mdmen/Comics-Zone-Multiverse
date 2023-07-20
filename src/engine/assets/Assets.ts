@@ -1,15 +1,14 @@
 import { Logger } from '../Logger';
+import { Observable } from '../Observable';
 import { isEmpty } from '../utils';
 
 type Sources = Record<string, unknown>;
 type Resources = Sources;
 
-export abstract class Assets {
-  public async load(
-    sources: Sources,
-    onProgress = () => {}
-  ): Promise<Resources> {
+export abstract class Assets extends Observable {
+  public async load(sources: Sources): Promise<Resources> {
     const assets = {} as Resources;
+    let loadCounter = 0;
 
     try {
       const names = Object.keys(sources);
@@ -23,7 +22,9 @@ export abstract class Assets {
           const source = sources[key];
           const asset = await this.loadAsset(source);
 
-          onProgress();
+          loadCounter++;
+
+          this.notify(loadCounter);
 
           assets[key] = asset;
         })

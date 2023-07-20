@@ -12,6 +12,7 @@ export * from './Logger';
 export * from './state';
 export * from './Emitter';
 export * from './Timer';
-export * from './Progress';
+export * from './Observable';
 export * from './utils';
+export * from './math';
 export * from './render/sprites/SpriteText';

@@ -874,16 +874,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@principalstudio/html-webpack-inject-preload@npm:^1.2.7":
-  version: 1.2.7
-  resolution: "@principalstudio/html-webpack-inject-preload@npm:1.2.7"
-  peerDependencies:
-    html-webpack-plugin: ^4.0.0 || ^5.0.0
-    webpack: ^4.0.0 || ^5.0.0
-  checksum: 87a0e72e7c61463f5af4c9d1374ab3eb353657472103ca9caf99f458cb86e6a25bc37918af8203d4afea47e10bc75c77328f3444d80baed2b0171074a4f50cd7
-  languageName: node
-  linkType: hard
-
 "@sinclair/typebox@npm:^0.25.16":
   version: 0.25.24
   resolution: "@sinclair/typebox@npm:0.25.24"
@@ -7505,7 +7495,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@principalstudio/html-webpack-inject-preload": ^1.2.7
     "@testing-library/dom": ^9.3.1
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/user-event": ^14.4.3

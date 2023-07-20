@@ -18,6 +18,11 @@ export abstract class Drawable extends Updatable {
     this.domNode = isDOMEngine() ? this.createDomNode() : null;
   }
 
+  public centerHorizontally(): void {
+    const x = this.layer.getWidth() / 2 - this.width / 2;
+    this.position.x = x;
+  }
+
   public getLayer(): Layer {
     return this.layer;
   }

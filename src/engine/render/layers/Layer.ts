@@ -89,6 +89,14 @@ export abstract class Layer extends Node {
     this.camera = null;
   }
 
+  public getWidth(): number {
+    return this.width;
+  }
+
+  public getHeight(): number {
+    return this.height;
+  }
+
   protected abstract create(): HTMLElement;
 
   protected abstract syncWithCamera(): void;

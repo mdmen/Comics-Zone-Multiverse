@@ -41,6 +41,7 @@ interface Options extends Omit<DrawableOptions, 'layer'> {
   maxWidth?: number;
   rowGap?: number;
   center?: boolean;
+  onCreate?: (text: SpriteText) => void;
 }
 
 interface GlobalOptions {
@@ -63,6 +64,7 @@ export class SpriteText extends Drawable {
   private maxWidth;
   private rowGap;
   private center;
+  private onCreate;
 
   // for compatibility reason
   private readonly source = new Vector();
@@ -74,6 +76,7 @@ export class SpriteText extends Drawable {
     row,
     rowGap,
     maxWidth = 0,
+    onCreate = () => {},
     ...options
   }: Options) {
     super({ ...options, layer: SpriteText.layer });
@@ -81,6 +84,7 @@ export class SpriteText extends Drawable {
     SpriteText.checkSetup();
 
     this.maxWidth = maxWidth;
+    this.onCreate = onCreate;
     this.rowIndex = this.getRowIndex(row);
     this.scale = scale || Settings.get('spriteFontScale');
     this.rowGap = rowGap || Settings.get('spriteFontRowGap');
@@ -230,11 +234,6 @@ export class SpriteText extends Drawable {
     const { glyphs, rowHeight } = SpriteText.data;
     const spaceWidth = this.getSpaceWidth();
 
-    context.save();
-    context.fillStyle = 'lightgrey';
-    context.fillRect(0, 0, this.width, this.height);
-    context.restore();
-
     let rowWidth = 0;
     let glyphPosX = 0;
     let glyphPosY = 0;
@@ -279,14 +278,16 @@ export class SpriteText extends Drawable {
     this.loaded = true;
   }
 
-  public setText(text: string): void {
+  public async setText(text: string): Promise<void> {
     this.text = this.prepareText(text);
 
     [this.width, this.height] = this.normalizeSizes(
       this.calculateTextImageSize()
     );
 
-    this.createTextImage();
+    await this.createTextImage();
+
+    this.onCreate(this);
   }
 
   public static setup({

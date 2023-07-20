@@ -8,6 +8,7 @@ export interface ImageOptions extends DrawableOptions {
   image: HTMLImageElement;
   flippable?: boolean;
   scale?: number;
+  onCreate?: (image: Image) => void;
 }
 
 type ImagesType = 'straight' | 'reversed';
@@ -21,6 +22,7 @@ export class Image extends Drawable {
   protected flipped = false;
   protected scale = 1;
   private loaded = false;
+  private readonly onCreate;
 
   constructor({
     x,
@@ -28,14 +30,20 @@ export class Image extends Drawable {
     layer,
     image,
     scale = 1,
-    width = image.width,
-    height = image.height,
+    width,
+    height,
     flippable = false,
+    onCreate = () => {},
   }: ImageOptions) {
     super({ x, y, width, height, layer });
 
     this.scale = scale;
+    this.onCreate = onCreate;
     this.setImages(image, flippable);
+
+    // precalculate image size before scaled image loaded
+    this.width = Math.floor(image.width * scale);
+    this.height = Math.floor(image.height * scale);
   }
 
   protected createDomNode(): ImageNode {
@@ -47,6 +55,8 @@ export class Image extends Drawable {
     flippable: boolean
   ): Promise<void> {
     this.image = await getScaledImage(image, this.scale);
+    this.width = this.image.width;
+    this.height = this.image.height;
 
     if (flippable) {
       const reversed = await getReversedImage(this.image);
@@ -57,6 +67,7 @@ export class Image extends Drawable {
     }
 
     this.loaded = true;
+    this.onCreate(this);
   }
 
   public getSource(): Vector {

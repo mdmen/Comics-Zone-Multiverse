@@ -32,3 +32,7 @@ export function isDOMEngine(): boolean {
 export function squashSpaces(str: string): string {
   return str.replace(/\s\s+/g, ' ');
 }
+
+export function getPercent(total: number, value: number): number {
+  return (value / total) * 100;
+}

@@ -9,7 +9,7 @@ import {
   ReturnAudioAssets,
 } from '@/engine';
 import { type Config } from './Config';
-import { LoadingScene } from './scenes/loading/LoadingScene';
+import { LoadingScene } from './scenes/LoadingScene';
 import { type Scene } from './scenes/Scene';
 import { type Input } from './Input';
 import { globalImages, globalSounds } from '@/constants';
@@ -34,17 +34,21 @@ interface Options {
 }
 
 export class Manager extends StateMachine {
-  protected readonly config;
-  protected readonly audio;
-  protected readonly imageAssets;
-  protected readonly audioAssets;
-  protected readonly fontAssets;
-  protected readonly layers;
-  protected readonly input;
+  private readonly config;
+  private readonly audio;
+  private readonly imageAssets;
+  private readonly audioAssets;
+  private readonly fontAssets;
+  private readonly layers;
+  private readonly input;
+
+  // for preloading purposes
+  private nextSceneImages = {};
+  private nextSceneSounds = {};
 
   // should be loaded during loading scene
-  protected images!: GlobalImages;
-  protected sounds!: GlobalSounds;
+  private images!: GlobalImages;
+  private sounds!: GlobalSounds;
 
   constructor({
     config,
