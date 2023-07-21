@@ -1,8 +1,9 @@
 import { type Image } from '../Image';
+import { type SpriteText } from '../sprites';
 import { DrawableNode, type DrawableNodeOptions } from './DrawableNode';
 
 interface ImageNodeOptions extends DrawableNodeOptions {
-  drawable: Image;
+  drawable: Image | SpriteText;
 }
 
 export class ImageNode extends DrawableNode {
@@ -10,17 +11,11 @@ export class ImageNode extends DrawableNode {
 
   constructor({ layer, drawable }: ImageNodeOptions) {
     super({ layer, drawable });
-
-    this.node = this.create();
   }
 
-  protected create(): HTMLElement {
-    const node = super.create();
+  public updateImage(): void {
     const { src } = this.drawable.getImage();
-
-    node.style.backgroundImage = `url(${src})`;
-
-    return node;
+    this.node.style.backgroundImage = `url(${src})`;
   }
 
   public flip(): void {

@@ -1,4 +1,4 @@
-import { Vector, type Scene, SpriteText } from '@/engine';
+import { Vector, type Scene, SpriteText, delay, isEmpty } from '@/engine';
 import { Progress } from './Progress';
 
 interface Options {
@@ -7,6 +7,7 @@ interface Options {
   centered?: boolean;
   position?: Vector;
   scale?: number;
+  stepDelay?: number;
   templateFunc?: (progress: number) => string;
 }
 
@@ -17,21 +18,24 @@ function getProgressText(progress: number): string {
 export class ProgressText extends Progress {
   private readonly scene;
   private readonly text;
+  private readonly stepDelay;
+  private currentPercentAsync = 0;
+  private busy = false;
   private readonly textTemplateFunc;
-  private readonly centered;
 
   constructor({
     scene,
     total,
     centered = false,
     position = new Vector(),
-    templateFunc = getProgressText,
     scale = 1,
+    stepDelay = 0,
+    templateFunc = getProgressText,
   }: Options) {
-    super(total);
+    super(total, !!stepDelay);
 
     this.scene = scene;
-    this.centered = centered;
+    this.stepDelay = stepDelay;
     this.textTemplateFunc = templateFunc;
 
     this.text = new SpriteText({
@@ -40,19 +44,53 @@ export class ProgressText extends Progress {
       scale,
       text: templateFunc(0),
       onCreate: (text) => {
-        text.centerHorizontally();
+        centered && text.centerHorizontally();
       },
     });
 
     this.scene.add(this.text);
   }
 
-  public async update(): Promise<void> {
-    super.update();
+  protected updateSync(): void {
+    const percent = Math.floor(this.progressPercent);
+    this.text.setText(this.textTemplateFunc(percent));
 
-    if (this.text && this.textTemplateFunc) {
-      const percent = Math.floor(this.progressPercent);
-      await this.text.setText(this.textTemplateFunc(percent));
+    if (this.progressPercent === 100) {
+      this.notify();
     }
+  }
+
+  protected async updateAsync(): Promise<void> {
+    if (isEmpty(this.stack)) {
+      return;
+    }
+
+    if (this.busy) return;
+
+    this.busy = true;
+
+    const targetPercent = this.stack.shift() as number;
+
+    while (this.currentPercentAsync < targetPercent) {
+      await delay(this.stepDelay);
+
+      const text = this.textTemplateFunc(this.currentPercentAsync);
+      await this.text.setText(text);
+
+      this.currentPercentAsync++;
+    }
+
+    this.busy = false;
+
+    if (this.currentPercentAsync === 100) {
+      this.notify();
+      return;
+    }
+
+    this.updateAsync();
+  }
+
+  public hide(): void {
+    this.text.hide();
   }
 }

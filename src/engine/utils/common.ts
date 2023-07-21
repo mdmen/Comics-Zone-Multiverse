@@ -34,5 +34,9 @@ export function squashSpaces(str: string): string {
 }
 
 export function getPercent(total: number, value: number): number {
-  return (value / total) * 100;
+  return Math.floor((value / total) * 100);
+}
+
+export function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

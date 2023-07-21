@@ -1,12 +1,13 @@
 import { type Layer } from '../layers/Layer';
 import { type LayerDOM } from '../layers/LayerDOM';
-import { DrawableNode } from '../nodes';
+import { DrawableNode, ImageNode } from '../nodes';
 import { Drawable, DrawableOptions } from '../Drawable';
 import {
   createCanvas,
   createContext2D,
   extractImageFromCanvas,
   getScaledImage,
+  isDOMEngine,
   squashSpaces,
 } from '../../utils';
 import { type SpriteAsset } from '../../assets/types';
@@ -58,6 +59,7 @@ export class SpriteText extends Drawable {
 
   private image!: HTMLImageElement;
   private text!: string;
+  protected domNode!: ImageNode;
   private loaded = false;
   private scale;
   private rowIndex;
@@ -119,7 +121,7 @@ export class SpriteText extends Drawable {
   }
 
   protected createDomNode(): DrawableNode {
-    return new DrawableNode({
+    return new ImageNode({
       layer: this.layer as LayerDOM,
       drawable: this,
     });
@@ -227,7 +229,7 @@ export class SpriteText extends Drawable {
     return 0;
   }
 
-  private async createTextImage(): Promise<void> {
+  private async createTextImage(): Promise<HTMLCanvasElement> {
     const canvas = createCanvas(...this.calculateTextImageSize());
     const context = createContext2D(canvas);
     const words = this.text.split(' ');
@@ -268,14 +270,12 @@ export class SpriteText extends Drawable {
       }
 
       this.drawGlyph(context, glyphs[' '], glyphPosX, glyphPosY);
+
       glyphPosX += spaceWidth;
       rowWidth += spaceWidth + wordWidth;
     });
 
-    const image = await extractImageFromCanvas(canvas);
-    this.image = await getScaledImage(image, this.scale);
-
-    this.loaded = true;
+    return canvas;
   }
 
   public async setText(text: string): Promise<void> {
@@ -285,9 +285,17 @@ export class SpriteText extends Drawable {
       this.calculateTextImageSize()
     );
 
-    await this.createTextImage();
+    const canvas = await this.createTextImage();
+    const image = await extractImageFromCanvas(canvas);
+    this.image = await getScaledImage(image, this.scale);
 
     this.onCreate(this);
+
+    if (isDOMEngine()) {
+      this.domNode.updateImage();
+    }
+
+    this.loaded = true;
   }
 
   public static setup({

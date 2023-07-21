@@ -42,10 +42,6 @@ export class Manager extends StateMachine {
   private readonly layers;
   private readonly input;
 
-  // for preloading purposes
-  private nextSceneImages = {};
-  private nextSceneSounds = {};
-
   // should be loaded during loading scene
   private images!: GlobalImages;
   private sounds!: GlobalSounds;

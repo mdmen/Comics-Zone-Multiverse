@@ -4,6 +4,7 @@ import { Layer, type LayerOptions } from './Layer';
 import { type Image } from '../Image';
 import { type RectShape } from '../RectShape';
 import { type SpriteText } from '../sprites';
+import { Drawable } from '../Drawable';
 
 interface LayerCanvasOptions extends LayerOptions {
   transparent?: boolean;
@@ -60,36 +61,55 @@ export class LayerCanvas extends Layer {
     const source = image.getSource();
     const width = image.getWidth();
     const height = image.getHeight();
+    const opacity = image.getOpacity();
+
+    this.context.save();
+
+    if (opacity !== 1) {
+      this.context.globalAlpha = opacity;
+    }
 
     this.context.drawImage(
       image.getImage(),
-      source.x,
-      source.y,
-      width,
-      height,
-      Math.floor(position.x),
-      Math.floor(position.y),
-      Math.floor(width),
-      Math.floor(height)
+      source.x | 0,
+      source.y | 0,
+      width | 0,
+      height | 0,
+      position.x | 0,
+      position.y | 0,
+      width | 0,
+      height | 0
     );
+
+    this.context.restore();
   }
 
   public postDraw(): void {
     this.context.restore();
   }
 
+  protected shouldDraw(drawable: Drawable): boolean {
+    return super.shouldDraw(drawable) && drawable.getOpacity() !== 0;
+  }
+
   public drawRect(shape: RectShape): void {
     if (!this.shouldDraw(shape)) return;
+
+    const position = shape.getPosition();
+    const opacity = shape.getOpacity();
 
     this.context.save();
     this.context.fillStyle = shape.getColor();
 
-    const position = shape.getPosition();
+    if (opacity !== 1) {
+      this.context.globalAlpha = opacity;
+    }
+
     this.context.fillRect(
-      Math.floor(position.x),
-      Math.floor(position.y),
-      Math.floor(shape.getWidth()),
-      Math.floor(shape.getHeight())
+      position.x | 0,
+      position.y | 0,
+      shape.getWidth() | 0,
+      shape.getHeight() | 0
     );
 
     this.context.restore();

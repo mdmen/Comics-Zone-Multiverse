@@ -2,8 +2,8 @@ import { Settings } from '../../Settings';
 import { Layer } from './Layer';
 import { type Image } from '../Image';
 import { type RectShape } from '../RectShape';
-import { type Updatable } from '../Updatable';
 import { type SpriteText } from '../sprites';
+import { Drawable } from '../Drawable';
 
 export class LayerDOM extends Layer {
   private subnode!: HTMLDivElement;
@@ -47,7 +47,7 @@ export class LayerDOM extends Layer {
     if (!this.shouldDraw(image)) return;
 
     const domNode = node.getNode();
-    this.setDomNodePosition(domNode, image);
+    this.setCommonProps(domNode, image);
 
     const source = image.getSource();
     domNode.style.backgroundPosition = `${-source.x}px ${-source.y}px`;
@@ -60,21 +60,27 @@ export class LayerDOM extends Layer {
     if (!this.shouldDraw(shape)) return;
 
     const domNode = node.getNode();
-    this.setDomNodePosition(domNode, shape);
+    this.setCommonProps(domNode, shape);
 
     domNode.style.backgroundColor = shape.getColor();
   }
 
-  private setDomNodePosition(node: HTMLElement, drawable: Updatable): void {
+  private setCommonProps(node: HTMLElement, drawable: Drawable): void {
     const position = drawable.getPosition();
-    const posX = Math.floor(position.x);
-    const posY = Math.floor(position.y);
-    const width = Math.floor(drawable.getWidth());
-    const height = Math.floor(drawable.getHeight());
+    const posX = position.x | 0;
+    const posY = position.y | 0;
+    const width = drawable.getWidth();
+    const height = drawable.getHeight();
+    const opacity = drawable.getOpacity();
+    const visible = drawable.isVisible();
 
-    node.hidden = drawable.isVisible();
-    node.style.width = `${width}px`;
-    node.style.height = `${height}px`;
+    node.hidden = !visible;
+
+    if (!visible) return;
+
+    node.style.opacity = `${opacity}`;
+    node.style.width = `${width | 0}px`;
+    node.style.height = `${height | 0}px`;
     node.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
   }
 

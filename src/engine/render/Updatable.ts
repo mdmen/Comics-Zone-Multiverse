@@ -10,22 +10,9 @@ export interface UpdatableOptions {
 
 export abstract class Updatable extends Rectangle {
   protected velocity = new Vector();
-  protected visible = true;
 
   constructor({ x, y, width, height }: UpdatableOptions) {
     super(x, y, width, height);
-  }
-
-  public hide(): void {
-    this.visible = false;
-  }
-
-  public show(): void {
-    this.visible = true;
-  }
-
-  public isVisible(): boolean {
-    return this.visible;
   }
 
   public setVelocity(x: number, y: number): void {

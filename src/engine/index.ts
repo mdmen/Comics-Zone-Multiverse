@@ -13,6 +13,8 @@ export * from './state';
 export * from './Emitter';
 export * from './Timer';
 export * from './Observable';
+export * from './Pendulum';
 export * from './utils';
 export * from './math';
+export * from './list';
 export * from './render/sprites/SpriteText';

@@ -1,11 +1,11 @@
 import { Vector } from '../../math';
 import { Settings } from '../../Settings';
 import type { Camera } from '../Camera';
+import { Drawable } from '../Drawable';
 import type { Image } from '../Image';
 import { Node } from '../nodes/Node';
 import { type RectShape } from '../RectShape';
 import { type SpriteText } from '../sprites';
-import { type Updatable } from '../Updatable';
 
 export interface LayerOptions {
   container: HTMLElement;
@@ -55,10 +55,10 @@ export abstract class Layer extends Node {
     this.container.appendChild(this.node);
   }
 
-  protected shouldDraw(updatable: Updatable): boolean {
-    if (!updatable.isVisible()) return false;
+  protected shouldDraw(drawable: Drawable): boolean {
+    if (!drawable.isVisible()) return false;
 
-    return !this.camera || this.camera.isCollidingWith(updatable);
+    return !this.camera || this.camera.isCollidingWith(drawable);
   }
 
   private shouldSyncWithCamera(): boolean {

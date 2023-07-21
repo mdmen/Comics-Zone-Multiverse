@@ -7,7 +7,7 @@ import {
   loadingSceneImages,
   fonts,
 } from '@/constants';
-import { ProgressImage, ProgressText } from '@/game/components';
+import { ProgressImage, ProgressText } from '../components';
 
 export class LoadingScene extends Scene {
   public async setup(): Promise<void> {
@@ -27,29 +27,49 @@ export class LoadingScene extends Scene {
       transform: (str) => str.toUpperCase(),
     });
 
+    const resourcesAmount = this.countTotal();
+
     const progressImage = new ProgressImage({
       position: new Vector(0, 200),
-      total: this.countTotal(),
+      total: resourcesAmount,
       scene: this.scene,
       centered: true,
       layer: layers.top,
       scale: 3,
       lowerImage: loadingImages.loadingFinish,
       upperImage: loadingImages.loadingStart,
+      stepDelay: 10,
     });
 
     const progressText = new ProgressText({
-      position: new Vector(0, 550),
-      total: this.countTotal(),
+      position: new Vector(380, 550),
+      total: resourcesAmount,
       scene: this.scene,
-      scale: 2.3,
-      centered: true,
+      scale: 3,
+      stepDelay: 5,
     });
 
     imageAssets.subscribe(progressImage);
     imageAssets.subscribe(progressText);
     audioAssets.subscribe(progressImage);
     audioAssets.subscribe(progressText);
+
+    progressText.subscribe({
+      update: () => {
+        const pressAnyKeyText = new SpriteText({
+          text: 'Press any key to continue',
+          scale: 3,
+          y: 550,
+          flicker: 2,
+          onCreate(text) {
+            progressText.hide();
+            text.centerHorizontally();
+          },
+        });
+
+        this.scene.add(pressAnyKeyText);
+      },
+    });
 
     const [gameGlobalImages, gameGlobalSounds] = await Promise.all([
       await imageAssets.load(globalImages),

@@ -2,32 +2,24 @@ import { Settings } from './Settings';
 
 interface LoopOptions {
   update(step: number): void;
-  draw(): void;
   fps?: number;
 }
 
 export class GameLoop {
   private readonly update;
-  private readonly draw;
   private readonly frameDuration;
   private readonly step;
   private readonly maxDeltaTime = 100;
   private previousTime = 0;
-  private previousDrawTime = 0;
   private rafId = -1;
   private accumulator = 0;
 
-  constructor({ update, draw, fps = Settings.get('fps') }: LoopOptions) {
+  constructor({ update, fps = Settings.get('fps') }: LoopOptions) {
     this.update = update;
-    this.draw = draw;
     this.frameDuration = 1000 / fps;
     this.step = 1 / fps;
 
     this.loop = this.loop.bind(this);
-  }
-
-  private shouldDraw(timeStamp: number): boolean {
-    return timeStamp - this.previousDrawTime >= Math.floor(this.frameDuration);
   }
 
   // with time based animation technique
@@ -41,12 +33,8 @@ export class GameLoop {
 
     while (this.accumulator >= this.frameDuration) {
       this.update(this.step);
-      this.accumulator -= this.frameDuration;
-    }
 
-    if (this.shouldDraw(timeStamp)) {
-      this.draw();
-      this.previousDrawTime = timeStamp;
+      this.accumulator -= this.frameDuration;
     }
 
     this.rafId = requestAnimationFrame(this.loop);
@@ -59,7 +47,6 @@ export class GameLoop {
   public stop(): void {
     cancelAnimationFrame(this.rafId);
     this.previousTime = 0;
-    this.previousDrawTime = 0;
     this.accumulator = 0;
   }
 }

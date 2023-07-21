@@ -1,10 +1,10 @@
-import { type Updatable } from '../Updatable';
+import { Drawable } from '../Drawable';
 import { type LayerDOM } from '../layers/LayerDOM';
 import { Node } from './Node';
 
 export interface DrawableNodeOptions {
   layer: LayerDOM;
-  drawable: Updatable;
+  drawable: Drawable;
   bgColor?: string;
 }
 

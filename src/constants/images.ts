@@ -8,12 +8,6 @@ export const globalImages = {
     src: sketchImage,
     data: sketchData,
   },
-  test1: sketchImage,
-  test2: sketchImage,
-  test3: sketchImage,
-  test4: sketchImage,
-  test5: sketchImage,
-  test6: sketchImage,
 };
 
 export const loadingSceneImages = {

@@ -1,5 +1,5 @@
 import { Vector } from '../math';
-import { getReversedImage, getScaledImage } from '../utils';
+import { getReversedImage, getScaledImage, isDOMEngine } from '../utils';
 import { Drawable, type DrawableOptions } from './Drawable';
 import { LayerDOM } from './layers/LayerDOM';
 import { ImageNode } from './nodes/ImageNode';
@@ -66,8 +66,13 @@ export class Image extends Drawable {
       };
     }
 
-    this.loaded = true;
     this.onCreate(this);
+
+    if (isDOMEngine()) {
+      this.domNode.updateImage();
+    }
+
+    this.loaded = true;
   }
 
   public getSource(): Vector {

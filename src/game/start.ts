@@ -45,10 +45,10 @@ export async function start(): Promise<void> {
 
   const gameLoop = new GameLoop({
     update(step: number) {
-      manager.getState().update(step);
-    },
-    draw() {
-      manager.getState().draw();
+      const scene = manager.getState();
+
+      scene.update(step);
+      scene.draw();
     },
   });
 
