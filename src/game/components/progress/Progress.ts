@@ -15,10 +15,6 @@ export abstract class Progress extends Observable {
     this.delay = delay;
   }
 
-  protected shouldUpdate(): boolean {
-    return this.progressPercent !== this.prevPercent;
-  }
-
   public update(): void {
     this.progress++;
 

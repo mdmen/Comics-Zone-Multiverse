@@ -12,7 +12,7 @@ export class Pendulum {
   private velocity;
   private factor: -1 | 1 = 1;
 
-  constructor({ value = 0, min = 0, max = 1, velocity = 1 }: Options) {
+  constructor({ value = 0, min = 0, max = 1, velocity = 1 }: Options = {}) {
     this.value = value;
     this.min = min;
     this.max = max;

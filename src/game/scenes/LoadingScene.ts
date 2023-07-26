@@ -8,6 +8,7 @@ import {
   fonts,
 } from '@/constants';
 import { ProgressImage, ProgressText } from '../components';
+import { OpacityModifier } from '../modifiers';
 
 export class LoadingScene extends Scene {
   public async setup(): Promise<void> {
@@ -27,7 +28,10 @@ export class LoadingScene extends Scene {
       transform: (str) => str.toUpperCase(),
     });
 
-    const resourcesAmount = this.countTotal();
+    const resourcesAmount = [globalImages, globalSounds].reduce(
+      (sum, manifest) => sum + Object.keys(manifest).length,
+      0
+    );
 
     const progressImage = new ProgressImage({
       position: new Vector(0, 200),
@@ -55,17 +59,23 @@ export class LoadingScene extends Scene {
     audioAssets.subscribe(progressText);
 
     progressText.subscribe({
-      update: () => {
+      update: (progress: number) => {
+        if (progress !== 100) return;
+
         const pressAnyKeyText = new SpriteText({
           text: 'Press any key to continue',
           scale: 3,
           y: 550,
-          flicker: 2,
           onCreate(text) {
             progressText.hide();
             text.centerHorizontally();
           },
         });
+
+        const opacityModifier = new OpacityModifier({
+          velocity: 2,
+        });
+        pressAnyKeyText.addModifier(opacityModifier);
 
         this.scene.add(pressAnyKeyText);
       },
@@ -78,13 +88,6 @@ export class LoadingScene extends Scene {
 
     this.manager.setImages(gameGlobalImages);
     this.manager.setSounds(gameGlobalSounds);
-  }
-
-  private countTotal(): number {
-    return [globalImages, globalSounds].reduce(
-      (sum, manifest) => sum + Object.keys(manifest).length,
-      0
-    );
   }
 
   public async preload(): Promise<void> {}

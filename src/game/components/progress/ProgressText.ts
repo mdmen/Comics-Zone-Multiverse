@@ -55,13 +55,11 @@ export class ProgressText extends Progress {
     const percent = Math.floor(this.progressPercent);
     this.text.setText(this.textTemplateFunc(percent));
 
-    if (this.progressPercent === 100) {
-      this.notify();
-    }
+    this.notify(this.progressPercent);
   }
 
   protected async updateAsync(): Promise<void> {
-    if (isEmpty(this.stack)) {
+    if (isEmpty(this.stack) || this.busy) {
       return;
     }
 
@@ -73,19 +71,15 @@ export class ProgressText extends Progress {
 
     while (this.currentPercentAsync < targetPercent) {
       await delay(this.stepDelay);
+      this.currentPercentAsync++;
 
       const text = this.textTemplateFunc(this.currentPercentAsync);
       await this.text.setText(text);
-
-      this.currentPercentAsync++;
     }
 
     this.busy = false;
 
-    if (this.currentPercentAsync === 100) {
-      this.notify();
-      return;
-    }
+    this.notify(this.currentPercentAsync);
 
     this.updateAsync();
   }

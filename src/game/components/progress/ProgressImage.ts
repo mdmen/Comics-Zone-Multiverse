@@ -85,17 +85,13 @@ export class ProgressImage extends Progress {
 
     this.upperImage.setHeight(upperImageHeight);
 
-    if (this.progressPercent === 100) {
-      this.notify();
-    }
+    this.notify(this.progressPercent);
   }
 
   protected async updateAsync(): Promise<void> {
-    if (isEmpty(this.stack)) {
+    if (isEmpty(this.stack) || this.busy || this.currentPercentAsync === 100) {
       return;
     }
-
-    if (this.busy) return;
 
     this.busy = true;
 
@@ -103,20 +99,16 @@ export class ProgressImage extends Progress {
 
     while (this.currentPercentAsync < targetPercent) {
       await delay(this.stepDelay);
+      this.currentPercentAsync++;
 
       const upperImageHeight =
         ((100 - this.currentPercentAsync) * this.lowerImage.getHeight()) / 100;
       this.upperImage.setHeight(upperImageHeight);
-
-      this.currentPercentAsync++;
     }
 
     this.busy = false;
 
-    if (this.currentPercentAsync === 100) {
-      this.notify();
-      return;
-    }
+    this.notify(this.currentPercentAsync);
 
     this.updateAsync();
   }

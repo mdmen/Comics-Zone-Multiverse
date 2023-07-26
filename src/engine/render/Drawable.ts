@@ -1,26 +1,27 @@
-import { Pendulum } from '../Pendulum';
 import { isDOMEngine } from '../utils';
 import { type Layer } from './layers/Layer';
 import { type DrawableNode } from './nodes';
 import { Updatable, type UpdatableOptions } from './Updatable';
 
+interface Modifier {
+  update(drawable: Drawable, step: number): void;
+}
+
 export interface DrawableOptions extends UpdatableOptions {
   layer: Layer;
-  flicker?: number;
 }
 
 export abstract class Drawable extends Updatable {
   protected readonly layer;
   protected readonly domNode;
+  protected readonly modifiers: Modifier[] = [];
   protected visible = true;
   protected opacity = 1;
-  private flicker;
 
-  constructor({ layer, flicker = 0, ...options }: DrawableOptions) {
+  constructor({ layer, ...options }: DrawableOptions) {
     super(options);
 
     this.layer = layer;
-    this.flicker = flicker ? new Pendulum({ velocity: flicker }) : null;
     this.domNode = isDOMEngine() ? this.createDomNode() : null;
   }
 
@@ -53,17 +54,29 @@ export abstract class Drawable extends Updatable {
     return this.opacity;
   }
 
+  public setOpacity(value: number): void {
+    if (value < 0 || value > 1) {
+      throw Error(`${value} is incorrect opacity value`);
+    }
+
+    this.opacity = value;
+  }
+
+  public addModifier(modifier: Modifier): void {
+    this.modifiers.push(modifier);
+  }
+
   public update(step: number): void {
     super.update(step);
 
-    if (this.flicker) {
-      this.flicker.update(step);
-      this.opacity = this.flicker.getValue();
-    }
+    this.modifiers.forEach((modifier) => {
+      modifier.update(this, step);
+    });
   }
 
   public destroy(): void {
-    return;
+    this.domNode?.destroy();
+    this.modifiers.length = 0;
   }
 
   protected abstract createDomNode(): DrawableNode;
