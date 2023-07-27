@@ -91,4 +91,6 @@ export class LayerDOM extends Layer {
   public getSubnode(): HTMLDivElement {
     return this.subnode;
   }
+
+  public clear(): void {}
 }

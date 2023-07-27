@@ -14,7 +14,7 @@ export interface DrawableOptions extends UpdatableOptions {
 export abstract class Drawable extends Updatable {
   protected readonly layer;
   protected readonly domNode;
-  protected readonly modifiers: Modifier[] = [];
+  protected readonly modifiers = new Set<Modifier>();
   protected visible = true;
   protected opacity = 1;
 
@@ -63,7 +63,11 @@ export abstract class Drawable extends Updatable {
   }
 
   public addModifier(modifier: Modifier): void {
-    this.modifiers.push(modifier);
+    this.modifiers.add(modifier);
+  }
+
+  public deleteModifier(modifier: Modifier): void {
+    this.modifiers.delete(modifier);
   }
 
   public update(step: number): void {
@@ -76,7 +80,7 @@ export abstract class Drawable extends Updatable {
 
   public destroy(): void {
     this.domNode?.destroy();
-    this.modifiers.length = 0;
+    this.modifiers.clear();
   }
 
   protected abstract createDomNode(): DrawableNode;

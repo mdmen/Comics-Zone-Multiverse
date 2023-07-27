@@ -9,8 +9,7 @@ import {
   ReturnAudioAssets,
 } from '@/engine';
 import { type Config } from './Config';
-import { LoadingScene } from './scenes/LoadingScene';
-import { type Scene } from './scenes/Scene';
+import { type Scene, LoadingScene, IntroScene } from './scenes';
 import { type Input } from './Input';
 import { globalImages, globalSounds } from '@/constants';
 
@@ -66,6 +65,7 @@ export class Manager extends StateMachine {
     this.input = input;
 
     this.addState(Scenes.LOADING, new LoadingScene(this));
+    this.addState(Scenes.INTRO, new IntroScene(this));
   }
 
   public addState(name: Scenes, scene: Scene): StateMachine {
@@ -76,8 +76,8 @@ export class Manager extends StateMachine {
     super.setState(name);
   }
 
-  public getState(): Scene {
-    return super.getState() as Scene;
+  public getState(key?: Scenes): Scene {
+    return super.getState(key) as Scene;
   }
 
   public getConfig(): Config {
@@ -92,11 +92,11 @@ export class Manager extends StateMachine {
     return this.sounds;
   }
 
-  public setImages(images: GlobalImages): void {
+  public setGlobalImages(images: GlobalImages): void {
     this.images = images;
   }
 
-  public setSounds(sounds: GlobalSounds): void {
+  public setGlobalSounds(sounds: GlobalSounds): void {
     this.sounds = sounds;
   }
 

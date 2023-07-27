@@ -12,7 +12,7 @@ interface Options {
 }
 
 function getProgressText(progress: number): string {
-  return `Loading...${progress}%`;
+  return `Progress...${progress}%`;
 }
 
 export class ProgressText extends Progress {

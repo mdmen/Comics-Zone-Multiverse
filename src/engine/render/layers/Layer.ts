@@ -106,4 +106,6 @@ export abstract class Layer extends Node {
   public abstract postDraw(): void;
 
   public abstract drawRect(rect: RectShape): void;
+
+  public abstract clear(): void;
 }

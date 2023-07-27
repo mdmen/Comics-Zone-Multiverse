@@ -9,8 +9,8 @@ const settings = {
 
   renderEngine: 'canvas' as RenderEngine,
   fps: 60,
-  canvasWidth: 1024,
-  canvasHeight: 768,
+  canvasWidth: 1012,
+  canvasHeight: 756,
   canvasClassName: 'layer',
   // only DOM render
   canvasSubLayerClassName: 'sub-layer',

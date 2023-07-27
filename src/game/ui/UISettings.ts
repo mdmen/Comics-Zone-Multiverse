@@ -1,5 +1,12 @@
 import { Config } from '../Config';
-import { Toggler, FlexContainer, type Node, Tooltip } from './components';
+import {
+  Toggler,
+  FlexContainer,
+  type Node,
+  Tooltip,
+  Button,
+  Modal,
+} from './components';
 
 interface Options {
   container: HTMLElement;
@@ -19,6 +26,7 @@ export class UISettings {
       items: [
         this.createSoundToggler(),
         this.createThemeToggler(),
+        this.createInfoButton(container),
         this.createEngineToggler(),
       ],
       classNames: containerClassNames,
@@ -95,6 +103,39 @@ export class UISettings {
       tooltip: canvas ? canvasTooltip : domTooltip,
       right: true,
       classNames: ['tooltip-engine'],
+    });
+
+    return tooltip;
+  }
+
+  private createInfoButton(container: HTMLElement): Node {
+    const content = document.createElement('p');
+    content.innerHTML = `
+            W, A, S, D - Moves<br/>
+            J - Strike<br/>
+            K - Jump<br/>
+            L - Defense<br/>
+            Space - Pause<br/><br/>
+            Gamepad is also supported
+          `;
+
+    const modal = new Modal({
+      container,
+      heading: 'Game controls',
+      content,
+    });
+
+    const tooltip = new Tooltip({
+      content: new Button({
+        content: '🎮',
+        label: 'Show controls modal',
+        classNames: tooltipClassNames,
+        onClick: () => {
+          modal.show();
+        },
+      }),
+      tooltip: 'Show controls',
+      classNames: ['tooltip-info'],
     });
 
     return tooltip;

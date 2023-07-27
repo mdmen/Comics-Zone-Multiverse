@@ -38,6 +38,10 @@ export class Scene extends Group<Updatable> {
 
   public clear(): Scene {
     super.clear();
+
+    this.layers.forEach((layer) => {
+      layer.clear();
+    });
     this.layers.clear();
 
     return this;

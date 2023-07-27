@@ -9,9 +9,10 @@ import {
 } from '@/constants';
 import { ProgressImage, ProgressText } from '../components';
 import { OpacityModifier } from '../modifiers';
+import { Scenes } from '../Manager';
 
 export class LoadingScene extends Scene {
-  public async setup(): Promise<void> {
+  public async enter(): Promise<void> {
     const layers = this.manager.getLayers();
     const fontAssets = this.manager.getFontAssets();
     const imageAssets = this.manager.getImageAssets();
@@ -28,10 +29,11 @@ export class LoadingScene extends Scene {
       transform: (str) => str.toUpperCase(),
     });
 
-    const resourcesAmount = [globalImages, globalSounds].reduce(
-      (sum, manifest) => sum + Object.keys(manifest).length,
-      0
-    );
+    const resourcesAmount = [
+      globalImages,
+      globalSounds,
+      introSceneImages,
+    ].reduce((sum, manifest) => sum + Object.keys(manifest).length, 0);
 
     const progressImage = new ProgressImage({
       position: new Vector(0, 200),
@@ -51,6 +53,9 @@ export class LoadingScene extends Scene {
       scene: this.scene,
       scale: 3,
       stepDelay: 5,
+      templateFunc(progress) {
+        return `Loading...${progress}%`;
+      },
     });
 
     imageAssets.subscribe(progressImage);
@@ -72,23 +77,35 @@ export class LoadingScene extends Scene {
           },
         });
 
-        const opacityModifier = new OpacityModifier({
+        const opacity = new OpacityModifier({
           velocity: 2,
         });
-        pressAnyKeyText.addModifier(opacityModifier);
+        pressAnyKeyText.addModifier(opacity);
 
         this.scene.add(pressAnyKeyText);
+
+        window.addEventListener(
+          'keydown',
+          () => {
+            this.manager.setState(Scenes.INTRO);
+          },
+          { once: true }
+        );
       },
     });
 
-    const [gameGlobalImages, gameGlobalSounds] = await Promise.all([
-      await imageAssets.load(globalImages),
-      await audioAssets.load(globalSounds),
-    ]);
+    const [gameGlobalImages, gameGlobalSounds, introImages] = await Promise.all(
+      [
+        await imageAssets.load(globalImages),
+        await audioAssets.load(globalSounds),
+        await imageAssets.load(introSceneImages),
+      ]
+    );
 
-    this.manager.setImages(gameGlobalImages);
-    this.manager.setSounds(gameGlobalSounds);
+    this.manager.setGlobalImages(gameGlobalImages);
+    this.manager.setGlobalSounds(gameGlobalSounds);
+
+    const introScene = this.manager.getState(Scenes.INTRO);
+    introScene.setImages(introImages);
   }
-
-  public async preload(): Promise<void> {}
 }

@@ -7,3 +7,7 @@ export const globalSounds = {
     data: sketchSpriteMap,
   },
 };
+
+export const introSceneSounds = {
+  someSound: sketchSprite,
+};

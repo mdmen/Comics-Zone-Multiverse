@@ -5,9 +5,9 @@ type State = 'on' | 'off';
 
 interface Options {
   onToggle(toggler: Toggler): void;
-  defaultState: State;
   activeContent: Node | HTMLElement | string;
   inactiveContent: Node | HTMLElement | string;
+  defaultState?: State;
   label?: string;
   classNames?: string[];
 }
@@ -19,7 +19,7 @@ export class Toggler extends Node {
   private readonly inactiveContent;
 
   constructor({
-    defaultState,
+    defaultState = 'off',
     activeContent,
     inactiveContent,
     label = '',

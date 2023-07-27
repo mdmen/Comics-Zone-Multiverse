@@ -69,7 +69,7 @@ export class Modal extends Node {
   }
 
   private createContent(): HTMLElement {
-    const content = document.createElement('p');
+    const content = document.createElement('div');
 
     content.classList.add('modal-content');
     const text =
@@ -107,6 +107,10 @@ export class Modal extends Node {
   }
 
   public show(): void {
+    document.querySelectorAll('.modal-overlay').forEach((overlay) => {
+      overlay.classList.add('hidden');
+    });
+
     this.node.classList.remove('hidden');
   }
 }

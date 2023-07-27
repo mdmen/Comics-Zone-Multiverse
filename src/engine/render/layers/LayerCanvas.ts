@@ -48,7 +48,7 @@ export class LayerCanvas extends Layer {
   }
 
   public preDraw(): void {
-    this.context.clearRect(0, 0, this.width, this.height);
+    this.clear();
     this.context.save();
 
     super.preDraw();
@@ -113,5 +113,9 @@ export class LayerCanvas extends Layer {
     );
 
     this.context.restore();
+  }
+
+  public clear(): void {
+    this.context.clearRect(0, 0, this.width, this.height);
   }
 }

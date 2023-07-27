@@ -29,7 +29,7 @@ export interface AnimationOptions {
   infinite?: boolean;
 }
 
-export abstract class Sprite extends Image {
+export class Sprite extends Image {
   private readonly data;
   private readonly animations: Record<string, SpriteAnimation>;
   private readonly offset = new Vector();

@@ -10,10 +10,11 @@
 }
 
 /* * * * * * * * * *
-* Togglers
+* Buttons, Togglers
 * * * * * * * * * */
 
-.toggler {
+.toggler,
+.button {
   border: 0;
   background: none;
   margin: 0;
@@ -131,6 +132,8 @@
   padding: 1rem;
   width: 400px;
   box-shadow: 2px 2px 7px -2px #222;
+  /* Created by Adam Anlauf (https://www.transparenttextures.com/grunge-wall.html) */
+  background-image: url('../images/ui/background.webp');
 }
 
 .modal-caption {
@@ -155,5 +158,9 @@
 }
 
 .modal-content {
+  line-height: 1.5rem;
+}
+
+.modal-content p {
   margin: 0;
 }

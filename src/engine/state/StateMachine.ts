@@ -57,7 +57,7 @@ export class StateMachine {
     this.currentState.enter();
   }
 
-  public getState(): State {
-    return this.currentState;
+  public getState(key?: string): State {
+    return key ? this.states[key] : this.currentState;
   }
 }

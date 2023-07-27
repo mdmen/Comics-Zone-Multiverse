@@ -1,19 +1,23 @@
-import { Scene as EngineScene, type State } from '@/engine';
+import {
+  Scene as EngineScene,
+  type Sounds,
+  type SpriteImageData,
+  type State,
+  type SpriteAsset,
+} from '@/engine';
 import { type Manager } from '../Manager';
+
+type Images = Record<string, HTMLImageElement | SpriteAsset<SpriteImageData>>;
 
 export abstract class Scene implements State {
   protected readonly manager: Manager;
   protected readonly scene;
-  protected ready = false;
+  protected images!: Images;
+  protected sounds!: Sounds;
 
   constructor(manager: Manager) {
     this.manager = manager;
     this.scene = new EngineScene();
-  }
-
-  public async enter(): Promise<void> {
-    await this.setup();
-    this.ready = true;
   }
 
   public update(step: number): void {
@@ -25,17 +29,17 @@ export abstract class Scene implements State {
   }
 
   public leave(): void {
-    this.ready = false;
-
     this.scene.destroy();
     this.scene.clear();
   }
 
-  public isReady(): boolean {
-    return this.ready;
+  public setImages(images: Images): void {
+    this.images = images;
   }
 
-  public abstract setup(): Promise<void>;
+  public setSounds(sounds: Sounds): void {
+    this.sounds = sounds;
+  }
 
-  public abstract preload(): Promise<void>;
+  public abstract enter(): Promise<void>;
 }
