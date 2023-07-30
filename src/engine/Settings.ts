@@ -28,6 +28,7 @@ const settings = {
 interface Settings {
   get<T extends SettingsMapKeys>(key: T): SettingsMap[T];
   set<T extends SettingsMapKeys>(key: T, value: SettingsMap[T]): void;
+  isDOMEngine(): boolean;
 }
 
 export const Settings: Readonly<Settings> = {
@@ -37,5 +38,9 @@ export const Settings: Readonly<Settings> = {
 
   set(key, value) {
     settings[key] = value;
+  },
+
+  isDOMEngine() {
+    return settings.renderEngine === 'dom';
   },
 };

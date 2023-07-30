@@ -56,8 +56,6 @@ export abstract class Layer extends Node {
   }
 
   protected shouldDraw(drawable: Drawable): boolean {
-    if (!drawable.isVisible()) return false;
-
     return !this.camera || this.camera.isCollidingWith(drawable);
   }
 

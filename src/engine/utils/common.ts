@@ -1,4 +1,3 @@
-import { Settings } from '../Settings';
 import type { LinkedList } from '../list/LinkedList';
 
 export function isEmpty(
@@ -25,10 +24,6 @@ export function generateUniqueId(): string {
     .slice(0, 10);
 }
 
-export function isDOMEngine(): boolean {
-  return Settings.get('renderEngine') === 'dom';
-}
-
 export function squashSpaces(str: string): string {
   return str.replace(/\s\s+/g, ' ');
 }
@@ -39,4 +34,12 @@ export function getPercent(total: number, value: number): number {
 
 export function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function getRandomNumber(min = 0, max = 1): number {
+  return Math.random() * (max - min) + min;
+}
+
+export function getRandomInteger(min = 0, max = 1): number {
+  return Math.floor(getRandomNumber(min, max));
 }

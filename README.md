@@ -22,11 +22,11 @@ Some description
 
 ### Controls
 
-- ↑, ↓, ←, → - moves
-- Space - pause
-- J - Action
+- ↑, ↓, ←, → - Moves
+- Space - Pause
+- J - Punch/Kick
 - K - Jump
-- L - Special move
+- L - Defense
 - Esc - Menu
 
 Gamepad is also supported
@@ -38,7 +38,9 @@ Gamepad is also supported
 
 ### Technical features
 
-...
+- Free to choose 2D Canvas or DOM render
+- Load assets only needed for current scene
+- Dark and light themes
 
 ## License
 

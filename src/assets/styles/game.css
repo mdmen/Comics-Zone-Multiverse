@@ -15,3 +15,78 @@
   top: 0;
   left: 0;
 }
+
+/* * * * * * * * * *
+* Glitch image
+* * * * * * * * * */
+
+@keyframes glitch-image {
+  0% {
+    background-position: -7px 0;
+  }
+  100% {
+    background-position: 7px 0;
+  }
+}
+
+@keyframes glitch-stripes {
+  0% {
+    background-position: 0 0;
+  }
+  20% {
+    background-position: 0 10%;
+  }
+  40% {
+    background-position: 0 5%;
+  }
+  90% {
+    background-position: 0 10%;
+  }
+  100% {
+    background-position: 0 5%;
+  }
+}
+
+.glitch {
+  animation: glitch-image 3s linear infinite reverse;
+}
+
+.glitch::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  animation: glitch-image 0.2s linear infinite;
+  mix-blend-mode: difference;
+  opacity: 0.3;
+}
+
+.glitch::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 255, 8, 0.6),
+    rgba(0, 255, 8, 0.6) 5%,
+    transparent 5%,
+    transparent 80%,
+    rgba(255, 0, 0, 0.6) 80%,
+    rgba(255, 0, 0, 0.6) 85%,
+    transparent 85%,
+    transparent
+  );
+  mix-blend-mode: difference;
+  background-size: 100% 10%;
+  animation: glitch-stripes 2s linear infinite;
+}
+
+.glitch.earlier::after {
+  background-image: url(../images/scenes/intro_earlier.webp);
+  background-size: cover;
+}

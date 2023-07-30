@@ -89,7 +89,11 @@ export class LayerCanvas extends Layer {
   }
 
   protected shouldDraw(drawable: Drawable): boolean {
-    return super.shouldDraw(drawable) && drawable.getOpacity() !== 0;
+    return (
+      super.shouldDraw(drawable) &&
+      drawable.isVisible() &&
+      drawable.getOpacity() !== 0
+    );
   }
 
   public drawRect(shape: RectShape): void {
@@ -113,6 +117,14 @@ export class LayerCanvas extends Layer {
     );
 
     this.context.restore();
+  }
+
+  public getNode(): HTMLCanvasElement {
+    return super.getNode() as HTMLCanvasElement;
+  }
+
+  public getContext(): CanvasRenderingContext2D {
+    return this.context;
   }
 
   public clear(): void {

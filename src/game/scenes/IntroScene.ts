@@ -1,11 +1,11 @@
 import {
-  Factory,
   type ReturnAudioAssets,
   type ReturnImageAssets,
   type Sounds,
 } from '@/engine';
 import { Scene } from './Scene';
 import { type introSceneImages, type introSceneSounds } from '@/constants';
+import { GlitchImage } from '../components';
 
 export class IntroScene extends Scene {
   protected images!: ReturnImageAssets<typeof introSceneImages>;
@@ -13,12 +13,15 @@ export class IntroScene extends Scene {
 
   public async enter(): Promise<void> {
     const layers = this.manager.getLayers();
-    const earlier = await Factory.createImage({
+
+    const earlier = new GlitchImage({
+      scene: this.scene,
       layer: layers.bottom,
       image: this.images.earlier,
-      scale: 3.2,
+      scale: 2.6,
+      classList: ['earlier'],
     });
 
-    this.scene.add(earlier);
+    earlier.start();
   }
 }

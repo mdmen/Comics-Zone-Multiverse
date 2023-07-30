@@ -1,5 +1,6 @@
+import { Settings } from '../Settings';
 import { Vector } from '../math';
-import { getReversedImage, getScaledImage, isDOMEngine } from '../utils';
+import { getReversedImage, getScaledImage } from '../utils';
 import { Drawable, type DrawableOptions } from './Drawable';
 import { LayerDOM } from './layers/LayerDOM';
 import { ImageNode } from './nodes/ImageNode';
@@ -21,7 +22,7 @@ export class Image extends Drawable {
   protected source = new Vector();
   protected flipped = false;
   protected scale = 1;
-  private loaded = false;
+  protected loaded = false;
   private readonly onCreate;
 
   constructor({
@@ -33,9 +34,10 @@ export class Image extends Drawable {
     width,
     height,
     flippable = false,
+    classList,
     onCreate = () => {},
   }: ImageOptions) {
-    super({ x, y, width, height, layer });
+    super({ x, y, width, height, layer, classList });
 
     this.scale = scale;
     this.onCreate = onCreate;
@@ -68,7 +70,7 @@ export class Image extends Drawable {
 
     this.onCreate(this);
 
-    if (isDOMEngine()) {
+    if (Settings.isDOMEngine()) {
       this.domNode.updateImage();
     }
 

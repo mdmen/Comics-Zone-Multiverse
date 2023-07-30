@@ -1,4 +1,4 @@
-import { isDOMEngine } from '../utils';
+import { Settings } from '../Settings';
 import { type Layer } from './layers/Layer';
 import { type DrawableNode } from './nodes';
 import { Updatable, type UpdatableOptions } from './Updatable';
@@ -9,6 +9,7 @@ interface Modifier {
 
 export interface DrawableOptions extends UpdatableOptions {
   layer: Layer;
+  classList?: string[];
 }
 
 export abstract class Drawable extends Updatable {
@@ -18,11 +19,13 @@ export abstract class Drawable extends Updatable {
   protected visible = true;
   protected opacity = 1;
 
-  constructor({ layer, ...options }: DrawableOptions) {
+  constructor({ layer, classList = [], ...options }: DrawableOptions) {
     super(options);
 
     this.layer = layer;
-    this.domNode = isDOMEngine() ? this.createDomNode() : null;
+    this.domNode = Settings.isDOMEngine() ? this.createDomNode() : null;
+
+    this.domNode?.getNode().classList.add(...classList);
   }
 
   public centerHorizontally(): void {

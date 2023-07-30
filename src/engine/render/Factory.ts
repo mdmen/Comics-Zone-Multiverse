@@ -6,14 +6,14 @@ export class Factory {
 
   public static async createImage(options: ImageOptions): Promise<Image> {
     return new Promise((resolve) => {
-      const imageClass = new Image({
+      const entity = new Image({
         ...options,
         onCreate: (image: Image) => {
           if (options.onCreate) {
             options.onCreate(image);
           }
 
-          resolve(imageClass);
+          resolve(entity);
         },
       });
     });
@@ -21,14 +21,14 @@ export class Factory {
 
   public static async createSprite(options: SpriteOptions): Promise<Sprite> {
     return new Promise((resolve) => {
-      const spriteClass = new Sprite({
+      const entity = new Sprite({
         ...options,
         onCreate: (image: Image) => {
           if (options.onCreate) {
             options.onCreate(image);
           }
 
-          resolve(spriteClass);
+          resolve(entity);
         },
       });
     });

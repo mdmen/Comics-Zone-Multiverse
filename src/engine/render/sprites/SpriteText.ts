@@ -7,7 +7,6 @@ import {
   createContext2D,
   extractImageFromCanvas,
   getScaledImage,
-  isDOMEngine,
   squashSpaces,
 } from '../../utils';
 import { type SpriteAsset } from '../../assets/types';
@@ -291,7 +290,7 @@ export class SpriteText extends Drawable {
 
     this.onCreate(this);
 
-    if (isDOMEngine()) {
+    if (Settings.isDOMEngine()) {
       this.domNode.updateImage();
     }
 
