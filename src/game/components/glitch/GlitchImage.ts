@@ -29,4 +29,8 @@ export class GlitchImage {
   public stop(): void {
     this.glitchImage.stop();
   }
+
+  public hide(): void {
+    this.glitchImage.hide();
+  }
 }

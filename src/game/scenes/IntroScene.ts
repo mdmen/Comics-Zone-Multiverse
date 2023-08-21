@@ -1,4 +1,5 @@
 import {
+  delay,
   type ReturnAudioAssets,
   type ReturnImageAssets,
   type Sounds,
@@ -14,14 +15,21 @@ export class IntroScene extends Scene {
   public async enter(): Promise<void> {
     const layers = this.manager.getLayers();
 
-    const earlier = new GlitchImage({
+    const earlierGlitch = new GlitchImage({
       scene: this.scene,
       layer: layers.bottom,
       image: this.images.earlier,
-      scale: 2.6,
+      scale: 3.2,
       classList: ['earlier'],
     });
 
-    earlier.start();
+    await delay(3000);
+
+    earlierGlitch.start();
+
+    await delay(3000);
+
+    earlierGlitch.stop();
+    earlierGlitch.hide();
   }
 }

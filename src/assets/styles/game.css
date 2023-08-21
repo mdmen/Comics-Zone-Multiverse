@@ -17,15 +17,15 @@
 }
 
 /* * * * * * * * * *
-* Glitch image
+* Noise image
 * * * * * * * * * */
 
 @keyframes glitch-image {
   0% {
-    background-position: -7px 0;
+    background-position: 0 0;
   }
   100% {
-    background-position: 7px 0;
+    background-position: 0 -10px;
   }
 }
 
@@ -47,22 +47,7 @@
   }
 }
 
-.glitch {
-  animation: glitch-image 3s linear infinite reverse;
-}
-
-.glitch::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  animation: glitch-image 0.2s linear infinite;
-  mix-blend-mode: difference;
-  opacity: 0.3;
-}
-
+.glitch::after,
 .glitch::before {
   content: '';
   position: absolute;
@@ -70,14 +55,23 @@
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.glitch::after {
+  animation: glitch-image 0.2s linear infinite;
+  mix-blend-mode: difference;
+  opacity: 0.3;
+}
+
+.glitch::before {
   background-image: linear-gradient(
     to bottom,
-    rgba(0, 255, 8, 0.6),
-    rgba(0, 255, 8, 0.6) 5%,
+    rgba(0 255 0),
+    rgba(0 255 0) 5%,
     transparent 5%,
     transparent 80%,
-    rgba(255, 0, 0, 0.6) 80%,
-    rgba(255, 0, 0, 0.6) 85%,
+    rgba(255 0 0) 80%,
+    rgba(255 0 0) 85%,
     transparent 85%,
     transparent
   );

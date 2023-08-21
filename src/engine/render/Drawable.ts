@@ -1,6 +1,7 @@
 import { Settings } from '../Settings';
+import { type LayerDOM } from './layers';
 import { type Layer } from './layers/Layer';
-import { type DrawableNode } from './nodes';
+import { DrawableNode } from './nodes';
 import { Updatable, type UpdatableOptions } from './Updatable';
 
 interface Modifier {
@@ -86,7 +87,9 @@ export abstract class Drawable extends Updatable {
     this.modifiers.clear();
   }
 
-  protected abstract createDomNode(): DrawableNode;
+  protected createDomNode(): DrawableNode {
+    return new DrawableNode({ layer: this.layer as LayerDOM, drawable: this });
+  }
 
   public abstract draw(): void;
 }
