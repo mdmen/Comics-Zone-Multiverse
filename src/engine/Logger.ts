@@ -1,3 +1,5 @@
+// TODO set levels
+
 interface Logger {
   error(...args: unknown[]): void;
   log(...args: unknown[]): void;

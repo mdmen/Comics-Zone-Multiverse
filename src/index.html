@@ -47,63 +47,7 @@
     <link rel="icon" href="/favicons/favicon.png" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" />
 
-    <!-- critical css -->
-    <style>
-      html,
-      body {
-        width: 100%;
-        height: 100%;
-      }
-
-      .wrapper {
-        position: relative;
-        inline-size: 100%;
-        min-height: 100%;
-        padding: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #fff;
-        background-image: url("<%=require('./assets/images/ui/background.webp')%>");
-        overflow: hidden;
-        z-index: 0;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        .wrapper {
-          background-color: #000;
-        }
-      }
-
-      .paper {
-        position: relative;
-        flex: 0 1 1024px;
-        aspect-ratio: 4 / 3;
-        background-color: #fff;
-        box-shadow: 1px 1px 3px 0 rgba(0 0 0 / 0.2);
-        box-sizing: border-box;
-        border: 6px solid #fff;
-      }
-
-      .paper:before,
-      .paper:after {
-        content: '';
-        inline-size: 100%;
-        block-size: 98%;
-        position: absolute;
-        background-color: #fbfbfb;
-        box-shadow: 1px 1px 3px 0 rgba(0 0 0 / 0.2);
-        z-index: -1;
-      }
-
-      .paper:before {
-        transform: rotate(-2.5deg) translate(-5px, 4px);
-      }
-
-      .paper:after {
-        transform: rotate(1.4deg) translate(3px, 1px);
-      }
-    </style>
+    <%= htmlWebpackPlugin.options.criticalStyles %>
   </head>
   <body>
     <div class="wrapper">

@@ -1,6 +1,7 @@
 .wrapper {
   background-color: var(--ui-background-color);
   color: var(--ui-text-color);
+  background-image: url('../images/ui/background.webp');
 }
 
 .flex-container {
