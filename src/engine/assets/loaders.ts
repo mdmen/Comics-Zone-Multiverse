@@ -26,10 +26,10 @@ async function fetchResource(src: string): Promise<Response> {
 
 export async function loadAudio(src: string): Promise<ArrayBuffer> {
   const response = await fetchResource(src);
-  return await response.arrayBuffer();
+  return response.arrayBuffer();
 }
 
 export async function loadData(src: string): Promise<Record<string, unknown>> {
   const response = await fetchResource(src);
-  return await response.json();
+  return response.json();
 }

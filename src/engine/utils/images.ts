@@ -11,7 +11,7 @@ export async function getReversedImage(
   context.scale(-1, 1);
   context.drawImage(image, 0, 0);
 
-  return await extractImageFromCanvas(canvas);
+  return extractImageFromCanvas(canvas);
 }
 
 export async function getScaledImage(
@@ -37,7 +37,7 @@ export async function getScaledImage(
     height
   );
 
-  return await extractImageFromCanvas(canvas);
+  return extractImageFromCanvas(canvas);
 }
 
 export async function extractImageFromCanvas(

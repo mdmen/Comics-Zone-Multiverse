@@ -22,7 +22,7 @@ export class ImageAssets extends Assets {
     source: string | SpriteSource
   ): Promise<HTMLImageElement | SpriteImageAsset> {
     if (isString(source)) {
-      return await loadImage(source);
+      return loadImage(source);
     }
 
     const { src, data: spriteDataSrc } = source;

@@ -58,13 +58,13 @@ export class SpriteAnimation {
     return this.frameIndex === this.frames.length - 1;
   }
 
-  private gerCurrentFrameName(): Frame {
+  private gerCurrentFrame(): Frame {
     return this.frames[this.frameIndex];
   }
 
   private shouldUpdateFrame(timeStamp: number): boolean {
     const delta = timeStamp - this.previousTime;
-    const frame = this.gerCurrentFrameName();
+    const frame = this.gerCurrentFrame();
     const duration = frame.duration || this.frameDuration;
 
     return delta > duration;
@@ -102,8 +102,8 @@ export class SpriteAnimation {
     this.playing = false;
   }
 
-  public getCurrentFrame(): FrameSource {
-    const frameName = this.gerCurrentFrameName();
+  public getCurrentFrameSource(): FrameSource {
+    const frameName = this.gerCurrentFrame();
     return this.frameSources[frameName.name];
   }
 }

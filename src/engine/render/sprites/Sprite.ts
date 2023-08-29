@@ -106,7 +106,7 @@ export class Sprite extends Image {
   private updateAnimation(): void {
     this.animation.update();
 
-    const { frame, offset } = this.animation.getCurrentFrame();
+    const { frame, offset } = this.animation.getCurrentFrameSource();
 
     const sourceX = this.flipped
       ? this.image.width - (frame.x + frame.w)

@@ -100,6 +100,12 @@ export class Modal extends Node {
         this.hide();
       }
     });
+
+    this.node.addEventListener('click', ({ target }) => {
+      if (target && !(target as HTMLElement).closest('.modal')) {
+        this.hide();
+      }
+    });
   }
 
   public hide(): void {
@@ -107,10 +113,6 @@ export class Modal extends Node {
   }
 
   public show(): void {
-    document.querySelectorAll('.modal-overlay').forEach((overlay) => {
-      overlay.classList.add('hidden');
-    });
-
     this.node.classList.remove('hidden');
   }
 }

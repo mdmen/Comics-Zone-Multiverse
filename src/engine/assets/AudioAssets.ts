@@ -24,7 +24,7 @@ export class AudioAssets extends Assets {
     source: string | SpriteSource
   ): Promise<AudioAsset | AudioSpriteAsset> {
     if (isString(source)) {
-      return await loadAudio(source);
+      return loadAudio(source);
     }
 
     const { src, data: spriteDataSrc } = source;
