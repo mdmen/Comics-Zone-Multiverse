@@ -1,9 +1,8 @@
-import { Settings } from '../../Settings';
-import type { SpriteFrame } from './Sprite';
+import { type FrameSource, type Frame } from './Sprite';
 
 interface AnimationOptions {
-  frames: Record<string, SpriteFrame>;
-  names: string[];
+  frameSources: Record<string, FrameSource>;
+  frames: Frame[];
   infinite?: boolean;
   frameDuration?: number;
   onStart?(): void;
@@ -11,8 +10,8 @@ interface AnimationOptions {
 }
 
 export class SpriteAnimation {
+  private readonly frameSources;
   private readonly frames;
-  private readonly names;
   private readonly frameDuration;
   private readonly infinite;
   private readonly onStart;
@@ -23,17 +22,17 @@ export class SpriteAnimation {
   private previousTime = 0;
 
   constructor({
+    frameSources,
     frames,
-    names,
     infinite = false,
-    frameDuration = Settings.get('animationFrameDuration'),
+    frameDuration = 200,
     onStart = () => {},
     onFinish = () => {},
   }: AnimationOptions) {
-    this.frames = frames;
-    this.names = names;
+    this.frameSources = frameSources;
     this.frameDuration = frameDuration;
     this.infinite = infinite;
+    this.frames = frames;
     this.onStart = onStart;
     this.onFinish = onFinish;
   }
@@ -56,12 +55,16 @@ export class SpriteAnimation {
   }
 
   private shouldFinish(): boolean {
-    return this.frameIndex === this.names.length - 1;
+    return this.frameIndex === this.frames.length - 1;
+  }
+
+  private gerCurrentFrameName(): Frame {
+    return this.frames[this.frameIndex];
   }
 
   private shouldUpdateFrame(timeStamp: number): boolean {
     const delta = timeStamp - this.previousTime;
-    const frame = this.getCurrentFrame();
+    const frame = this.gerCurrentFrameName();
     const duration = frame.duration || this.frameDuration;
 
     return delta > duration;
@@ -99,8 +102,8 @@ export class SpriteAnimation {
     this.playing = false;
   }
 
-  public getCurrentFrame(): SpriteFrame {
-    const name = this.names[this.frameIndex];
-    return this.frames[name];
+  public getCurrentFrame(): FrameSource {
+    const frameName = this.gerCurrentFrameName();
+    return this.frameSources[frameName.name];
   }
 }

@@ -9,14 +9,18 @@ interface FrameBoundaries {
   h: number;
 }
 
-export interface SpriteFrame {
-  frame: FrameBoundaries;
+export interface Frame {
+  name: string;
   duration?: number;
+}
+
+export interface FrameSource {
+  frame: FrameBoundaries;
   offset?: Point;
 }
 
 export interface SpriteImageData {
-  frames: Record<string, SpriteFrame>;
+  frames: Record<string, FrameSource>;
 }
 
 export interface SpriteOptions extends ImageOptions {
@@ -25,7 +29,7 @@ export interface SpriteOptions extends ImageOptions {
 
 export interface AnimationOptions {
   name: string;
-  frameNames: string[];
+  frames: Frame[];
   infinite?: boolean;
 }
 
@@ -45,7 +49,7 @@ export class Sprite extends Image {
 
   public addAnimation({
     name,
-    frameNames,
+    frames,
     infinite = false,
   }: AnimationOptions): Sprite {
     if (!this.data) {
@@ -53,8 +57,8 @@ export class Sprite extends Image {
     }
 
     this.animations[name] = new SpriteAnimation({
-      frames: this.data.frames,
-      names: frameNames,
+      frameSources: this.data.frames,
+      frames,
       infinite,
     });
 

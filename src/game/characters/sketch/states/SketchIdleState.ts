@@ -7,7 +7,7 @@ export class SketchIdleState extends SketchState {
 
     this.character.addAnimation({
       name: CharacterMoves.IDLE,
-      frameNames: [],
+      frames: [],
       infinite: true,
     });
   }

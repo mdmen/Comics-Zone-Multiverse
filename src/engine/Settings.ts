@@ -15,7 +15,6 @@ const settings = {
   // only DOM render
   canvasSubLayerClassName: 'sub-layer',
   antialiasing: false,
-  animationFrameDuration: 200,
 
   cameraOffsetX: 50,
   cameraOffsetY: 50,
