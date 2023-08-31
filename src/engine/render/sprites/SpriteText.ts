@@ -60,7 +60,7 @@ export class SpriteText extends Drawable {
   private text!: string;
   protected domNode!: ImageNode;
   private loaded = false;
-  private scale;
+  private multiply;
   private rowIndex;
   private maxWidth;
   private rowGap;
@@ -87,7 +87,7 @@ export class SpriteText extends Drawable {
     this.maxWidth = maxWidth;
     this.onCreate = onCreate;
     this.rowIndex = this.getRowIndex(row);
-    this.scale = scale || Settings.get('spriteFontScale');
+    this.multiply = scale || Settings.get('spriteFontScale');
     this.rowGap = rowGap || Settings.get('spriteFontRowGap');
     this.center = center || Settings.get('spriteFontCenter');
 
@@ -139,7 +139,7 @@ export class SpriteText extends Drawable {
   }
 
   private normalizeSizes(sizes: number[]): number[] {
-    return sizes.map((value) => Math.floor(value * this.scale));
+    return sizes.map((value) => Math.floor(value * this.multiply));
   }
 
   private calculateTextImageSize(): number[] {
@@ -286,7 +286,7 @@ export class SpriteText extends Drawable {
 
     const canvas = await this.createTextImage();
     const image = await extractImageFromCanvas(canvas);
-    this.image = await getScaledImage(image, this.scale);
+    this.image = await getScaledImage(image, this.multiply);
 
     this.onCreate(this);
 

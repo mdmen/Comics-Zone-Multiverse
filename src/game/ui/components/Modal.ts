@@ -1,4 +1,4 @@
-import { createHiddenLabel } from '@/helpers';
+import { createHiddenLabel } from '@/game/helpers';
 import { generateUniqueId } from '@/engine';
 import { type NodeContent, Node } from './Node';
 

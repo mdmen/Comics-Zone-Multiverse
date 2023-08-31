@@ -44,7 +44,7 @@ export class LoadingScene extends Scene {
       scale: 3,
       lowerImage: loadingImages.loadingFinish,
       upperImage: loadingImages.loadingStart,
-      stepDelay: 10,
+      stepDelay: 0, // 10,
     });
 
     const progressText = new ProgressText({
@@ -52,7 +52,7 @@ export class LoadingScene extends Scene {
       total: resourcesAmount,
       scene: this.scene,
       scale: 3,
-      stepDelay: 5,
+      stepDelay: 0, // 5,
       templateFunc(progress) {
         return `Loading...${progress}%`;
       },

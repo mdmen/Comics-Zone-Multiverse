@@ -83,6 +83,8 @@ export abstract class Drawable extends Updatable {
   }
 
   public destroy(): void {
+    super.destroy();
+
     this.domNode?.destroy();
     this.modifiers.clear();
   }
@@ -90,6 +92,4 @@ export abstract class Drawable extends Updatable {
   protected createDomNode(): DrawableNode {
     return new DrawableNode({ layer: this.layer as LayerDOM, drawable: this });
   }
-
-  public abstract draw(): void;
 }

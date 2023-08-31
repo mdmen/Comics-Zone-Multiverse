@@ -36,7 +36,7 @@ export interface AnimationOptions {
 export class Sprite extends Image {
   private readonly data;
   private readonly animations: Record<string, SpriteAnimation>;
-  private readonly offset = new Vector();
+  private readonly frameOffset = new Vector();
   private animation!: SpriteAnimation;
 
   constructor(options: SpriteOptions) {
@@ -81,12 +81,12 @@ export class Sprite extends Image {
 
   private resetAnimationOffset(): void {
     if (this.flipped) {
-      const posOffsetX = this.position.x + this.offset.x;
-      const posOffsetY = this.position.y - this.offset.y;
+      const posOffsetX = this.position.x + this.frameOffset.x;
+      const posOffsetY = this.position.y - this.frameOffset.y;
 
       this.position.set(posOffsetX, posOffsetY);
     } else {
-      this.position.subtract(this.offset);
+      this.position.subtract(this.frameOffset);
     }
   }
 
@@ -100,7 +100,7 @@ export class Sprite extends Image {
       this.position.add(offset);
     }
 
-    this.offset.copy(offset);
+    this.frameOffset.copy(offset);
   }
 
   private updateAnimation(): void {
@@ -116,7 +116,7 @@ export class Sprite extends Image {
     this.width = frame.w;
     this.height = frame.h;
 
-    if (offset && !this.offset.isEqualTo(offset)) {
+    if (offset && !this.frameOffset.isEqualTo(offset)) {
       this.resetAnimationOffset();
       this.updateAnimationOffset(offset);
     }

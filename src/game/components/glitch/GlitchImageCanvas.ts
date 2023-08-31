@@ -13,7 +13,7 @@ interface Options extends ImageOptions {
 // Based on https://codepen.io/dimaZubkov/pen/EgmobE
 export class GlitchImageCanvas extends Image {
   protected layer!: LayerCanvas;
-  private offset;
+  private imageOffset;
   private delay = 0;
   private delayMin;
   private delayMax;
@@ -28,7 +28,7 @@ export class GlitchImageCanvas extends Image {
       throw Error('delayMin should be greater or equal delayMax');
     }
 
-    this.offset = this.width * 0.01;
+    this.imageOffset = this.width * 0.01;
     this.delayMin = delayMin;
     this.delayMax = delayMax;
 
@@ -64,13 +64,13 @@ export class GlitchImageCanvas extends Image {
 
     context.drawImage(
       this.layer.getNode(),
-      this.offset,
+      this.imageOffset,
       y,
-      this.width - this.offset * 2,
+      this.width - this.imageOffset * 2,
       height,
-      1 + getRandomInteger(0, this.offset * 2),
+      1 + getRandomInteger(0, this.imageOffset * 2),
       y + getRandomInteger(0, 10),
-      this.width - this.offset,
+      this.width - this.imageOffset,
       height
     );
   }

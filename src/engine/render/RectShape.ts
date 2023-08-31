@@ -29,6 +29,8 @@ export class RectShape extends Drawable {
   }
 
   public draw(): void {
+    super.draw();
+
     this.layer.drawRect(this);
   }
 }

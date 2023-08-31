@@ -1,4 +1,4 @@
-import { getAppContainer } from '@/helpers';
+import { getAppContainer } from './helpers';
 import { UISettings } from './ui/UISettings';
 import { Config } from './Config';
 import {

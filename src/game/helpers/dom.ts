@@ -1,5 +1,3 @@
-import { containerID } from '@/constants';
-
 function getElement(selector: string): HTMLElement {
   const element = document.querySelector(selector);
 
@@ -9,7 +7,7 @@ function getElement(selector: string): HTMLElement {
 }
 
 export function getAppContainer(): HTMLElement {
-  return getElement(`#${containerID}`);
+  return getElement('.container');
 }
 
 export function setTheme(theme: 'dark' | 'light'): void {

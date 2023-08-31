@@ -38,8 +38,9 @@ Gamepad is also supported
 
 ### Technical features
 
-- Free to choose 2D Canvas or DOM render
-- Load assets only needed for current scene
+- Custom game engine
+- Can be rendered using 2D Canvas or DOM
+- Loads assets only needed for current scene
 - Dark and light themes
 
 ## License

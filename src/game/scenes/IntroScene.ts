@@ -6,7 +6,7 @@ import {
 } from '@/engine';
 import { Scene } from './Scene';
 import { type introSceneImages, type introSceneSounds } from '@/constants';
-import { GlitchImage } from '../components';
+import { GlitchImage, Hud } from '../components';
 
 export class IntroScene extends Scene {
   protected images!: ReturnImageAssets<typeof introSceneImages>;
@@ -23,13 +23,19 @@ export class IntroScene extends Scene {
       classList: ['earlier'],
     });
 
-    await delay(3000);
+    // await delay(3000);
 
-    earlierGlitch.start();
+    // earlierGlitch.start();
 
-    await delay(3000);
+    // await delay(3000);
 
-    earlierGlitch.stop();
-    earlierGlitch.hide();
+    // earlierGlitch.stop();
+    // earlierGlitch.hide();
+
+    const hud = new Hud({
+      layer: layers.middle,
+      scene: this.scene,
+      scale: 3,
+    });
   }
 }

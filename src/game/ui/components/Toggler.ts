@@ -1,4 +1,4 @@
-import { createHiddenLabel } from '@/helpers';
+import { createHiddenLabel } from '@/game/helpers';
 import { Node } from './Node';
 
 type State = 'on' | 'off';

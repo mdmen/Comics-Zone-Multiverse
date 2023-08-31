@@ -19,7 +19,6 @@ export class ImageNode extends DrawableNode {
   }
 
   public flip(): void {
-    const { src } = this.drawable.getImage();
-    this.node.style.backgroundImage = `url(${src})`;
+    this.updateImage();
   }
 }

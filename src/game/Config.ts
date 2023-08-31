@@ -1,5 +1,5 @@
 import { Storage, type Audio, Settings } from '@/engine';
-import { setTheme } from '@/helpers';
+import { setTheme } from '@/game/helpers';
 
 type Theme = 'system' | 'light' | 'dark';
 type Sound = 'on' | 'off';

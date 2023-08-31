@@ -30,7 +30,6 @@ export abstract class Scene implements State {
 
   public leave(): void {
     this.scene.destroy();
-    this.scene.clear();
   }
 
   public setImages(images: Images): void {

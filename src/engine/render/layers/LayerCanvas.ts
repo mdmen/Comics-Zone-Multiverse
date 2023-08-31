@@ -57,7 +57,7 @@ export class LayerCanvas extends Layer {
   public drawImage(image: Image | SpriteText): void {
     if (!this.shouldDraw(image)) return;
 
-    const position = image.getPosition();
+    const position = image.getOffsetPosition();
     const source = image.getSource();
     const width = image.getWidth();
     const height = image.getHeight();

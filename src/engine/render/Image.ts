@@ -93,6 +93,20 @@ export class Image extends Drawable {
   }
 
   public draw(): void {
+    super.draw();
+
     this.loaded && this.layer.drawImage(this);
+  }
+
+  public destroy(): void {
+    super.destroy();
+
+    const emptyImage = new global.Image();
+
+    this.image = emptyImage;
+    this.images = {
+      straight: emptyImage,
+      reversed: emptyImage,
+    };
   }
 }

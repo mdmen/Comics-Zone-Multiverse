@@ -66,17 +66,18 @@ export class LayerDOM extends Layer {
   }
 
   private setCommonProps(node: HTMLElement, drawable: Drawable): void {
-    const position = drawable.getPosition();
-    const posX = position.x | 0;
-    const posY = position.y | 0;
-    const width = drawable.getWidth();
-    const height = drawable.getHeight();
-    const opacity = drawable.getOpacity();
     const visible = drawable.isVisible();
 
     node.hidden = !visible;
 
     if (!visible) return;
+
+    const position = drawable.getOffsetPosition();
+    const posX = position.x | 0;
+    const posY = position.y | 0;
+    const width = drawable.getWidth();
+    const height = drawable.getHeight();
+    const opacity = drawable.getOpacity();
 
     node.style.opacity = `${opacity}`;
     node.style.width = `${width | 0}px`;
