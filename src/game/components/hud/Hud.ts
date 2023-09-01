@@ -1,8 +1,11 @@
 import { Updatable, type Layer, type Scene } from '@/engine';
 import { HudHealthBar } from './HudHealthBar';
+import { HudInventory } from './HudInventory';
+import { type Manager } from '@/game/Manager';
 
 interface Options {
   scene: Scene;
+  manager: Manager;
   layer: Layer;
   scale?: number;
   x?: number;
@@ -12,21 +15,34 @@ interface Options {
 
 export class Hud extends Updatable {
   private healthBar;
-  private scene;
+  private inventory;
 
-  constructor({ x, y, scale = 1, health = 100, scene, layer }: Options) {
+  constructor({
+    x,
+    y,
+    scale = 1,
+    health = 100,
+    scene,
+    layer,
+    manager,
+  }: Options) {
     super({ x, y });
 
-    this.scene = scene;
-
     this.healthBar = new HudHealthBar({
+      y: 77,
       layer,
       health,
       scale,
     });
+    this.inventory = new HudInventory({
+      layer,
+      scale,
+      manager,
+    });
 
     this.addChild(this.healthBar);
+    this.addChild(this.inventory);
 
-    this.scene.add(this);
+    scene.add(this);
   }
 }

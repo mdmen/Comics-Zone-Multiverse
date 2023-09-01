@@ -19,7 +19,7 @@
 .wrapper {
   background-color: var(--ui-background-color);
   color: var(--ui-text-color);
-  background-image: url('../images/ui/background.webp');
+  background-image: url('../images/background.webp');
 }
 
 .flex-container {
@@ -152,7 +152,7 @@
   width: 400px;
   box-shadow: 2px 2px 7px -2px #222;
   /* Created by Adam Anlauf (https://www.transparenttextures.com/grunge-wall.html) */
-  background-image: url('../images/ui/background.webp');
+  background-image: url('../images/background.webp');
 }
 
 .modal-caption {

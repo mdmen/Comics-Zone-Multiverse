@@ -7,46 +7,57 @@ import {
   Updatable,
   type UpdatableOptions,
   RectShape,
-  Rectangle,
 } from '@/engine';
 import {
+  scaleLayout,
+  type HudLayout,
   outerBorderColor,
   innerBorderColor,
   innerAccentColor,
   backgroundColor,
   progressBarColor,
-} from './constants';
-
-interface Layout {
-  color: string;
-  rect: Rectangle;
-}
+} from './layout';
 
 const outerWidth = 72;
 const outerHeight = 11;
 
-const bottomLayouts: Layout[] = [
+const bottomLayouts: HudLayout[] = [
   {
     color: outerBorderColor,
-    rect: new Rectangle(0, 0, outerWidth, outerHeight),
+    x: 0,
+    y: 0,
+    width: outerWidth,
+    height: outerHeight,
   },
   {
     color: innerBorderColor,
-    rect: new Rectangle(1, 1, 70, 9),
+    x: 1,
+    y: 1,
+    width: 70,
+    height: 9,
   },
   {
     color: innerAccentColor,
-    rect: new Rectangle(3, 2, 67, 7),
+    x: 3,
+    y: 2,
+    width: 67,
+    height: 7,
   },
   {
     color: backgroundColor,
-    rect: new Rectangle(3, 3, 66, 5),
+    x: 3,
+    y: 3,
+    width: 66,
+    height: 5,
   },
 ];
 
 const progressBarLayout = {
   color: progressBarColor,
-  rect: new Rectangle(3, 3, 37, 5),
+  x: 3,
+  y: 3,
+  width: 37,
+  height: 5,
 };
 
 interface Options extends UpdatableOptions {
@@ -85,17 +96,11 @@ export class HudHealthBar extends Updatable {
   }
 
   private setProgressBar(layer: Layer): void {
-    const { color, rect } = progressBarLayout;
-    const position = rect.getPosition();
-
     this.progressBar = new RectShape({
       layer,
-      color,
-      x: Math.floor(position.x * this.scale),
-      y: Math.floor(position.y * this.scale),
-      width: Math.floor(rect.getWidth() * this.scale),
-      height: Math.floor(rect.getHeight() * this.scale),
+      ...scaleLayout(progressBarLayout, this.scale),
     });
+
     this.addChild(this.progressBar);
   }
 
@@ -106,17 +111,21 @@ export class HudHealthBar extends Updatable {
     );
     const context = createContext2D(canvas);
 
-    bottomLayouts.forEach(({ color, rect }) => {
-      const position = rect.getPosition();
-      const posX = Math.floor(position.x * this.scale);
-      const posY = Math.floor(position.y * this.scale);
-      const finalWidth = Math.floor(rect.getWidth() * this.scale);
-      const finalHeight = Math.floor(rect.getHeight() * this.scale);
+    bottomLayouts.forEach((layout) => {
+      const { color, x, y, width, height } = scaleLayout(layout, this.scale);
 
       context.fillStyle = color;
-      context.fillRect(posX, posY, finalWidth, finalHeight);
+      context.fillRect(x, y, width, height);
     });
 
     return extractImageFromCanvas(canvas);
+  }
+
+  public setHealth(value: number): void {
+    this.health = value;
+  }
+
+  public getHealth(): number {
+    return this.health;
   }
 }

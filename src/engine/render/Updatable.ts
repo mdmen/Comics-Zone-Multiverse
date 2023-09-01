@@ -60,6 +60,16 @@ export abstract class Updatable extends Rectangle {
     this.children.add(updatable);
   }
 
+  public getChild(index: number): Updatable {
+    const child = [...this.children].at(index);
+
+    if (!child) {
+      throw Error(`Group's element with index ${index} does no exists`);
+    }
+
+    return child;
+  }
+
   public removeChild(updatable: Updatable): void {
     this.children.delete(updatable);
   }

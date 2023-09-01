@@ -99,7 +99,7 @@ export class LayerCanvas extends Layer {
   public drawRect(shape: RectShape): void {
     if (!this.shouldDraw(shape)) return;
 
-    const position = shape.getPosition();
+    const position = shape.getOffsetPosition();
     const opacity = shape.getOpacity();
 
     this.context.save();
