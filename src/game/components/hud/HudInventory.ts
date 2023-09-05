@@ -6,6 +6,7 @@ import {
   createContext2D,
   extractImageFromCanvas,
   type Layer,
+  isEmpty,
 } from '@/engine';
 import { type Manager } from '@/game/Manager';
 import {
@@ -56,11 +57,12 @@ const slotLayouts: HudLayout[] = [
 ];
 
 export enum InventoryItems {
-  RAT = 'rat',
+  ROADKILL = 'roadkill',
   KNIFE = 'knife',
   BOMB = 'bomb',
-  DRINK = 'drink',
-  FIST = 'fist',
+  TEA = 'tea',
+  SLAM = 'slam',
+  SUPERHERO = 'superhero',
 }
 
 interface Options extends UpdatableOptions {
@@ -71,8 +73,8 @@ interface Options extends UpdatableOptions {
 
 export class HudInventory extends Updatable {
   private readonly manager;
-  private readonly items: InventoryItems[] = [];
   private readonly slotsCount = 3;
+  private items: InventoryItems[] = [];
   private scale;
 
   constructor({ manager, layer, scale = 1, ...options }: Options) {
@@ -114,5 +116,17 @@ export class HudInventory extends Updatable {
     }
 
     return extractImageFromCanvas(canvas);
+  }
+
+  public addItem(item: InventoryItems): void {
+    if (this.items.length === this.slotsCount) return;
+
+    this.items.push(item);
+  }
+
+  public removeItem(item: InventoryItems): void {
+    if (isEmpty(this.items)) return;
+
+    this.items = this.items.filter((iItem) => iItem !== item);
   }
 }

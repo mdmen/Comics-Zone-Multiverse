@@ -20,6 +20,13 @@ Some description
 
 ...
 
+### Technical features
+
+- Custom game engine
+- Can be rendered using 2D Canvas or DOM
+- Loads assets only needed for current scene
+- Dark and light themes
+
 ### Controls
 
 - ↑, ↓, ←, → - Moves
@@ -35,13 +42,6 @@ Gamepad is also supported
 
 - **Uppercut** (↑ + J)  
   ![Uppercut move](./src/assets/images/readme/uppercut_test.png)
-
-### Technical features
-
-- Custom game engine
-- Can be rendered using 2D Canvas or DOM
-- Loads assets only needed for current scene
-- Dark and light themes
 
 ## License
 
