@@ -1,5 +1,5 @@
 import { Settings } from '../Settings';
-import { Rectangle } from '../math';
+import { Rectangle } from '../geometries';
 
 interface Options {
   map: Rectangle;

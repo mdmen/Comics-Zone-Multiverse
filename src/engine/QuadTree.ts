@@ -1,5 +1,5 @@
 import { isEmpty } from './utils';
-import { Rectangle } from './math/Rectangle';
+import { Rectangle } from './geometries';
 
 export class QuadTree {
   private readonly maxObjects = 10;

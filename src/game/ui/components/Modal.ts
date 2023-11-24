@@ -109,10 +109,16 @@ export class Modal extends Node {
   }
 
   public hide(): void {
-    this.node.classList.add('hidden');
+    this.node.querySelector('.modal')?.classList.remove('visible');
+    setTimeout(() => {
+      this.node.classList.add('hidden');
+    }, 300);
   }
 
   public show(): void {
     this.node.classList.remove('hidden');
+    setTimeout(() => {
+      this.node.querySelector('.modal')?.classList.add('visible');
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { type Point, Vector } from '../math';
+import { type Point, Vector } from '../geometries';
 
 export class Rectangle {
   protected position;

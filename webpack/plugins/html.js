@@ -1,7 +1,7 @@
 const fs = require('fs');
-const { title, description } = require('../../package.json');
+const { title, description, homepage } = require('../../package.json');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { sourceFolder } = require('../helpers');
+const { sourceFolder, minify } = require('../helpers');
 
 const criticalStyles = fs
   .readFileSync(`${sourceFolder}/assets/styles/critical.css`)
@@ -13,5 +13,6 @@ module.exports = () =>
     scriptLoading: 'defer',
     title,
     description,
-    criticalStyles: `<style>${criticalStyles}</style>`,
+    homepage,
+    criticalStyles: `<style>${minify(criticalStyles)}</style>`,
   });

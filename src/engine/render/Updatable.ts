@@ -1,5 +1,4 @@
-import { Rectangle } from '../math/Rectangle';
-import { Vector } from '../math';
+import { Vector, Rectangle } from '../geometries';
 
 export interface UpdatableOptions {
   x?: number;

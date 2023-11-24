@@ -6,7 +6,7 @@
 
 Some description
 
-### Roadmap
+## Roadmap
 
 - [x] Game engine
 - [ ] Game mechanics
@@ -14,42 +14,39 @@ Some description
 - [ ] Level 1
 - [ ] Level 2
 - [ ] Level 3
-- [ ] Completed
 
-### Plot
+## Plot
 
 ...
 
-### Technical features
+## Technical features
 
 - Custom game engine
 - Can be rendered using 2D Canvas or DOM
 - Loads assets only needed for current scene
 - Dark and light themes
 
-### Controls
+## Controls
 
 - ↑, ↓, ←, → - Moves
 - Space - Pause
 - J - Punch/Kick
 - K - Jump
 - L - Defense
-- Esc - Menu
+- Esc - Pause
 
 Gamepad is also supported
 
-### Available moves
+## Available moves
 
 - **Uppercut** (↑ + J)  
   ![Uppercut move](./src/assets/images/readme/uppercut_test.png)
 
 ## License
 
-The code in this repository is under [MIT license](./LICENSE). But sounds and images belong to their authors and copyright holders and cannot be used for commercial purposes without their consent.
+This game exists solely for fun and educational non-profit purposes. The code is under [GNU GPLv3 license](./LICENSE), but sounds and images belong to their authors and copyright holders.
 
-## Attributions
-
-The images and sounds are taken from the following games:
+Images and sounds are taken from the following games:
 
 - [Comix Zone](https://en.wikipedia.org/wiki/Comix_Zone)
 - ...

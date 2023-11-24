@@ -1,5 +1,5 @@
 import { Settings } from '../Settings';
-import { Vector } from '../math';
+import { Vector } from '../geometries';
 import { getReversedImage, getScaledImage } from '../utils';
 import { Drawable, type DrawableOptions } from './Drawable';
 import { LayerDOM } from './layers/LayerDOM';

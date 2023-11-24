@@ -14,5 +14,5 @@ export * from './Emitter';
 export * from './Timer';
 export * from './Observable';
 export * from './utils';
-export * from './math';
+export * from './geometries';
 export * from './list';

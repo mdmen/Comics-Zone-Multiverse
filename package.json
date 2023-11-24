@@ -1,7 +1,9 @@
 {
+  "version": "0.1.0",
   "private": true,
   "title": "Comics Zone: Glitch",
   "description": "An attempt to create HTML5 spin-off for the great SEGA game called Comix Zone",
+  "homepage": "https://comicszoneglitch.github.io",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
@@ -12,7 +14,7 @@
     "postinstall": "yarn simple-git-hooks"
   },
   "lint-staged": {
-    "*.{ts,js,json,css,html}": [
+    "*.{ts,js,json,css}": [
       "prettier --write"
     ]
   },

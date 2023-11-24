@@ -11,7 +11,7 @@ import {
 } from '../../utils';
 import { type SpriteAsset } from '../../assets/types';
 import { Settings } from '../../Settings';
-import { Vector } from '../../math';
+import { Vector } from '../../geometries';
 
 interface TransformCallback {
   (text: string): string;

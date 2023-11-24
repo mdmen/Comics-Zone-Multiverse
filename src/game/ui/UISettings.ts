@@ -109,14 +109,17 @@ export class UISettings {
   }
 
   private createInfoButton(container: HTMLElement): Node {
-    const content = document.createElement('p');
+    const content = document.createElement('div');
     content.innerHTML = `
-            W, A, S, D - Moves<br/>
-            J - Strike<br/>
-            K - Jump<br/>
-            L - Defense<br/>
-            Space - Pause<br/><br/>
-            Gamepad is also supported
+            <p style="line-height:2">
+              <kbd>W</kbd>, <kbd>A</kbd>, <kbd>S</kbd>, <kbd>D</kbd> - Moves<br/>
+              <kbd>J</kbd> - Strike<br/>
+              <kbd>K</kbd> - Jump<br/>
+              <kbd>L</kbd> - Defense<br/>
+              <kbd>Space</kbd> - Pause
+              <hr style="margin:1rem 0" />
+              Gamepad is also supported
+            </p>
           `;
 
     const modal = new Modal({

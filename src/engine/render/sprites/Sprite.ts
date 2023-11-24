@@ -1,4 +1,4 @@
-import { Point, Vector } from '../../math';
+import { Point, Vector } from '../../geometries';
 import { Image, type ImageOptions } from '../Image';
 import { SpriteAnimation } from './SpriteAnimation';
 

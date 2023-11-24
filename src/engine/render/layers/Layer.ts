@@ -1,4 +1,4 @@
-import { Vector } from '../../math';
+import { Vector } from '../../geometries';
 import { Settings } from '../../Settings';
 import type { Camera } from '../Camera';
 import { Drawable } from '../Drawable';

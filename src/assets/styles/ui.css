@@ -132,27 +132,31 @@
 .modal-overlay {
   position: fixed;
   display: flex;
-  align-items: center;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
   justify-content: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 10px;
-  z-index: 10;
+  align-items: center;
 }
 
 .modal {
+  margin: auto;
   position: relative;
-  max-width: 100%;
   overscroll-behavior: contain;
   background-color: var(--ui-background-color);
   border-radius: 0.3rem;
   padding: 1rem;
-  width: 400px;
   box-shadow: 2px 2px 7px -2px #222;
   /* Created by Adam Anlauf (https://www.transparenttextures.com/grunge-wall.html) */
   background-image: url('../images/background.webp');
+  transform: translateY(-100vh);
+  transition: transform 0.3s;
+  width: 30rem;
+  max-width: 100%;
+}
+
+.modal.visible {
+  transform: translateY(0);
 }
 
 .modal-caption {
@@ -182,4 +186,19 @@
 
 .modal-content p {
   margin: 0;
+}
+
+kbd {
+  background-color: #eee;
+  border-radius: 3px;
+  border: 1px solid #b4b4b4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),
+    0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+  color: #333;
+  display: inline-block;
+  font-size: 0.9em;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.15rem 0.4rem;
+  white-space: nowrap;
 }

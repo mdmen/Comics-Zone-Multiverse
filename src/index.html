@@ -1,60 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
 
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <meta
-      name="description"
-      content="<%= htmlWebpackPlugin.options.description %>"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
 
-    <meta name="og:title" content="<%= htmlWebpackPlugin.options.title %>" />
-    <meta
-      name="og:description"
-      content="<%= htmlWebpackPlugin.options.description %>"
-    />
-    <meta name="og:url" content="" />
-    <meta
-      name="og:image"
-      content="<%=require('./assets/images/readme/header.webp')%>"
-    />
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+  <meta name="description" content="<%= htmlWebpackPlugin.options.description %>" />
 
-    <link
-      rel="preload"
-      as="image"
-      href="<%=require('./assets/images/scenes/loading_start.webp')%>"
-    />
-    <link
-      rel="preload"
-      as="image"
-      href="<%=require('./assets/images/scenes/loading_finish.webp')%>"
-    />
+  <meta name="og:type" content="website" />
+  <meta name="og:title" content="<%= htmlWebpackPlugin.options.title %>" />
+  <meta name="og:description" content="<%= htmlWebpackPlugin.options.description %>" />
+  <meta name="og:url" content="<%= htmlWebpackPlugin.options.homepage %>" />
+  <meta name="og:image" content="<%=require('./assets/images/readme/header.webp')%>" />
 
-    <link
-      rel="preload"
-      as="image"
-      href="<%=require('./assets/fonts/font_bitmap.webp')%>"
-    />
-    <link
-      rel="preload"
-      as="fetch"
-      href="<%=require('./assets/fonts/font_glyphs.json')%>"
-    />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="<%= htmlWebpackPlugin.options.title %>" />
+  <meta name="twitter:description" content="<%= htmlWebpackPlugin.options.description %>" />
+  <meta name="twitter:url" content="<%= htmlWebpackPlugin.options.homepage %>" />
+  <meta name="twitter:image" content="<%=require('./assets/images/readme/header.webp')%>" />
 
-    <link rel="icon" href="/favicons/favicon.png" sizes="any" />
-    <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" />
+  <link rel="preload" as="image" href="<%=require('./assets/images/scenes/loading_start.webp')%>" />
+  <link rel="preload" as="image" href="<%=require('./assets/images/scenes/loading_finish.webp')%>" />
+  <link rel="preload" as="image" href="<%=require('./assets/fonts/font_bitmap.webp')%>" />
+  <link rel="preload" as="fetch" href="<%=require('./assets/fonts/font_glyphs.json')%>" />
 
-    <%= htmlWebpackPlugin.options.criticalStyles %>
-  </head>
-  <body>
-    <div class="wrapper">
-      <div class="paper">
-        <noscript>You need to enable JavaScript to play this game</noscript>
-        <div class="container" data-testid="container"></div>
-      </div>
+  <link rel="icon" href="/favicons/favicon.png" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" />
+
+  <%= htmlWebpackPlugin.options.criticalStyles %>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="paper">
+      <noscript>You need to enable JavaScript to play this game</noscript>
+      <div class="container" data-testid="container"></div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
