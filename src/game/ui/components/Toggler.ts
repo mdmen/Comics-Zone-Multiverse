@@ -50,7 +50,7 @@ export class Toggler extends Node {
     return node;
   }
 
-  private bindEvents(onToggle: (toggler: Toggler) => void): void {
+  private bindEvents(onToggle: (toggler: Toggler) => void) {
     this.node.addEventListener('click', () => {
       this.toggleState();
       this.setAria();
@@ -62,16 +62,16 @@ export class Toggler extends Node {
     });
   }
 
-  private toggleState(): void {
+  private toggleState() {
     this.state = this.isActive() ? 'off' : 'on';
   }
 
-  private setAria(): void {
+  private setAria() {
     const value = this.isActive().toString();
     this.node.setAttribute('aria-pressed', value);
   }
 
-  public setContent(): void {
+  setContent() {
     const node = this.isActive() ? this.activeContent : this.inactiveContent;
     super.setContent(node);
 
@@ -81,7 +81,7 @@ export class Toggler extends Node {
     }
   }
 
-  public isActive(): boolean {
+  isActive(): boolean {
     return this.state === 'on';
   }
 }

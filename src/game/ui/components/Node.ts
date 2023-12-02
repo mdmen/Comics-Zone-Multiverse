@@ -5,11 +5,11 @@ export abstract class Node {
 
   protected abstract create(...args: unknown[]): HTMLElement;
 
-  public getNode(): HTMLElement {
+  getNode(): HTMLElement {
     return this.node;
   }
 
-  public setContent(content: NodeContent): void {
+  setContent(content: NodeContent) {
     const node = content instanceof Node ? content.getNode() : content;
 
     this.node.innerHTML = '';

@@ -6,7 +6,7 @@ interface Options extends DrawableOptions {
   color?: string;
 }
 
-export class RectShape extends Drawable {
+export class Rect extends Drawable {
   protected domNode!: DrawableNode;
   private color;
 
@@ -16,7 +16,7 @@ export class RectShape extends Drawable {
     this.color = color;
   }
 
-  public getColor(): string {
+  getColor(): string {
     return this.color;
   }
 
@@ -28,7 +28,7 @@ export class RectShape extends Drawable {
     });
   }
 
-  public draw(): void {
+  draw() {
     super.draw();
 
     this.layer.drawRect(this);

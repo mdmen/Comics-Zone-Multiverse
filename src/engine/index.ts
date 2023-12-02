@@ -15,4 +15,4 @@ export * from './Timer';
 export * from './Observable';
 export * from './utils';
 export * from './geometries';
-export * from './list';
+export * from './linked-list';

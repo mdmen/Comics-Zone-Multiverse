@@ -12,9 +12,9 @@ export abstract class CharacterState implements State {
     this.character = character;
   }
 
-  public abstract enter(): void;
+  abstract enter(): void;
 
-  public abstract update(): void;
+  abstract update(): void;
 
-  public abstract leave(): void;
+  abstract leave(): void;
 }

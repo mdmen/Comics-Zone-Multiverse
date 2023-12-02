@@ -51,7 +51,7 @@ export class ProgressText extends Progress {
     this.scene.add(this.text);
   }
 
-  protected updateSync(): void {
+  protected updateSync() {
     const percent = Math.floor(this.progressPercent);
     this.text.setText(this.textTemplateFunc(percent));
 
@@ -84,7 +84,7 @@ export class ProgressText extends Progress {
     this.updateAsync();
   }
 
-  public hide(): void {
+  hide() {
     this.text.hide();
   }
 }

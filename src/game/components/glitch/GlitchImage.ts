@@ -1,8 +1,8 @@
-import { ImageOptions, Scene, Settings } from '@/engine';
+import { PictureOptions, Scene, Settings } from '@/engine';
 import { GlitchImageCanvas } from './GlitchImageCanvas';
 import { GlitchImageDOM } from './GlitchImageDOM';
 
-interface Options extends ImageOptions {
+interface Options extends PictureOptions {
   scene: Scene;
   delayMin?: number;
   delayMax?: number;
@@ -22,15 +22,15 @@ export class GlitchImage {
     this.scene.add(this.glitchImage);
   }
 
-  public start(): void {
+  start() {
     this.glitchImage.start();
   }
 
-  public stop(): void {
+  stop() {
     this.glitchImage.stop();
   }
 
-  public hide(): void {
+  hide() {
     this.glitchImage.hide();
   }
 }

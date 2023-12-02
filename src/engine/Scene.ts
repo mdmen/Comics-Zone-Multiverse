@@ -7,7 +7,7 @@ export class Scene {
   protected readonly items: Set<SceneItem> = new Set();
   private readonly layers: Set<Layer> = new Set();
 
-  private hasUpdatablesUsingLayer(layer: Layer): boolean {
+  private hasUpdatablesUsingLayer(layer: Layer) {
     for (const item of this.items) {
       if (item instanceof Drawable && item.getLayer() === layer) return true;
     }
@@ -15,7 +15,7 @@ export class Scene {
     return false;
   }
 
-  public add(updatable: SceneItem): Scene {
+  add(updatable: SceneItem) {
     this.items.add(updatable);
 
     if (updatable instanceof Drawable) {
@@ -26,7 +26,7 @@ export class Scene {
     return this;
   }
 
-  public remove(updatable: Updatable): Scene {
+  remove(updatable: Updatable) {
     updatable.destroy();
     this.items.delete(updatable);
 
@@ -40,7 +40,7 @@ export class Scene {
     return this;
   }
 
-  public destroy(): Scene {
+  destroy() {
     this.items.forEach((item) => {
       item.destroy();
     });
@@ -53,13 +53,13 @@ export class Scene {
     return this;
   }
 
-  public update(step: number): void {
+  update(step: number) {
     this.items.forEach((item) => {
       item.update(step);
     });
   }
 
-  public draw(): void {
+  draw() {
     this.layers.forEach((layer) => {
       layer.preDraw();
     });

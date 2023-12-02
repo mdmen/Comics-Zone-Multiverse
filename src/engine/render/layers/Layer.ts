@@ -2,9 +2,9 @@ import { Vector } from '../../geometries';
 import { Settings } from '../../Settings';
 import type { Camera } from '../Camera';
 import { Drawable } from '../Drawable';
-import type { Image } from '../Image';
+import type { Picture } from '../Picture';
 import { Node } from '../nodes/Node';
-import { type RectShape } from '../RectShape';
+import { type Rect } from '../Rect';
 import { type SpriteText } from '../sprites';
 
 export interface LayerOptions {
@@ -40,7 +40,7 @@ export abstract class Layer extends Node {
     this.mount();
   }
 
-  private setup(): void {
+  private setup() {
     this.node.classList.add(Settings.get('canvasClassName'));
     this.node.style.width = `${Math.floor(this.width)}px`;
     this.node.style.height = `${Math.floor(this.height)}px`;
@@ -51,7 +51,7 @@ export abstract class Layer extends Node {
     }
   }
 
-  private mount(): void {
+  private mount() {
     this.container.appendChild(this.node);
   }
 
@@ -67,31 +67,31 @@ export abstract class Layer extends Node {
     return !cameraPosition.isEqualTo(this.prevPosition);
   }
 
-  private updatePrevPosition(): void {
+  private updatePrevPosition() {
     const cameraPosition = (this.camera as Camera).getPosition();
     this.prevPosition.copy(cameraPosition);
   }
 
-  public preDraw(): void {
+  preDraw() {
     if (!this.shouldSyncWithCamera()) return;
 
     this.syncWithCamera();
     this.updatePrevPosition();
   }
 
-  public setCamera(camera: Camera): void {
+  setCamera(camera: Camera) {
     this.camera = camera;
   }
 
-  public unsetCamera(): void {
+  unsetCamera() {
     this.camera = null;
   }
 
-  public getWidth(): number {
+  getWidth(): number {
     return this.width;
   }
 
-  public getHeight(): number {
+  getHeight(): number {
     return this.height;
   }
 
@@ -99,11 +99,11 @@ export abstract class Layer extends Node {
 
   protected abstract syncWithCamera(): void;
 
-  public abstract drawImage(drawable: Image | SpriteText): void;
+  abstract drawImage(drawable: Picture | SpriteText): void;
 
-  public abstract postDraw(): void;
+  abstract postDraw(): void;
 
-  public abstract drawRect(rect: RectShape): void;
+  abstract drawRect(rect: Rect): void;
 
-  public abstract clear(): void;
+  abstract clear(): void;
 }

@@ -4,7 +4,7 @@ import {
   type Audio,
   type ImageAssets,
   type AudioAssets,
-  type FontAssets,
+  type ImageFontAssets,
   ReturnImageAssets,
   ReturnAudioAssets,
 } from '@/engine';
@@ -27,7 +27,7 @@ interface Options {
   audio: Audio;
   imageAssets: ImageAssets;
   audioAssets: AudioAssets;
-  fontAssets: FontAssets;
+  fontAssets: ImageFontAssets;
   layers: Record<Layers, Layer>;
   input: Input;
 }
@@ -68,51 +68,51 @@ export class Manager extends StateMachine {
     this.addState(Scenes.INTRO, new IntroScene(this));
   }
 
-  public addState(name: Scenes, scene: Scene): StateMachine {
+  addState(name: Scenes, scene: Scene): StateMachine {
     return super.addState(name, scene);
   }
 
-  public setState(name: Scenes): void {
+  setState(name: Scenes) {
     super.setState(name);
   }
 
-  public getState(key?: Scenes): Scene {
+  getState(key?: Scenes): Scene {
     return super.getState(key) as Scene;
   }
 
-  public getConfig(): Config {
+  getConfig(): Config {
     return this.config;
   }
 
-  public getImages(): GlobalImages {
+  getImages(): GlobalImages {
     return this.images;
   }
 
-  public getSounds(): GlobalSounds {
+  getSounds(): GlobalSounds {
     return this.sounds;
   }
 
-  public setGlobalImages(images: GlobalImages): void {
+  setGlobalImages(images: GlobalImages) {
     this.images = images;
   }
 
-  public setGlobalSounds(sounds: GlobalSounds): void {
+  setGlobalSounds(sounds: GlobalSounds) {
     this.sounds = sounds;
   }
 
-  public getImageAssets(): ImageAssets {
+  getImageAssets(): ImageAssets {
     return this.imageAssets;
   }
 
-  public getAudioAssets(): AudioAssets {
+  getAudioAssets(): AudioAssets {
     return this.audioAssets;
   }
 
-  public getLayers(): Record<Layers, Layer> {
+  getLayers(): Record<Layers, Layer> {
     return this.layers;
   }
 
-  public getFontAssets(): FontAssets {
+  getFontAssets(): ImageFontAssets {
     return this.fontAssets;
   }
 }

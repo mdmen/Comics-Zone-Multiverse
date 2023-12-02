@@ -25,7 +25,7 @@ export class Pendulum {
     }
   }
 
-  public update(step: number): void {
+  update(step: number) {
     this.value += this.factor * step * this.velocity;
 
     if (this.value <= this.min) {
@@ -39,7 +39,7 @@ export class Pendulum {
     }
   }
 
-  public getValue(): number {
+  getValue(): number {
     return +this.value.toFixed(2);
   }
 }

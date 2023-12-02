@@ -40,7 +40,7 @@ export class DrawableNode extends Node {
     return node;
   }
 
-  public mount(): void {
+  mount() {
     const subnode = this.layer.getSubnode();
 
     if (subnode.contains(this.node)) return;

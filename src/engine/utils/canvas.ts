@@ -3,7 +3,7 @@ import { Settings } from '../Settings';
 export function createCanvas(
   width = Settings.get('canvasWidth'),
   height = Settings.get('canvasHeight')
-): HTMLCanvasElement {
+) {
   const canvas = document.createElement('canvas');
   canvas.width = Math.floor(width);
   canvas.height = Math.floor(height);
@@ -15,7 +15,7 @@ export function createContext2D(
   canvas: HTMLCanvasElement,
   transparent = true,
   antialiasing = Settings.get('antialiasing')
-): CanvasRenderingContext2D {
+) {
   const context = canvas.getContext('2d', {
     alpha: transparent,
   });

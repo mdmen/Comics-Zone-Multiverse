@@ -1,24 +1,24 @@
-import { type Image } from '../Image';
+import { type Picture } from '../Picture';
 import { type SpriteText } from '../sprites';
 import { DrawableNode, type DrawableNodeOptions } from './DrawableNode';
 
 interface ImageNodeOptions extends DrawableNodeOptions {
-  drawable: Image | SpriteText;
+  drawable: Picture | SpriteText;
 }
 
 export class ImageNode extends DrawableNode {
-  protected drawable!: Image;
+  protected drawable!: Picture;
 
   constructor({ layer, drawable }: ImageNodeOptions) {
     super({ layer, drawable });
   }
 
-  public updateImage(): void {
+  updateImage() {
     const { src } = this.drawable.getImage();
     this.node.style.backgroundImage = `url(${src})`;
   }
 
-  public flip(): void {
+  flip() {
     this.updateImage();
   }
 }

@@ -47,7 +47,7 @@ export class Tooltip extends Node {
     return node;
   }
 
-  public setTooltip(content: NodeContent): void {
+  setTooltip(content: NodeContent) {
     this.tooltipNode.innerHTML = '';
 
     this.tooltipNode.append(

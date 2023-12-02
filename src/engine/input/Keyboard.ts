@@ -21,7 +21,7 @@ export class Keyboard {
     this.pressedKeys.delete(code);
   }
 
-  public isPressed(code: string): boolean {
+  isPressed(code: string) {
     return this.pressedKeys.has(code);
   }
 }

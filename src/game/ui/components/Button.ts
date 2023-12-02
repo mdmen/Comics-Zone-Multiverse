@@ -37,7 +37,7 @@ export class Button extends Node {
     return node;
   }
 
-  public setContent(): void {
+  setContent() {
     super.setContent(this.content);
 
     if (this.label) {

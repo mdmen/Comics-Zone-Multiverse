@@ -34,15 +34,15 @@ export abstract class Character extends Sprite {
     this.health = health;
   }
 
-  public getMovingState(): StateMachine {
+  getMovingState(): StateMachine {
     return this.moveStates;
   }
 
-  public update(step: number): void {
+  update(step: number) {
     const moveState = this.moveStates.getState();
     moveState.update(step);
     super.update(step);
   }
 
-  public abstract getSounds(): Sounds;
+  abstract getSounds(): Sounds;
 }

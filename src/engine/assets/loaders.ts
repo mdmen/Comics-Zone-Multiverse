@@ -2,19 +2,25 @@ export function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const image = new Image();
 
-    image.addEventListener('load', () => {
-      resolve(image);
-    });
-
-    image.addEventListener('error', (event) => {
+    const onError = (event: Event) => {
       reject(event);
-    });
+    };
+
+    const onLoad = () => {
+      image.removeEventListener('load', onLoad);
+      image.removeEventListener('error', onError);
+
+      resolve(image);
+    };
+
+    image.addEventListener('load', onLoad);
+    image.addEventListener('error', onError);
 
     image.src = src;
   });
 }
 
-async function fetchResource(src: string): Promise<Response> {
+async function fetchResource(src: string) {
   const response = await fetch(src);
 
   if (!response.ok) {
@@ -24,7 +30,7 @@ async function fetchResource(src: string): Promise<Response> {
   return response;
 }
 
-export async function loadAudio(src: string): Promise<ArrayBuffer> {
+export async function loadAudio(src: string) {
   const response = await fetchResource(src);
   return response.arrayBuffer();
 }

@@ -3,7 +3,7 @@ import fontData from '@/assets/fonts/font_glyphs.json';
 
 export const fonts = {
   basic: {
-    src: fontImage,
+    url: fontImage,
     data: fontData,
   },
 };

@@ -1,17 +1,3 @@
 {
-  "cSpell.words": [
-    "Antialiasing",
-    "Comix",
-    "contextlost",
-    "contextrestored",
-    "corepack",
-    "drawables",
-    "flippable",
-    "Gamepad",
-    "labelledby",
-    "testid",
-    "updatables",
-    "webp"
-  ],
   "livePreview.serverRoot": "./dist"
 }

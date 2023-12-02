@@ -21,35 +21,35 @@ export class Input {
     this.input = new EngineInput(controls);
   }
 
-  public isUp(): boolean {
+  isUp(): boolean {
     return this.input.isPressed('up');
   }
 
-  public isDown(): boolean {
+  isDown(): boolean {
     return this.input.isPressed('down');
   }
 
-  public isLeft(): boolean {
+  isLeft(): boolean {
     return this.input.isPressed('left');
   }
 
-  public isRight(): boolean {
+  isRight(): boolean {
     return this.input.isPressed('right');
   }
 
-  public isStart(): boolean {
+  isStart(): boolean {
     return this.input.isPressed('start');
   }
 
-  public isButtonA(): boolean {
+  isButtonA(): boolean {
     return this.input.isPressed('A');
   }
 
-  public isButtonB(): boolean {
+  isButtonB(): boolean {
     return this.input.isPressed('B');
   }
 
-  public isButtonC(): boolean {
+  isButtonC(): boolean {
     return this.input.isPressed('C');
   }
 }

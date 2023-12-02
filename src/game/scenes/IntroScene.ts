@@ -11,7 +11,7 @@ export class IntroScene extends Scene {
   protected images!: ReturnImageAssets<typeof introSceneImages>;
   protected sounds!: Sounds<ReturnAudioAssets<typeof introSceneSounds>>;
 
-  public async enter(): Promise<void> {
+  async enter(): Promise<void> {
     const layers = this.manager.getLayers();
 
     new GlitchImage({

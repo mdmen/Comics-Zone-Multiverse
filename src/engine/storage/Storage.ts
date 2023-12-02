@@ -9,7 +9,7 @@ export class Storage<Values extends Record<string, unknown>> {
 
   constructor(storageKey: string, initialValues: Values) {
     if (Storage.storages.includes(storageKey)) {
-      throw Error(`Storage with key ${storageKey} already exists`);
+      throw Error(`Storage "${storageKey}" already exists`);
     }
 
     this.initialValues = initialValues;
@@ -23,14 +23,11 @@ export class Storage<Values extends Record<string, unknown>> {
     });
   }
 
-  public setValue<Key extends keyof Values>(
-    name: Key,
-    value: Values[Key]
-  ): void {
+  setValue<Key extends keyof Values>(name: Key, value: Values[Key]) {
     this.memory[name] = value;
   }
 
-  public getValue<Key extends keyof Values>(name: Key): Values[Key] {
+  getValue<Key extends keyof Values>(name: Key) {
     return this.memory[name] ?? this.initialValues[name];
   }
 }

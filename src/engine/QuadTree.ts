@@ -16,7 +16,7 @@ export class QuadTree {
     this.nodes = [];
   }
 
-  private split(): void {
+  private split() {
     const position = this.bounds.getPosition();
     const level = this.level + 1;
     const halfWidth = this.bounds.getWidth() / 2;
@@ -48,7 +48,7 @@ export class QuadTree {
     );
   }
 
-  private getIndex(object: Rectangle): number[] {
+  private getIndex(object: Rectangle) {
     const indexes = [];
     const position = this.bounds.getPosition();
     const verticalMidpoint = position.x + this.bounds.getWidth() / 2;
@@ -67,11 +67,11 @@ export class QuadTree {
     return indexes;
   }
 
-  private isSizeExceeded(): boolean {
+  private isSizeExceeded() {
     return this.objects.size > this.maxObjects && this.level < this.maxLevels;
   }
 
-  public insert(object: Rectangle): void {
+  insert(object: Rectangle) {
     if (!isEmpty(this.nodes)) {
       const indexes = this.getIndex(object);
 
@@ -98,7 +98,7 @@ export class QuadTree {
     this.objects.clear();
   }
 
-  public retrieve(object: Rectangle): Set<Rectangle> {
+  retrieve(object: Rectangle) {
     const indexes = this.getIndex(object);
 
     if (!isEmpty(this.nodes)) {
@@ -111,7 +111,7 @@ export class QuadTree {
     return this.objects;
   }
 
-  public clear(): void {
+  clear() {
     this.objects.clear();
 
     for (let i = 0; i < this.nodes.length; i++) {

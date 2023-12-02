@@ -1,28 +1,24 @@
-import { Playable } from './Playable';
+import { Sound } from './Sound';
+import type { SoundSpriteData } from '../assets/types';
 
-interface Segment {
-  start: number;
-  end: number;
-}
+export class SoundSprite extends Sound {
+  private data;
 
-export interface SoundSpriteData<Names extends PrimitiveKeys = string> {
-  map: Record<Names, Segment>;
-}
-
-export class SoundSprite<
-  Names extends PrimitiveKeys = string
-> extends Playable {
-  private readonly data;
-
-  constructor(source: AudioBufferSourceNode, data: SoundSpriteData<Names>) {
+  constructor(source: AudioBufferSourceNode, data: SoundSpriteData) {
     super(source);
 
     this.data = data;
   }
 
-  public play(name: Names): void {
-    const { start, end } = this.data.map[name];
+  play(segment: string) {
+    const { start, end } = this.data.map[segment];
 
     this.source.start(0, start, end);
+  }
+
+  destroy() {
+    super.destroy();
+
+    this.data = null as unknown as SoundSpriteData;
   }
 }

@@ -74,7 +74,7 @@ export class Camera extends Rectangle {
     );
   }
 
-  private followTarget(): void {
+  private followTarget() {
     const targetPosition = this.target.getPosition();
 
     if (this.isTargetHitLeftBoundary()) {
@@ -92,7 +92,7 @@ export class Camera extends Rectangle {
     }
   }
 
-  private stayOnTheMap(): void {
+  private stayOnTheMap() {
     const mapPosition = this.map.getPosition();
 
     if (this.position.x < mapPosition.x) {
@@ -108,7 +108,7 @@ export class Camera extends Rectangle {
     }
   }
 
-  public update(): void {
+  update() {
     this.followTarget();
     this.stayOnTheMap();
   }

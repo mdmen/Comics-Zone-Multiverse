@@ -12,12 +12,12 @@ export class SketchIdleState extends SketchState {
     });
   }
 
-  protected onInput(): void {}
+  protected onInput() {}
 
-  public enter(): void {
+  enter() {
     this.character.getSounds().play('sketch', 'oh-yeah');
     this.character.setAnimation(CharacterMoves.IDLE);
   }
 
-  public leave(): void {}
+  leave() {}
 }

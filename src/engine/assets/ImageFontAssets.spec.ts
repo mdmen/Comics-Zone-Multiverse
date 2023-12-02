@@ -1,4 +1,4 @@
-import { FontAssets } from './FontAssets';
+import { ImageFontAssets } from './ImageFontAssets';
 import fontImage from 'firstImage.webp';
 
 const sources = {
@@ -15,7 +15,7 @@ interface ImageFontAsset {
 
 describe('Font assets (engine)', () => {
   test('Should load font assets', async () => {
-    const assets = new FontAssets();
+    const assets = new ImageFontAssets();
     const fonts = await assets.load(sources);
 
     const font = fonts.font as unknown as ImageFontAsset;

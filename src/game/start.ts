@@ -4,10 +4,10 @@ import { Config } from './Config';
 import {
   Audio,
   AudioAssets,
-  FontAssets,
+  ImageFontAssets,
   GameLoop,
   ImageAssets,
-  createLayer,
+  Factory,
   onGlobalError,
 } from '@/engine';
 import { Modal } from './ui/components';
@@ -18,15 +18,15 @@ export async function start(): Promise<void> {
   const container = getAppContainer();
   const audio = new Audio();
   const config = new Config(audio);
-  const fontAssets = new FontAssets();
+  const fontAssets = new ImageFontAssets();
   const imageAssets = new ImageAssets();
   const audioAssets = new AudioAssets();
   const input = new Input();
 
   const layers = {
-    bottom: createLayer({ container }),
-    middle: createLayer({ container }),
-    top: createLayer({ container }),
+    bottom: Factory.createLayer({ container }),
+    middle: Factory.createLayer({ container }),
+    top: Factory.createLayer({ container }),
   };
   layers.bottom.setStyle('zIndex', '1');
   layers.middle.setStyle('zIndex', '5');

@@ -1,44 +1,44 @@
-import type { Point } from './Point';
+import type { Point } from './types';
 
 export class Vector implements Point {
-  public x;
-  public y;
+  x;
+  y;
 
   constructor(x = 0, y = 0) {
     this.x = x;
     this.y = y;
   }
 
-  public set(x: number, y: number): void {
+  set(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
 
-  public copy(v: Point): void {
+  copy(v: Point) {
     this.x = v.x;
     this.y = v.y;
   }
 
-  public add(v: Point): void {
+  add(v: Point) {
     this.x += v.x;
     this.y += v.y;
   }
 
-  public subtract(v: Point): void {
+  subtract(v: Point) {
     this.x -= v.x;
     this.y -= v.y;
   }
 
-  public scale(n: number): void {
+  scale(n: number) {
     this.x *= n;
     this.y *= n;
   }
 
-  public isEqualTo(v: Point): boolean {
+  isEqualTo(v: Point) {
     return this.x === v.x && this.y === v.y;
   }
 
-  public isZero(): boolean {
+  isZero() {
     return this.x === 0 && this.y === 0;
   }
 }

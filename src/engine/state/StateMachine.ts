@@ -1,6 +1,6 @@
-import { LinkedList } from '../list/LinkedList';
+import { LinkedList } from '../linked-list/LinkedList';
 import { isEmpty } from '../utils';
-import { type State } from './State';
+import { type State } from './types';
 
 const defaultState: State = {
   update() {},
@@ -21,13 +21,13 @@ export class StateMachine {
     this.stacked = stacked;
   }
 
-  public addState(key: string, state: State): StateMachine {
+  addState(key: string, state: State) {
     this.states[key] = state;
 
     return this;
   }
 
-  public setState(key: string, ...args: unknown[]): void {
+  setState(key: string, ...args: unknown[]) {
     this.currentState.leave();
     this.currentState = this.states[key];
     this.currentState.enter(...args);
@@ -35,7 +35,7 @@ export class StateMachine {
     this.stacked && this.updateStateStack(key);
   }
 
-  public updateStateStack(newStateKey: string): void {
+  updateStateStack(newStateKey: string) {
     if (this.prevStateKey) {
       this.stack.append(this.prevStateKey);
     }
@@ -47,7 +47,7 @@ export class StateMachine {
     this.prevStateKey = newStateKey;
   }
 
-  public setPrevState(): void {
+  setPrevState() {
     if (isEmpty(this.stack)) return;
 
     const key = this.stack.pop() as string;
@@ -57,7 +57,7 @@ export class StateMachine {
     this.currentState.enter();
   }
 
-  public getState(key?: string): State {
+  getState(key?: string) {
     return key ? this.states[key] : this.currentState;
   }
 }

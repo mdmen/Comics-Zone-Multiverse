@@ -23,7 +23,7 @@ export class GameLoop {
   }
 
   // with time based animation technique
-  private loop(timeStamp: number): void {
+  private loop(timeStamp: number) {
     this.accumulator += timeStamp - this.previousTime;
     this.previousTime = timeStamp;
 
@@ -40,11 +40,11 @@ export class GameLoop {
     this.rafId = requestAnimationFrame(this.loop);
   }
 
-  public start(): void {
+  start() {
     this.loop(0);
   }
 
-  public stop(): void {
+  stop() {
     cancelAnimationFrame(this.rafId);
     this.previousTime = 0;
     this.accumulator = 0;

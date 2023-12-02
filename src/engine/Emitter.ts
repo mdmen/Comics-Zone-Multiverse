@@ -1,7 +1,7 @@
 import { Settings } from './Settings';
 
 interface CustomEventListener {
-  (event: CustomEvent): void;
+  (event: CustomEvent);
 }
 
 export class Emitter<EventTypes extends string> {
@@ -13,25 +13,25 @@ export class Emitter<EventTypes extends string> {
     this.prefix = Settings.get('eventsPrefix');
   }
 
-  private getEventType(type: EventTypes): string {
+  private getEventType(type: EventTypes) {
     return `${this.prefix}${type}`;
   }
 
-  public subscribe(type: EventTypes, listener: CustomEventListener): void {
+  subscribe(type: EventTypes, listener: CustomEventListener) {
     this.emitter.addEventListener(
       this.getEventType(type),
       listener as EventListener
     );
   }
 
-  public unsubscribe(type: EventTypes, listener: CustomEventListener): void {
+  unsubscribe(type: EventTypes, listener: CustomEventListener) {
     this.emitter.removeEventListener(
       this.getEventType(type),
       listener as EventListener
     );
   }
 
-  public emit(type: EventTypes, detail?: unknown): void {
+  emit(type: EventTypes, detail?: unknown) {
     const event = new CustomEvent(this.getEventType(type), { detail });
     this.emitter.dispatchEvent(event);
   }

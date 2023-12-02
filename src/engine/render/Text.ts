@@ -1,37 +1,24 @@
-import { type Layer } from '../layers/Layer';
-import { type LayerDOM } from '../layers/LayerDOM';
-import { DrawableNode, ImageNode } from '../nodes';
-import { Drawable, DrawableOptions } from '../Drawable';
+import { type Layer } from './layers/Layer';
+import { type LayerDOM } from './layers/LayerDOM';
+import { DrawableNode, ImageNode } from './nodes';
+import { Drawable, DrawableOptions } from './Drawable';
 import {
   createCanvas,
   createContext2D,
   extractImageFromCanvas,
   getScaledImage,
   squashSpaces,
-} from '../../utils';
-import { type SpriteAsset } from '../../assets/types';
-import { Settings } from '../../Settings';
-import { Vector } from '../../geometries';
+} from '../utils';
+import type {
+  ImageFontAsset,
+  ImageFontData,
+  ImageFontGlyph,
+} from '../assets/types';
+import { Settings } from '../Settings';
+import { Vector } from '../geometries';
 
 interface TransformCallback {
   (text: string): string;
-}
-
-interface GlyphOffset {
-  left: number;
-  right: number;
-}
-
-export interface ImageFontGlyph {
-  x: number;
-  width: number;
-  offset: GlyphOffset;
-}
-
-export interface ImageFontData {
-  rows: string[];
-  rowHeight: number;
-  glyphs: Record<string, ImageFontGlyph>;
 }
 
 interface Options extends Omit<DrawableOptions, 'layer'> {
@@ -46,7 +33,7 @@ interface Options extends Omit<DrawableOptions, 'layer'> {
 
 interface GlobalOptions {
   layer: Layer;
-  font: SpriteAsset<ImageFontData>;
+  font: ImageFontAsset;
   transform?: TransformCallback;
 }
 
@@ -98,7 +85,7 @@ export class SpriteText extends Drawable {
     return squashSpaces(SpriteText.transform(text));
   }
 
-  private static checkSetup(): void {
+  private static checkSetup() {
     const requiredProps = [
       SpriteText.layer,
       SpriteText.data,
@@ -180,7 +167,7 @@ export class SpriteText extends Drawable {
     glyph: ImageFontGlyph,
     dx: number,
     dy: number
-  ): void {
+  ) {
     const { rowHeight } = SpriteText.data;
 
     context.drawImage(
@@ -277,7 +264,7 @@ export class SpriteText extends Drawable {
     return canvas;
   }
 
-  public async setText(text: string): Promise<void> {
+  async setText(text: string): Promise<void> {
     this.text = this.prepareText(text);
 
     [this.width, this.height] = this.normalizeSizes(
@@ -297,26 +284,22 @@ export class SpriteText extends Drawable {
     this.loaded = true;
   }
 
-  public static setup({
-    layer,
-    font,
-    transform = (str) => str,
-  }: GlobalOptions): void {
+  static setup({ layer, font, transform = (str) => str }: GlobalOptions) {
     SpriteText.layer = layer;
     SpriteText.spriteImage = font.image;
     SpriteText.data = font.data;
     SpriteText.transform = transform;
   }
 
-  public getImage(): HTMLImageElement {
+  getImage(): HTMLImageElement {
     return this.image;
   }
 
-  public getSource(): Vector {
+  getSource(): Vector {
     return this.source;
   }
 
-  public draw(): void {
+  draw() {
     this.loaded && this.layer.drawImage(this);
   }
 }

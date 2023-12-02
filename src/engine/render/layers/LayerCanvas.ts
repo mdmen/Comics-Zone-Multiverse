@@ -1,8 +1,8 @@
 import { Logger } from '../../Logger';
 import { createCanvas, createContext2D } from '../../utils';
 import { Layer, type LayerOptions } from './Layer';
-import { type Image } from '../Image';
-import { type RectShape } from '../RectShape';
+import { type Picture } from '../Picture';
+import { type Rect } from '../Rect';
 import { type SpriteText } from '../sprites';
 import { Drawable } from '../Drawable';
 
@@ -23,12 +23,12 @@ export class LayerCanvas extends Layer {
     this.bindEvents();
   }
 
-  private bindEvents(): void {
+  private bindEvents() {
     this.node.addEventListener('contextlost', this.onContextChange);
     this.node.addEventListener('contextrestored', this.onContextChange);
   }
 
-  private onContextChange(event: Event): void {
+  private onContextChange(event: Event) {
     Logger.error(event);
   }
 
@@ -39,7 +39,7 @@ export class LayerCanvas extends Layer {
     return canvas;
   }
 
-  protected syncWithCamera(): void {
+  protected syncWithCamera() {
     const position = this.camera!.getPosition();
     const posX = -Math.floor(position.x);
     const posY = -Math.floor(position.y);
@@ -47,14 +47,14 @@ export class LayerCanvas extends Layer {
     this.context.translate(posX, posY);
   }
 
-  public preDraw(): void {
+  preDraw() {
     this.clear();
     this.context.save();
 
     super.preDraw();
   }
 
-  public drawImage(image: Image | SpriteText): void {
+  drawImage(image: Picture | SpriteText) {
     if (!this.shouldDraw(image)) return;
 
     const position = image.getOffsetPosition();
@@ -84,7 +84,7 @@ export class LayerCanvas extends Layer {
     this.context.restore();
   }
 
-  public postDraw(): void {
+  postDraw() {
     this.context.restore();
   }
 
@@ -96,7 +96,7 @@ export class LayerCanvas extends Layer {
     );
   }
 
-  public drawRect(shape: RectShape): void {
+  drawRect(shape: Rect) {
     if (!this.shouldDraw(shape)) return;
 
     const position = shape.getOffsetPosition();
@@ -119,15 +119,15 @@ export class LayerCanvas extends Layer {
     this.context.restore();
   }
 
-  public getNode(): HTMLCanvasElement {
+  getNode(): HTMLCanvasElement {
     return super.getNode() as HTMLCanvasElement;
   }
 
-  public getContext(): CanvasRenderingContext2D {
+  getContext(): CanvasRenderingContext2D {
     return this.context;
   }
 
-  public clear(): void {
+  clear() {
     this.context.clearRect(0, 0, this.width, this.height);
   }
 }

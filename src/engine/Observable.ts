@@ -11,15 +11,15 @@ interface Subject {
 export class Observable implements Subject {
   private readonly observers = new Set<Observer>();
 
-  public subscribe(observer: Observer): void {
+  subscribe(observer: Observer) {
     this.observers.add(observer);
   }
 
-  public unsubscribe(observer: Observer): void {
+  unsubscribe(observer: Observer) {
     this.observers.delete(observer);
   }
 
-  public notify(...args: unknown[]): void {
+  notify(...args: unknown[]) {
     this.observers.forEach((observer) => {
       observer.update(...args);
     });

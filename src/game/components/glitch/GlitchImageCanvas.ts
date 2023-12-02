@@ -1,17 +1,17 @@
 import {
-  Image,
-  type ImageOptions,
+  Picture,
+  type PictureOptions,
   type LayerCanvas,
   getRandomInteger,
 } from '@/engine';
 
-interface Options extends ImageOptions {
+interface Options extends PictureOptions {
   delayMin?: number;
   delayMax?: number;
 }
 
 // Based on https://codepen.io/dimaZubkov/pen/EgmobE
-export class GlitchImageCanvas extends Image {
+export class GlitchImageCanvas extends Picture {
   protected layer!: LayerCanvas;
   private imageOffset;
   private delay = 0;
@@ -37,11 +37,11 @@ export class GlitchImageCanvas extends Image {
     this.glitchLine = this.glitchLine.bind(this);
   }
 
-  private pixelFlick(i: number, d: Uint8ClampedArray): void {
+  private pixelFlick(i: number, d: Uint8ClampedArray) {
     d[i] = d[i + 16];
   }
 
-  private glitchBlock(x: number, y: number): void {
+  private glitchBlock(x: number, y: number) {
     const context = this.layer.getContext();
     const height = 1 + getRandomInteger(0, 10);
 
@@ -58,7 +58,7 @@ export class GlitchImageCanvas extends Image {
     );
   }
 
-  private glitchLine(x: number, y: number): void {
+  private glitchLine(x: number, y: number) {
     const context = this.layer.getContext();
     const height = 1 + getRandomInteger(1, 50);
 
@@ -99,7 +99,7 @@ export class GlitchImageCanvas extends Image {
     }
   }
 
-  private flickImage(): void {
+  private flickImage() {
     const context = this.layer.getContext();
     const position = this.getPosition();
 
@@ -109,7 +109,7 @@ export class GlitchImageCanvas extends Image {
     context.putImageData(imageData, position.x, position.y);
   }
 
-  private drawInitialImage(): void {
+  private drawInitialImage() {
     const context = this.layer.getContext();
     const position = this.getPosition();
 
@@ -134,7 +134,7 @@ export class GlitchImageCanvas extends Image {
     );
   }
 
-  public draw(): void {
+  draw() {
     super.draw();
 
     if (!this.playing || !this.loaded) return;
@@ -160,11 +160,11 @@ export class GlitchImageCanvas extends Image {
     this.cache = this.getImageData();
   }
 
-  public start(): void {
+  start() {
     this.playing = true;
   }
 
-  public stop(): void {
+  stop() {
     this.playing = false;
   }
 }

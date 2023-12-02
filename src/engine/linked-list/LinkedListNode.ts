@@ -1,7 +1,7 @@
 export class LinkedListNode<Value> {
-  public value;
-  public next: NodeType<Value> = null;
-  public prev: NodeType<Value> = null;
+  value;
+  next: NodeType<Value> = null;
+  prev: NodeType<Value> = null;
 
   constructor(value: Value) {
     this.value = value;

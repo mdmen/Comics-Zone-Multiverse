@@ -94,7 +94,7 @@ export class Modal extends Node {
     return button;
   }
 
-  private bindClose(): void {
+  private bindClose() {
     window.addEventListener('keydown', ({ code }) => {
       if (code === 'Escape') {
         this.hide();
@@ -108,14 +108,14 @@ export class Modal extends Node {
     });
   }
 
-  public hide(): void {
+  hide() {
     this.node.querySelector('.modal')?.classList.remove('visible');
     setTimeout(() => {
       this.node.classList.add('hidden');
     }, 300);
   }
 
-  public show(): void {
+  show() {
     this.node.classList.remove('hidden');
     setTimeout(() => {
       this.node.querySelector('.modal')?.classList.add('visible');

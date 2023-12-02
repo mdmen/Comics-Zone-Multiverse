@@ -1,8 +1,8 @@
-import type { LinkedList } from '../list/LinkedList';
+import type { LinkedList } from '../linked-list/LinkedList';
 
 export function isEmpty(
   value: unknown[] | Set<unknown> | Map<unknown, unknown> | LinkedList
-): boolean {
+) {
   return Array.isArray(value) ? !value.length : !value.size;
 }
 
@@ -14,7 +14,7 @@ export function isNumber(value: unknown): value is number {
   return typeof value === 'number';
 }
 
-export function generateUniqueId(): string {
+export function generateUniqueId() {
   if (typeof crypto !== 'undefined') {
     return crypto.randomUUID();
   }
@@ -24,22 +24,22 @@ export function generateUniqueId(): string {
     .slice(0, 10);
 }
 
-export function squashSpaces(str: string): string {
+export function squashSpaces(str: string) {
   return str.replace(/\s\s+/g, ' ');
 }
 
-export function getPercent(total: number, value: number): number {
+export function getPercent(total: number, value: number) {
   return Math.floor((value / total) * 100);
 }
 
-export function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+export function delay(ms: number) {
+  return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
-export function getRandomNumber(min = 0, max = 1): number {
+export function getRandomNumber(min = 0, max = 1) {
   return Math.random() * (max - min) + min;
 }
 
-export function getRandomInteger(min = 0, max = 1): number {
+export function getRandomInteger(min = 0, max = 1) {
   return Math.floor(getRandomNumber(min, max));
 }

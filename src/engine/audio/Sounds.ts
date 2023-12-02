@@ -2,24 +2,24 @@ import type { Audio } from './Audio';
 import { SoundSprite } from './SoundSprite';
 import { Sound } from './Sound';
 import { Logger } from '../Logger';
-import type { AudioSpriteAsset, AudioAsset } from '../assets/AudioAssets';
+import type { AudioSpriteAsset } from '../assets/types';
 import { isEmpty } from '../utils';
 
-type ResultSounds<T> = Record<keyof T, Sound | SoundSprite>;
+type ResultSounds<Assets> = Record<keyof Assets, Sound | SoundSprite>;
 
-type AudioResource = Record<string, AudioAsset | AudioSpriteAsset>;
+type AudioAssets = Record<string, ArrayBuffer | AudioSpriteAsset>;
 
-export class Sounds<Resources extends AudioResource = AudioResource> {
+export class Sounds<Assets extends AudioAssets = AudioAssets> {
   private readonly audio;
   private sounds;
 
-  constructor(resources: Resources, audio: Audio) {
-    this.audio = audio;
+  constructor(resources: Assets, audio: Audio) {
     this.sounds = this.extract(resources);
+    this.audio = audio;
   }
 
-  private extract(resources: Resources): ResultSounds<Resources> {
-    const sounds = {} as ResultSounds<Resources>;
+  private extract(resources: Assets) {
+    const sounds = {} as ResultSounds<Assets>;
 
     try {
       const names = Object.keys(resources);
@@ -28,7 +28,7 @@ export class Sounds<Resources extends AudioResource = AudioResource> {
         throw Error('There are no sounds');
       }
 
-      names.forEach(async (name: keyof Resources) => {
+      names.forEach(async (name: keyof Assets) => {
         const resource = resources[name];
 
         if (resource instanceof ArrayBuffer) {
@@ -45,7 +45,7 @@ export class Sounds<Resources extends AudioResource = AudioResource> {
     return sounds;
   }
 
-  private async createSound(arrayBuffer: AudioAsset): Promise<Sound> {
+  private async createSound(arrayBuffer: ArrayBuffer) {
     const context = this.audio.getContext();
     const buffer = await context.decodeAudioData(arrayBuffer);
     const source = new AudioBufferSourceNode(context, { buffer });
@@ -55,54 +55,59 @@ export class Sounds<Resources extends AudioResource = AudioResource> {
     return new Sound(source);
   }
 
-  private async createSpriteSound(
-    resource: AudioSpriteAsset
-  ): Promise<SoundSprite> {
+  private async createSpriteSound(resource: AudioSpriteAsset) {
     const context = this.audio.getContext();
-    const { buffer: arrayBuffer, data } = resource;
-    const buffer = await context.decodeAudioData(arrayBuffer);
+    const buffer = await context.decodeAudioData(resource.buffer);
     const source = new AudioBufferSourceNode(context, { buffer });
 
     source.connect(context.destination);
 
-    return new SoundSprite(source, data);
+    return new SoundSprite(source, resource.data);
   }
 
-  public play<Key extends keyof Resources>(
-    ...args: Resources[Key] extends AudioSpriteAsset
+  play<Key extends keyof Assets>(
+    ...args: Assets[Key] extends AudioSpriteAsset
       ? [
           Key,
-          Resources[Key] extends AudioSpriteAsset<infer Segments>
+          Assets[Key] extends AudioSpriteAsset<infer Segments>
             ? Segments
             : never
         ]
       : [Key]
-  ): void {
+  ) {
     try {
       const [name, segment] = args;
       const resource = this.sounds[name];
+
+      if (!resource) {
+        throw Error(`There is no "${String(name)}" sound`);
+      }
+
       resource.play(segment as string);
     } catch (error) {
       Logger.error(error);
     }
   }
 
-  public stop(name: keyof Resources): void {
+  stop(name: keyof Assets) {
     try {
-      this.sounds[name].stop();
+      const sound = this.sounds[name];
+
+      if (!sound) {
+        throw Error(`There is no "${String(name)}" sound`);
+      }
+
+      sound.stop();
     } catch (error) {
       Logger.error(error);
     }
   }
 
-  public clear(): void {
-    const context = this.audio.getContext();
-
+  clear() {
     Object.keys(this.sounds).forEach((name) => {
-      const source = this.sounds[name].getSource();
-      source.disconnect(context.destination);
+      this.sounds[name].destroy();
     });
 
-    this.sounds = {} as ResultSounds<Resources>;
+    this.sounds = null as unknown as ResultSounds<Assets>;
   }
 }

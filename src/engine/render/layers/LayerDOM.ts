@@ -1,7 +1,7 @@
 import { Settings } from '../../Settings';
 import { Layer } from './Layer';
-import { type Image } from '../Image';
-import { type RectShape } from '../RectShape';
+import { type Picture } from '../Picture';
+import { type Rect } from '../Rect';
 import { type SpriteText } from '../sprites';
 import { Drawable } from '../Drawable';
 
@@ -32,7 +32,7 @@ export class LayerDOM extends Layer {
     return layer;
   }
 
-  protected syncWithCamera(): void {
+  protected syncWithCamera() {
     const position = this.camera!.getPosition();
     const posX = -Math.floor(position.x);
     const posY = -Math.floor(position.y);
@@ -40,7 +40,7 @@ export class LayerDOM extends Layer {
     this.subnode.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
   }
 
-  public drawImage(image: Image | SpriteText): void {
+  drawImage(image: Picture | SpriteText) {
     const node = image.getDomNode();
 
     if (!node) throw Error('There is no Node within Image');
@@ -53,7 +53,7 @@ export class LayerDOM extends Layer {
     domNode.style.backgroundPosition = `${-source.x}px ${-source.y}px`;
   }
 
-  public drawRect(shape: RectShape): void {
+  drawRect(shape: Rect) {
     const node = shape.getDomNode();
 
     if (!node) throw Error('There is no Node within Shape');
@@ -65,7 +65,7 @@ export class LayerDOM extends Layer {
     domNode.style.backgroundColor = shape.getColor();
   }
 
-  private setCommonProps(node: HTMLElement, drawable: Drawable): void {
+  private setCommonProps(node: HTMLElement, drawable: Drawable) {
     const visible = drawable.isVisible();
 
     node.hidden = !visible;
@@ -85,13 +85,13 @@ export class LayerDOM extends Layer {
     node.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
   }
 
-  public postDraw(): void {
+  postDraw() {
     return;
   }
 
-  public getSubnode(): HTMLDivElement {
+  getSubnode(): HTMLDivElement {
     return this.subnode;
   }
 
-  public clear(): void {}
+  clear() {}
 }

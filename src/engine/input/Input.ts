@@ -21,7 +21,7 @@ export class Input<Names extends string = string> {
     }
   }
 
-  public isPressed(control: Names): boolean {
+  isPressed(control: Names) {
     const [keyboardKey, gamepadButtonIndex] = this.controls[control];
 
     return (
@@ -30,11 +30,11 @@ export class Input<Names extends string = string> {
     );
   }
 
-  public setKeyboardControl(control: Names, key: KeyboardKeyCode): void {
+  setKeyboardControl(control: Names, key: KeyboardKeyCode) {
     this.controls[control][0] = key;
   }
 
-  public setGamepadControl(control: Names, button: GamepadButtonIndex): void {
+  setGamepadControl(control: Names, button: GamepadButtonIndex) {
     this.controls[control][1] = button;
   }
 }

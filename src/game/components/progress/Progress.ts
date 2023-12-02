@@ -15,7 +15,7 @@ export abstract class Progress extends Observable {
     this.delay = delay;
   }
 
-  public update(): void {
+  update() {
     this.progress++;
 
     this.progressPercent = getPercent(this.total, this.progress);
@@ -36,7 +36,7 @@ export abstract class Progress extends Observable {
 
   protected abstract updateAsync(): void;
 
-  public reset(): void {
+  reset() {
     this.progress = 0;
     this.progressPercent = 0;
     this.prevPercent = 0;

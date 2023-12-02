@@ -9,7 +9,7 @@ export class Audio {
     this.bindResumeContext();
   }
 
-  private bindResumeContext(): void {
+  private bindResumeContext() {
     const resume = () => {
       this.resumeContext();
     };
@@ -18,17 +18,17 @@ export class Audio {
     window.addEventListener('mousedown', resume, { once: true });
   }
 
-  private resumeContext(): void {
+  private resumeContext() {
     if (this.context.state === 'suspended') {
       this.context.resume();
     }
   }
 
-  public setMuted(value: boolean): void {
+  setMuted(value: boolean) {
     this.gainNode.gain.value = +value;
   }
 
-  public getContext(): AudioContext {
+  getContext() {
     return this.context;
   }
 }

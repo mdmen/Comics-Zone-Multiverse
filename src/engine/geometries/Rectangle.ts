@@ -11,31 +11,31 @@ export class Rectangle {
     this.height = height;
   }
 
-  public getPosition(): Vector {
+  getPosition() {
     return this.position;
   }
 
-  public setPosition(x: number, y: number): void {
+  setPosition(x: number, y: number) {
     this.position.set(x, y);
   }
 
-  public getWidth(): number {
+  getWidth() {
     return this.width;
   }
 
-  public getHeight(): number {
+  getHeight() {
     return this.height;
   }
 
-  public setWidth(width: number): void {
+  setWidth(width: number) {
     this.width = width;
   }
 
-  public setHeight(height: number): void {
+  setHeight(height: number) {
     this.height = height;
   }
 
-  public isCollidingWith(target: Rectangle): boolean {
+  isCollidingWith(target: Rectangle) {
     const targetPosition = target.getPosition();
 
     return !(
@@ -46,7 +46,7 @@ export class Rectangle {
     );
   }
 
-  public isCollidingWithPoint(point: Point): boolean {
+  isCollidingWithPoint(point: Point) {
     return (
       point.x >= this.position.x &&
       point.x <= this.position.x + this.width &&

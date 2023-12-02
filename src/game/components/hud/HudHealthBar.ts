@@ -1,12 +1,12 @@
 import {
-  Image,
+  Picture,
   type Layer,
   createCanvas,
   createContext2D,
   extractImageFromCanvas,
   Updatable,
   type UpdatableOptions,
-  RectShape,
+  Rect,
 } from '@/engine';
 import {
   scaleLayout,
@@ -69,7 +69,7 @@ interface Options extends UpdatableOptions {
 export class HudHealthBar extends Updatable {
   private health;
   private scale;
-  private progressBar!: RectShape;
+  private progressBar!: Rect;
 
   constructor({ layer, health = 100, scale = 1, ...options }: Options) {
     super(options);
@@ -87,7 +87,7 @@ export class HudHealthBar extends Updatable {
 
   private async setBottomLayout(layer: Layer): Promise<void> {
     const image = await this.generateBottomLayoutImage();
-    const layout = new Image({
+    const layout = new Picture({
       image,
       layer,
     });
@@ -95,8 +95,8 @@ export class HudHealthBar extends Updatable {
     this.addChild(layout);
   }
 
-  private setProgressBar(layer: Layer): void {
-    this.progressBar = new RectShape({
+  private setProgressBar(layer: Layer) {
+    this.progressBar = new Rect({
       layer,
       ...scaleLayout(progressBarLayout, this.scale),
     });
@@ -121,11 +121,11 @@ export class HudHealthBar extends Updatable {
     return extractImageFromCanvas(canvas);
   }
 
-  public setHealth(value: number): void {
+  setHealth(value: number) {
     this.health = value;
   }
 
-  public getHealth(): number {
+  getHealth(): number {
     return this.health;
   }
 }

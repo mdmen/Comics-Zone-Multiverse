@@ -20,11 +20,11 @@ export class Sketch extends Character {
     this.addStates();
   }
 
-  private addStates(): void {
+  private addStates() {
     this.moveStates.addState('idle', new SketchIdleState({ character: this }));
   }
 
-  public getSounds(): SketchSounds {
+  getSounds(): SketchSounds {
     return this.sounds;
   }
 }

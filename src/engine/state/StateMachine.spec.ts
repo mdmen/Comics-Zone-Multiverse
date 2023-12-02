@@ -1,5 +1,5 @@
 import { StateMachine } from './StateMachine';
-import { type State } from './State';
+import { type State } from './types';
 
 class BaseState implements State {
   enter() {}

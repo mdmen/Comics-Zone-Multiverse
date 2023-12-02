@@ -42,7 +42,7 @@ export class Gamepad {
     this.gamepad = null;
   }
 
-  public isPressed(code: number): boolean {
+  isPressed(code: number) {
     return !!this.gamepad?.buttons[code]?.pressed;
   }
 }

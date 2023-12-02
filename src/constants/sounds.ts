@@ -3,7 +3,7 @@ import sketchSpriteMap from '../assets/audio/sketch/sprite.json';
 
 export const globalSounds = {
   sketch: {
-    src: sketchSprite,
+    url: sketchSprite,
     data: sketchSpriteMap,
   },
 };

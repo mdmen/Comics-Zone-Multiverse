@@ -1,6 +1,8 @@
-import { type FrameSource, type Frame } from './Sprite';
+import type { ImageSpriteData, ImageSpriteFrame } from '../../assets/types';
 
-interface AnimationOptions {
+create abstract animation not independant from fields
+
+export interface AnimationOptions {
   frameSources: Record<string, FrameSource>;
   frames: Frame[];
   infinite?: boolean;
@@ -37,14 +39,14 @@ export class SpriteAnimation {
     this.onFinish = onFinish;
   }
 
-  private handleStarted(): void {
+  private handleStarted() {
     if (this.frameIndex > 0 || !this.dirty) return;
 
     this.dirty = true;
     this.onStart();
   }
 
-  private handleFinish(): void {
+  private handleFinish() {
     if (this.infinite) {
       this.frameIndex = 0;
       return;
@@ -70,13 +72,13 @@ export class SpriteAnimation {
     return delta > duration;
   }
 
-  public reset(): void {
+  reset() {
     this.playing = false;
     this.frameIndex = 0;
     this.dirty = false;
   }
 
-  public update(): void {
+  update() {
     if (!this.playing) return;
 
     const now = performance.now();
@@ -94,15 +96,15 @@ export class SpriteAnimation {
     }
   }
 
-  public play(): void {
+  play() {
     this.playing = true;
   }
 
-  public pause(): void {
+  pause() {
     this.playing = false;
   }
 
-  public getCurrentFrameSource(): FrameSource {
+  getCurrentFrameSource(): FrameSource {
     const frameName = this.gerCurrentFrame();
     return this.frameSources[frameName.name];
   }

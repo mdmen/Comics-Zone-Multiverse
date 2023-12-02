@@ -1,6 +1,6 @@
 import {
   Vector,
-  Image,
+  Picture,
   type Layer,
   type Scene,
   delay,
@@ -44,11 +44,11 @@ export class ProgressImage extends Progress {
     this.scene = scene;
     this.stepDelay = stepDelay;
 
-    function onCreate(image: Image) {
+    function onCreate(image: Picture) {
       centered && image.centerHorizontally();
     }
 
-    this.lowerImage = new Image({
+    this.lowerImage = new Picture({
       x: position.x,
       y: position.y,
       image: lowerImage,
@@ -57,7 +57,7 @@ export class ProgressImage extends Progress {
       layer,
     });
 
-    this.upperImage = new Image({
+    this.upperImage = new Picture({
       x: position.x,
       y: position.y,
       image: upperImage,
@@ -79,7 +79,7 @@ export class ProgressImage extends Progress {
     this.scene.add(this.upperImage);
   }
 
-  protected updateSync(): void {
+  protected updateSync() {
     const upperImageHeight =
       ((100 - this.progressPercent) * this.lowerImage.getHeight()) / 100;
 

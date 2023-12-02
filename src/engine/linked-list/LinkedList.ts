@@ -5,7 +5,7 @@ export class LinkedList<Value = unknown> {
   private tail: NodeType<Value> = null;
   private length = 0;
 
-  public prepend(value: Value): void {
+  prepend(value: Value) {
     const node = new LinkedListNode(value);
 
     if (this.head) this.head.prev = node;
@@ -15,7 +15,7 @@ export class LinkedList<Value = unknown> {
     this.length++;
   }
 
-  public append(value: Value): void {
+  append(value: Value) {
     const node = new LinkedListNode(value);
 
     this.length++;
@@ -31,7 +31,7 @@ export class LinkedList<Value = unknown> {
     this.tail = node;
   }
 
-  public shift(): Value | null {
+  shift() {
     if (!this.head) return null;
 
     const head = this.head;
@@ -49,7 +49,7 @@ export class LinkedList<Value = unknown> {
     return head.value;
   }
 
-  public pop(): Value | null {
+  pop() {
     if (!this.tail) return null;
 
     const tail = this.tail;
@@ -69,13 +69,13 @@ export class LinkedList<Value = unknown> {
     return tail.value;
   }
 
-  public clear(): void {
+  clear() {
     this.head = null;
     this.tail = null;
     this.length = 0;
   }
 
-  get size(): number {
+  get size() {
     return this.length;
   }
 }

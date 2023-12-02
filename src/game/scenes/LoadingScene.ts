@@ -12,7 +12,7 @@ import { OpacityModifier } from '../modifiers';
 import { Scenes } from '../Manager';
 
 export class LoadingScene extends Scene {
-  public async enter(): Promise<void> {
+  async enter(): Promise<void> {
     const layers = this.manager.getLayers();
     const fontAssets = this.manager.getFontAssets();
     const imageAssets = this.manager.getImageAssets();

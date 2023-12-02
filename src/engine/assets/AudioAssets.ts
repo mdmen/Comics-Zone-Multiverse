@@ -1,44 +1,23 @@
 import { Assets } from './Assets';
-import { type SoundSpriteData } from '../audio/SoundSprite';
 import { isString } from '../utils';
 import { loadAudio, loadData } from './loaders';
-import { type SpriteSource, type SpriteResource } from './types';
-
-type SoundSpriteResource = SpriteResource<SoundSpriteData>;
-
-export type AudioAsset = ArrayBuffer;
-
-export interface AudioSpriteAsset<Names extends PrimitiveKeys = string> {
-  buffer: AudioAsset;
-  data: SoundSpriteData<Names>;
-}
-
-export type ReturnAudioAssets<Sources> = {
-  [Key in keyof Sources]: Sources[Key] extends SoundSpriteResource
-    ? AudioSpriteAsset<keyof Sources[Key]['data']['map']>
-    : ArrayBuffer;
-};
+import type { SpriteSource, ReturnAudioAssets } from './types';
 
 export class AudioAssets extends Assets {
-  protected async loadAsset(
-    source: string | SpriteSource
-  ): Promise<AudioAsset | AudioSpriteAsset> {
+  protected async loadAsset(source: string | SpriteSource<string>) {
     if (isString(source)) {
       return loadAudio(source);
     }
 
-    const { src, data: spriteDataSrc } = source;
     const [buffer, data] = await Promise.all([
-      loadAudio(src),
-      loadData(spriteDataSrc) as unknown as Promise<SoundSpriteData>,
+      loadAudio(source.url),
+      loadData(source.data),
     ]);
 
     return { buffer, data };
   }
 
-  public async load<Sources extends Record<string, unknown>>(
-    sources: Sources
-  ): Promise<ReturnAudioAssets<Sources>> {
-    return (await super.load(sources)) as ReturnAudioAssets<Sources>;
+  async load<Sources extends Record<string, unknown>>(sources: Sources) {
+    return super.load(sources) as ReturnAudioAssets<Sources>;
   }
 }

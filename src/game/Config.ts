@@ -28,7 +28,7 @@ export class Config {
     this.initTheme();
   }
 
-  private initTheme(): void {
+  private initTheme() {
     const theme = this.getTheme();
 
     if (theme !== 'system') {
@@ -36,7 +36,7 @@ export class Config {
     }
   }
 
-  public setTheme(value: Theme): void {
+  setTheme(value: Theme) {
     this.storage.setValue('theme', value);
 
     if (value !== 'system') {
@@ -44,24 +44,24 @@ export class Config {
     }
   }
 
-  public getTheme(): Theme {
+  getTheme(): Theme {
     return this.storage.getValue('theme');
   }
 
-  public setSound(value: Sound): void {
+  setSound(value: Sound) {
     this.audio.setMuted(value === 'off');
     this.storage.setValue('sound', value);
   }
 
-  public getSound(): Sound {
+  getSound(): Sound {
     return this.storage.getValue('sound');
   }
 
-  public getRender(): Render {
+  getRender(): Render {
     return this.storage.getValue('render');
   }
 
-  public setRender(value: Render): void {
+  setRender(value: Render) {
     Settings.set('renderEngine', value);
     this.storage.setValue('render', value);
   }

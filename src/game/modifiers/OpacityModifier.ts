@@ -15,7 +15,7 @@ export class OpacityModifier extends Modifier {
     this.pendulum = new Pendulum({ velocity });
   }
 
-  public update(drawable: Drawable, step: number): void {
+  update(drawable: Drawable, step: number) {
     this.pendulum.update(step);
 
     const opacity = this.pendulum.getValue();

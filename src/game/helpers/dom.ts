@@ -10,7 +10,7 @@ export function getAppContainer(): HTMLElement {
   return getElement('.container');
 }
 
-export function setTheme(theme: 'dark' | 'light'): void {
+export function setTheme(theme: 'dark' | 'light') {
   const html = document.documentElement;
 
   html.classList.remove('dark', 'light');
@@ -24,4 +24,12 @@ export function createHiddenLabel(content: HTMLElement | string): HTMLElement {
   label.append(content);
 
   return label;
+}
+
+export function onDOMReady(callback: (event: Event) => void) {
+  window.addEventListener('DOMContentLoaded', callback);
+}
+
+export function onGlobalError(callback: (error: ErrorEvent) => void) {
+  window.addEventListener('error', callback);
 }

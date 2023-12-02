@@ -1,9 +1,7 @@
 import { isSafari } from './browsers';
 import { createCanvas, createContext2D } from './canvas';
 
-export async function getReversedImage(
-  image: HTMLImageElement
-): Promise<HTMLImageElement> {
+export async function getFlippedImage(image: HTMLImageElement) {
   const canvas = createCanvas(image.width, image.height);
   const context = createContext2D(canvas);
 
@@ -14,10 +12,7 @@ export async function getReversedImage(
   return extractImageFromCanvas(canvas);
 }
 
-export async function getScaledImage(
-  image: HTMLImageElement,
-  scale: number
-): Promise<HTMLImageElement> {
+export async function getScaledImage(image: HTMLImageElement, scale: number) {
   if (scale === 1) return image;
 
   const width = Math.floor(image.width * scale);
@@ -40,17 +35,18 @@ export async function getScaledImage(
   return extractImageFromCanvas(canvas);
 }
 
-export async function extractImageFromCanvas(
-  canvas: HTMLCanvasElement
-): Promise<HTMLImageElement> {
-  return new Promise((resolve) => {
+export async function extractImageFromCanvas(canvas: HTMLCanvasElement) {
+  return new Promise<HTMLImageElement>((resolve) => {
     const image = new Image();
+
+    const onLoad = () => {
+      image.removeEventListener('load', onLoad);
+      resolve(image);
+    };
+
+    image.addEventListener('load', onLoad);
 
     const type = isSafari() ? 'png' : 'webp';
     image.src = canvas.toDataURL(`image/${type}`, 1);
-
-    image.addEventListener('load', () => {
-      resolve(image);
-    });
   });
 }

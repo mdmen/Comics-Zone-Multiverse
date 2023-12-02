@@ -28,7 +28,7 @@ export class Pool {
     this.bindReset();
   }
 
-  private bindReset(): void {
+  private bindReset() {
     const start = () => {
       if (this.shouldReset()) {
         this.reset();
@@ -40,7 +40,7 @@ export class Pool {
     start();
   }
 
-  private init(): void {
+  private init() {
     for (let i = 0; i < this.initialSize; i++) {
       const object = this.create();
       this.objects.set(i, object);
@@ -50,37 +50,37 @@ export class Pool {
     this.lastId = this.initialSize - 1;
   }
 
-  private shouldReset(): boolean {
+  private shouldReset() {
     return this.hasNoActives() && this.objects.size > this.initialSize;
   }
 
-  private hasNoActives(): boolean {
+  private hasNoActives() {
     return this.objects.size - this.nonActiveObjects.size === 0;
   }
 
-  private hasOnlyActives(): boolean {
+  private hasOnlyActives() {
     return this.objects.size - this.nonActiveObjects.size === this.objects.size;
   }
 
-  private shouldExpand(): boolean {
+  private shouldExpand() {
     return this.hasOnlyActives() && !this.isMaxFull();
   }
 
-  private isMaxFull(): boolean {
+  private isMaxFull() {
     return this.objects.size === this.maxSize;
   }
 
-  private isMaxFullOfActives(): boolean {
+  private isMaxFullOfActives() {
     return this.isMaxFull() && this.hasOnlyActives();
   }
 
-  private updateNonActives(object: PoolObject, id: number): void {
+  private updateNonActives(object: PoolObject, id: number) {
     object.isActive()
       ? this.nonActiveObjects.delete(id)
       : this.nonActiveObjects.add(id);
   }
 
-  private reset(): void {
+  private reset() {
     let counter = 0;
 
     for (const key of this.objects.keys()) {
@@ -94,7 +94,7 @@ export class Pool {
     });
   }
 
-  private expand(): void {
+  private expand() {
     for (let i = 0; i < this.initialSize && !this.isMaxFull(); i++) {
       this.lastId++;
 
@@ -105,7 +105,7 @@ export class Pool {
     }
   }
 
-  public get(): PoolObject {
+  get() {
     if (this.isMaxFullOfActives()) return this.create();
 
     if (this.shouldExpand()) {
@@ -116,14 +116,14 @@ export class Pool {
     return this.objects.get(id) as PoolObject;
   }
 
-  public update(step: number): void {
+  update(step: number) {
     this.objects.forEach((object, id) => {
       object.update(step);
       this.updateNonActives(object, id);
     });
   }
 
-  public destroy(): void {
+  destroy() {
     clearTimeout(this.resetTimer);
     this.objects.clear();
     this.nonActiveObjects.clear();

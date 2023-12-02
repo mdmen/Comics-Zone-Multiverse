@@ -1,4 +1,4 @@
-import { onDOMReady } from '@/engine';
+import { onDOMReady } from './game/helpers';
 import { start } from './game/start';
 
 import './assets/styles/index.css';

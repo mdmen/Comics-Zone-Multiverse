@@ -4,19 +4,15 @@ import { type Layer } from './layers/Layer';
 import { DrawableNode } from './nodes';
 import { Updatable, type UpdatableOptions } from './Updatable';
 
-interface Modifier {
-  update(drawable: Drawable, step: number): void;
-}
-
 export interface DrawableOptions extends UpdatableOptions {
   layer: Layer;
   classList?: string[];
 }
 
 export abstract class Drawable extends Updatable {
-  protected readonly layer;
-  protected readonly domNode;
-  protected readonly modifiers = new Set<Modifier>();
+  protected layer;
+  protected domNode;
+  protected children!: Set<Drawable>;
   protected visible = true;
   protected opacity = 1;
 
@@ -29,36 +25,36 @@ export abstract class Drawable extends Updatable {
     this.domNode?.getNode().classList.add(...classList);
   }
 
-  public centerHorizontally(): void {
+  centerHorizontally() {
     const x = this.layer.getWidth() / 2 - this.width / 2;
     this.position.x = x;
   }
 
-  public getLayer(): Layer {
+  getLayer() {
     return this.layer;
   }
 
-  public getDomNode(): DrawableNode | null {
+  getDomNode() {
     return this.domNode;
   }
 
-  public hide(): void {
+  hide() {
     this.visible = false;
   }
 
-  public show(): void {
+  show() {
     this.visible = true;
   }
 
-  public isVisible(): boolean {
+  isVisible() {
     return this.visible;
   }
 
-  public getOpacity(): number {
+  getOpacity() {
     return this.opacity;
   }
 
-  public setOpacity(value: number): void {
+  setOpacity(value: number) {
     if (value < 0 || value > 1) {
       throw Error(`${value} is incorrect opacity value`);
     }
@@ -66,30 +62,22 @@ export abstract class Drawable extends Updatable {
     this.opacity = value;
   }
 
-  public addModifier(modifier: Modifier): void {
-    this.modifiers.add(modifier);
-  }
-
-  public deleteModifier(modifier: Modifier): void {
-    this.modifiers.delete(modifier);
-  }
-
-  public update(step: number): void {
-    super.update(step);
-
-    this.modifiers.forEach((modifier) => {
-      modifier.update(this, step);
+  draw() {
+    this.children.forEach((drawable) => {
+      drawable.draw();
     });
   }
 
-  public destroy(): void {
+  destroy() {
     super.destroy();
 
+    this.layer = null as unknown as Layer;
+
     this.domNode?.destroy();
-    this.modifiers.clear();
+    this.domNode = null;
   }
 
-  protected createDomNode(): DrawableNode {
+  protected createDomNode() {
     return new DrawableNode({ layer: this.layer as LayerDOM, drawable: this });
   }
 }

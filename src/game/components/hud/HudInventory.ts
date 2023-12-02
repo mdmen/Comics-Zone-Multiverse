@@ -1,5 +1,5 @@
 import {
-  Image,
+  Picture,
   Updatable,
   createCanvas,
   type UpdatableOptions,
@@ -88,7 +88,7 @@ export class HudInventory extends Updatable {
 
   private async setBottomLayout(layer: Layer): Promise<void> {
     const image = await this.generateSlotsImage();
-    const bottomLayout = new Image({
+    const bottomLayout = new Picture({
       layer,
       image,
     });
@@ -118,13 +118,13 @@ export class HudInventory extends Updatable {
     return extractImageFromCanvas(canvas);
   }
 
-  public addItem(item: InventoryItems): void {
+  addItem(item: InventoryItems) {
     if (this.items.length === this.slotsCount) return;
 
     this.items.push(item);
   }
 
-  public removeItem(item: InventoryItems): void {
+  removeItem(item: InventoryItems) {
     if (isEmpty(this.items)) return;
 
     this.items = this.items.filter((iItem) => iItem !== item);

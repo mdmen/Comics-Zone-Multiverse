@@ -20,25 +20,25 @@ export abstract class Scene implements State {
     this.scene = new EngineScene();
   }
 
-  public update(step: number): void {
+  update(step: number) {
     this.scene.update(step);
   }
 
-  public draw(): void {
+  draw() {
     this.scene.draw();
   }
 
-  public leave(): void {
+  leave() {
     this.scene.destroy();
   }
 
-  public setImages(images: Images): void {
+  setImages(images: Images) {
     this.images = images;
   }
 
-  public setSounds(sounds: Sounds): void {
+  setSounds(sounds: Sounds) {
     this.sounds = sounds;
   }
 
-  public abstract enter(): Promise<void>;
+  abstract enter(): Promise<void>;
 }

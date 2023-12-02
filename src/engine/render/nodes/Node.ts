@@ -10,23 +10,23 @@ type Styles = Pick<CSSStyleDeclaration, AllowedProps>;
 export abstract class Node {
   protected node!: HTMLElement;
 
-  public setStyle<T extends keyof Styles>(name: T, value: Styles[T]): void {
+  setStyle<T extends keyof Styles>(name: T, value: Styles[T]) {
     this.node.style[name] = value;
   }
 
-  public getNode(): HTMLElement {
+  getNode(): HTMLElement {
     return this.node;
   }
 
-  public show(): void {
+  show() {
     this.node.hidden = false;
   }
 
-  public hide(): void {
+  hide() {
     this.node.hidden = true;
   }
 
-  public destroy(): void {
+  destroy() {
     this.node.remove();
   }
 }

@@ -7,7 +7,7 @@ import inventory from '@/assets/images/inventory.webp';
 
 export const globalImages = {
   sketch: {
-    src: sketchImage,
+    url: sketchImage,
     data: sketchData,
   },
   inventory,
