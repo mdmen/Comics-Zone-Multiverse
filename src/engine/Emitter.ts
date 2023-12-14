@@ -1,7 +1,7 @@
 import { Settings } from './Settings';
 
 interface CustomEventListener {
-  (event: CustomEvent);
+  (event: CustomEvent): void;
 }
 
 export class Emitter<EventTypes extends string> {

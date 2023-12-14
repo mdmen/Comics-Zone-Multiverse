@@ -1,9 +1,10 @@
 import { Storage, type Audio, Settings } from '@/engine';
 import { setTheme } from '@/game/helpers';
+import { Events, GameEvents } from './Events';
 
 type Theme = 'system' | 'light' | 'dark';
 type Sound = 'on' | 'off';
-type Render = 'canvas' | 'dom';
+type Render = 'canvas' | 'dom' | 'webgl';
 
 interface ConfigValues {
   theme: Theme;
@@ -13,9 +14,9 @@ interface ConfigValues {
 
 const defaults: ConfigValues = {
   theme: 'system',
-  sound: 'on',
-  render: Settings.get('renderEngine'),
-} as const;
+  sound: 'off',
+  render: 'canvas',
+};
 
 export class Config {
   private readonly storage;
@@ -62,7 +63,9 @@ export class Config {
   }
 
   setRender(value: Render) {
-    Settings.set('renderEngine', value);
+    Settings.set('render', value);
     this.storage.setValue('render', value);
+
+    Events.emit(GameEvents.GAME_RESET);
   }
 }

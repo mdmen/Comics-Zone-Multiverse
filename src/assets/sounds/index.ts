@@ -1,5 +1,5 @@
-import sketchSprite from '../assets/audio/sketch/sprite.mp3';
-import sketchSpriteMap from '../assets/audio/sketch/sprite.json';
+import sketchSprite from './sketch/sprite.mp3';
+import sketchSpriteMap from './sketch/sprite.json';
 
 export const globalSounds = {
   sketch: {

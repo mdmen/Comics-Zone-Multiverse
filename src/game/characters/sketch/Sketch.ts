@@ -21,7 +21,7 @@ export class Sketch extends Character {
   }
 
   private addStates() {
-    this.moveStates.addState('idle', new SketchIdleState({ character: this }));
+    this.moveStates.addScene('idle', new SketchIdleState({ character: this }));
   }
 
   getSounds(): SketchSounds {

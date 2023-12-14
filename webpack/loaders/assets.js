@@ -1,6 +1,6 @@
 module.exports = () => [
   {
-    test: /\.(webp|mp3|woff2|json)$/,
+    test: /\.(webp|mp3|json)$/,
     type: 'asset/resource',
   },
 ];

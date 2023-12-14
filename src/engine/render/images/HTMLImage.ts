@@ -1,16 +1,28 @@
 import { Image } from './Image';
+import { extractImageFromCanvas } from '../../utils';
+
+type ImageSourceInput = HTMLCanvasElement | HTMLImageElement;
+type CreateCallback = (image: Image) => void;
 
 export class HTMLImage extends Image {
-  private source;
+  protected source!: HTMLImageElement;
 
-  constructor(image: HTMLImageElement) {
+  constructor(image: ImageSourceInput, onCreate?: CreateCallback) {
     super();
 
-    this.source = image;
+    this.create(image, onCreate);
   }
 
-  getSource() {
-    return this.source;
+  private async create(image: ImageSourceInput, onCreate?: CreateCallback) {
+    if (image instanceof HTMLCanvasElement) {
+      this.source = await extractImageFromCanvas(image);
+    } else {
+      this.source = image;
+    }
+
+    this.loaded = true;
+
+    onCreate?.(this);
   }
 
   getWidth() {
@@ -21,8 +33,8 @@ export class HTMLImage extends Image {
     return this.source.naturalHeight;
   }
 
-  isLoaded() {
-    return true;
+  getSource() {
+    return this.source;
   }
 
   destroy() {

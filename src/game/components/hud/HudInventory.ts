@@ -8,7 +8,7 @@ import {
   type Layer,
   isEmpty,
 } from '@/engine';
-import { type Manager } from '@/game/Manager';
+import { type SceneManager } from '@/game/scenes/SceneManager';
 import {
   type HudLayout,
   outerBorderColor,
@@ -66,7 +66,7 @@ export enum InventoryItems {
 }
 
 interface Options extends UpdatableOptions {
-  manager: Manager;
+  manager: SceneManager;
   layer: Layer;
   scale?: number;
 }

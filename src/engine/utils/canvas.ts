@@ -1,8 +1,8 @@
 import { Settings } from '../Settings';
 
 export function createCanvas(
-  width = Settings.get('canvasWidth'),
-  height = Settings.get('canvasHeight')
+  width = Settings.get('width'),
+  height = Settings.get('height')
 ) {
   const canvas = document.createElement('canvas');
   canvas.width = Math.floor(width);

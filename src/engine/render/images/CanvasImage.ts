@@ -1,22 +1,21 @@
 import { Image } from './Image';
 
-export class CanvasImage extends Image {
-  private source!: ImageBitmap;
-  private loaded = false;
+type CreateCallback = (image: Image) => void;
 
-  constructor(image: HTMLImageElement) {
+export class CanvasImage extends Image {
+  protected source!: ImageBitmap;
+
+  constructor(image: CanvasImageSource, onCreate?: CreateCallback) {
     super();
 
-    this.create(image);
+    this.create(image, onCreate);
   }
 
-  private async create(image: HTMLImageElement) {
+  private async create(image: CanvasImageSource, onCreate?: CreateCallback) {
     this.source = await createImageBitmap(image);
     this.loaded = true;
-  }
 
-  getSource() {
-    return this.source;
+    onCreate?.(this);
   }
 
   getWidth() {
@@ -27,8 +26,8 @@ export class CanvasImage extends Image {
     return this.source.height;
   }
 
-  isLoaded() {
-    return this.loaded;
+  getSource() {
+    return this.source;
   }
 
   destroy() {

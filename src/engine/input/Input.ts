@@ -14,11 +14,9 @@ export class Input<Names extends string = string> {
 
   constructor(controls: Controls<Names>) {
     this.controls = controls;
-    this.keyboard = new Keyboard();
 
-    if (Settings.get('gamepadAllowed')) {
-      this.gamepad = new Gamepad();
-    }
+    this.keyboard = new Keyboard();
+    this.gamepad = Settings.get('gamepad') ? new Gamepad() : null;
   }
 
   isPressed(control: Names) {

@@ -4,31 +4,27 @@
   "glyphs": {
     "!": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 0,
       "width": 5
     },
     "\"": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 5,
       "width": 6
     },
     "#": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 11,
       "width": 8
     },
     "%": {
       "offset": {
-        "left": 0,
         "right": 1
       },
       "x": 19,
@@ -36,7 +32,6 @@
     },
     "&": {
       "offset": {
-        "left": 0,
         "right": 1
       },
       "x": 27,
@@ -52,23 +47,20 @@
     },
     "(": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 37,
       "width": 3
     },
     ")": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 40,
       "width": 4
     },
     ",": {
       "offset": {
-        "left": 0,
         "right": 2
       },
       "x": 44,
@@ -84,7 +76,6 @@
     },
     ".": {
       "offset": {
-        "left": 0,
         "right": 2
       },
       "x": 50,
@@ -100,64 +91,53 @@
     },
     "0": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 56,
       "width": 8
     },
     "1": {
-      "offset": {
-        "left": 0,
-        "right": 0
-      },
       "x": 64,
       "width": 4
     },
     "2": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 68,
       "width": 7
     },
     "3": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 75,
       "width": 7
     },
     "4": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 82,
       "width": 7
     },
     "5": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 89,
       "width": 7
     },
     "6": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 96,
       "width": 7
     },
     "7": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 103,
       "width": 6
@@ -172,15 +152,13 @@
     },
     "9": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 116,
       "width": 6
     },
     ":": {
       "offset": {
-        "left": 0,
         "right": 1
       },
       "x": 122,
@@ -188,7 +166,6 @@
     },
     ";": {
       "offset": {
-        "left": 0,
         "right": 1
       },
       "x": 126,
@@ -196,8 +173,7 @@
     },
     "=": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 130,
       "width": 5
@@ -212,7 +188,6 @@
     },
     "?": {
       "offset": {
-        "left": 0,
         "right": 1
       },
       "x": 142,
@@ -220,8 +195,7 @@
     },
     "@": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 147,
       "width": 9
@@ -236,16 +210,14 @@
     },
     "B": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 162,
       "width": 8
     },
     "C": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 170,
       "width": 7
@@ -260,56 +232,46 @@
     },
     "E": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 185,
       "width": 7
     },
     "F": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 192,
       "width": 7
     },
     "G": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 199,
       "width": 8
     },
     "H": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 207,
       "width": 8
     },
     "I": {
-      "offset": {
-        "left": 0,
-        "right": 0
-      },
       "x": 215,
       "width": 4
     },
     "J": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 219,
       "width": 7
     },
     "K": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 226,
       "width": 7
@@ -324,87 +286,76 @@
     },
     "M": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 238,
       "width": 11
     },
     "N": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 249,
       "width": 10
     },
     "O": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 259,
       "width": 8
     },
     "P": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 267,
       "width": 8
     },
     "Q": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 275,
       "width": 8
     },
     "R": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 283,
       "width": 9
     },
     "S": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 292,
       "width": 7
     },
     "T": {
       "offset": {
-        "left": 1,
-        "right": 0
+        "left": 1
       },
       "x": 299,
       "width": 5
     },
     "U": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 304,
       "width": 9
     },
     "V": {
       "offset": {
-        "left": 1,
-        "right": 0
+        "left": 1
       },
       "x": 313,
       "width": 7
     },
     "W": {
       "offset": {
-        "left": 0,
         "right": -1
       },
       "x": 320,
@@ -412,33 +363,23 @@
     },
     "X": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 330,
       "width": 9
     },
     "Y": {
-      "offset": {
-        "left": 0,
-        "right": 0
-      },
       "x": 339,
       "width": 7
     },
     "Z": {
       "offset": {
-        "left": -1,
-        "right": 0
+        "left": -1
       },
       "x": 346,
       "width": 7
     },
     " ": {
-      "offset": {
-        "left": 0,
-        "right": 0
-      },
       "x": 353,
       "width": 7
     }

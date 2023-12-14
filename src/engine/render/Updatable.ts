@@ -1,4 +1,4 @@
-import { Vector, Rectangle } from '../geometries';
+import { Rectangle, Vector } from '../geometries';
 
 interface Modifier {
   update(updatable: Updatable, step: number): void;
@@ -11,33 +11,36 @@ export interface UpdatableOptions {
   height?: number;
 }
 
-export abstract class Updatable extends Rectangle {
-  protected velocity = new Vector();
-  protected children: Set<Updatable> = new Set();
-  protected modifiers = new Set<Modifier>();
+export class Updatable extends Rectangle {
+  protected readonly modifiers = new Set<Modifier>();
+  protected readonly children = new Set<Updatable>();
   protected parent: Updatable | null = null;
+  readonly velocity = new Vector();
 
-  constructor({ x, y, width, height }: UpdatableOptions = {}) {
+  constructor({ x = 0, y = 0, width = 0, height = 0 }: UpdatableOptions = {}) {
     super(x, y, width, height);
   }
 
-  setVelocity(x: number, y: number) {
-    this.velocity.set(x, y);
+  addChild(updatable: Updatable) {
+    updatable.parent = this;
+    this.children.add(updatable);
+
+    return this;
   }
 
-  setParent(updatable: Updatable) {
-    this.parent = updatable;
+  removeChild(updatable: Updatable) {
+    updatable.parent = null;
+    this.children.delete(updatable);
+
+    return this;
   }
 
-  getOffsetPosition(): Vector {
-    const position = new Vector();
-    position.copy(this.position);
+  getPosition(): Vector {
+    const position = new Vector(this.position.x, this.position.y);
 
     let parent = this.parent;
     while (parent) {
-      const parentPosition = parent.getPosition();
-
-      position.add(parentPosition);
+      position.add(parent.position);
 
       parent = parent.parent;
     }
@@ -50,32 +53,11 @@ export abstract class Updatable extends Rectangle {
       modifier.update(this, step);
     });
 
-    if (!this.velocity.isZero()) {
-      const velocity = new Vector(this.velocity.x, this.velocity.y);
-      velocity.scale(step);
-
-      this.position.add(velocity);
-    }
+    this.position.add(this.velocity);
 
     this.children.forEach((updatable) => {
       updatable.update(step);
     });
-  }
-
-  addChild(updatable: Updatable) {
-    updatable.setParent(this);
-
-    this.children.add(updatable);
-  }
-
-  getChild(index: number): Updatable {
-    const child = [...this.children].at(index);
-
-    if (!child) {
-      throw Error(`Group's element with index ${index} does not exist`);
-    }
-
-    return child;
   }
 
   addModifier(modifier: Modifier) {
@@ -86,17 +68,12 @@ export abstract class Updatable extends Rectangle {
     this.modifiers.delete(modifier);
   }
 
-  removeChild(updatable: Updatable) {
-    this.children.delete(updatable);
-  }
-
   destroy() {
     this.children.forEach((updatable) => {
       updatable.destroy();
     });
-
-    this.modifiers.clear();
     this.children.clear();
+    this.modifiers.clear();
     this.parent = null;
   }
 }

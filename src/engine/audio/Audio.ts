@@ -16,6 +16,7 @@ export class Audio {
 
     window.addEventListener('keydown', resume, { once: true });
     window.addEventListener('mousedown', resume, { once: true });
+    window.addEventListener('touchstart', resume, { once: true });
   }
 
   private resumeContext() {

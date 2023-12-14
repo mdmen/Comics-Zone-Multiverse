@@ -1,65 +1,61 @@
 import { Vector } from '../../geometries';
 import { Settings } from '../../Settings';
-import type { Camera } from '../Camera';
-import { Drawable } from '../Drawable';
-import type { Picture } from '../Picture';
-import { Node } from '../nodes/Node';
-import { type Rect } from '../Rect';
-import { type SpriteText } from '../sprites';
+import { type Camera } from '../Camera';
+import { type Drawable } from '../Drawable';
+import { type Picture } from '../Picture';
 
 export interface LayerOptions {
   container: HTMLElement;
+  className?: string;
   width?: number;
   height?: number;
   camera?: Camera | null;
 }
 
-export abstract class Layer extends Node {
-  private readonly container;
-  protected readonly node;
-  protected readonly width;
-  protected readonly height;
+export abstract class Layer {
+  protected node;
+  protected width;
+  protected height;
   protected camera;
-  private readonly prevPosition = new Vector();
+  private prevPosition = new Vector();
 
   constructor({
     container,
     camera = null,
-    width = Settings.get('canvasWidth'),
-    height = Settings.get('canvasHeight'),
+    className,
+    width = Settings.get('width'),
+    height = Settings.get('height'),
   }: LayerOptions) {
-    super();
-
     this.width = width;
     this.height = height;
     this.camera = camera;
-    this.container = container;
+    this.node = this.create(className);
 
-    this.node = this.create();
-    this.setup();
-    this.mount();
+    container.appendChild(this.node);
   }
 
-  private setup() {
-    this.node.classList.add(Settings.get('canvasClassName'));
-    this.node.style.width = `${Math.floor(this.width)}px`;
-    this.node.style.height = `${Math.floor(this.height)}px`;
+  private create(className?: string) {
+    const node = this.createNode();
+
+    !className && (node.style.position = 'relative');
+    !!className && node.classList.add(className);
+    node.style.width = `${Math.floor(this.width)}px`;
+    node.style.height = `${Math.floor(this.height)}px`;
+    node.style.overflow = 'hidden';
 
     if (!Settings.get('antialiasing')) {
-      this.node.style.imageRendering = 'pixelated';
-      this.node.style.textRendering = 'optimizeSpeed';
+      node.style.imageRendering = 'pixelated';
+      node.style.textRendering = 'optimizeSpeed';
     }
+
+    return node;
   }
 
-  private mount() {
-    this.container.appendChild(this.node);
-  }
-
-  protected shouldDraw(drawable: Drawable): boolean {
+  protected shouldDraw(drawable: Drawable) {
     return !this.camera || this.camera.isCollidingWith(drawable);
   }
 
-  private shouldSyncWithCamera(): boolean {
+  shouldSyncWithCamera() {
     if (!this.camera) return false;
 
     const cameraPosition = this.camera.getPosition();
@@ -67,43 +63,34 @@ export abstract class Layer extends Node {
     return !cameraPosition.isEqualTo(this.prevPosition);
   }
 
-  private updatePrevPosition() {
+  updatePrevPosition() {
     const cameraPosition = (this.camera as Camera).getPosition();
     this.prevPosition.copy(cameraPosition);
   }
 
-  preDraw() {
-    if (!this.shouldSyncWithCamera()) return;
-
-    this.syncWithCamera();
-    this.updatePrevPosition();
-  }
-
-  setCamera(camera: Camera) {
-    this.camera = camera;
-  }
-
-  unsetCamera() {
-    this.camera = null;
-  }
-
-  getWidth(): number {
+  getWidth() {
     return this.width;
   }
 
-  getHeight(): number {
+  getHeight() {
     return this.height;
   }
 
-  protected abstract create(): HTMLElement;
+  destroy() {
+    this.node.remove();
+    this.node = null as unknown as HTMLElement;
+    this.camera = null as unknown as Camera;
+  }
 
-  protected abstract syncWithCamera(): void;
+  protected abstract createNode(): HTMLElement;
 
-  abstract drawImage(drawable: Picture | SpriteText): void;
+  abstract syncWithCamera(): void;
 
-  abstract postDraw(): void;
+  abstract getNode(): HTMLElement;
 
-  abstract drawRect(rect: Rect): void;
+  abstract drawImage(image: Picture): void;
+
+  abstract drawRect(drawable: Drawable): void;
 
   abstract clear(): void;
 }

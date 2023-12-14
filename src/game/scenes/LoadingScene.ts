@@ -1,33 +1,27 @@
-import { SpriteText, Vector } from '@/engine';
+import { Text, Vector, Sounds } from '@/engine';
 import { Scene } from './Scene';
 import {
   globalImages,
-  globalSounds,
   introSceneImages,
   loadingSceneImages,
-  fonts,
-} from '@/constants';
+} from '@/assets/images';
+import { globalSounds } from '@/assets/sounds';
+import { globalFonts } from '@/assets/fonts';
 import { ProgressImage, ProgressText } from '../components';
 import { OpacityModifier } from '../modifiers';
-import { Scenes } from '../Manager';
+import { Scenes } from './scenes';
 
 export class LoadingScene extends Scene {
-  async enter(): Promise<void> {
+  async enter() {
     const layers = this.manager.getLayers();
     const fontAssets = this.manager.getFontAssets();
     const imageAssets = this.manager.getImageAssets();
     const audioAssets = this.manager.getAudioAssets();
 
-    const [spriteFonts, loadingImages] = await Promise.all([
-      await fontAssets.load(fonts),
+    const [imageFonts, loadingImages] = await Promise.all([
+      await fontAssets.load(globalFonts),
       await imageAssets.load(loadingSceneImages),
     ]);
-
-    SpriteText.setup({
-      layer: layers.top,
-      font: spriteFonts.basic,
-      transform: (str) => str.toUpperCase(),
-    });
 
     const resourcesAmount = [
       globalImages,
@@ -67,7 +61,7 @@ export class LoadingScene extends Scene {
       update: (progress: number) => {
         if (progress !== 100) return;
 
-        const pressAnyKeyText = new SpriteText({
+        const pressAnyKeyText = new Text({
           text: 'Press any key to continue',
           scale: 3,
           y: 550,
@@ -87,7 +81,7 @@ export class LoadingScene extends Scene {
         window.addEventListener(
           'keydown',
           () => {
-            this.manager.setState(Scenes.INTRO);
+            this.manager.setScene(Scenes.INTRO);
           },
           { once: true }
         );
@@ -102,10 +96,14 @@ export class LoadingScene extends Scene {
       ]
     );
 
+    this.manager.setGlobalFonts(imageFonts);
     this.manager.setGlobalImages(gameGlobalImages);
-    this.manager.setGlobalSounds(gameGlobalSounds);
 
-    const introScene = this.manager.getState(Scenes.INTRO);
+    const audio = this.manager.getAudio();
+    const sounds = new Sounds(gameGlobalSounds, audio);
+    this.manager.setGlobalSounds(sounds);
+
+    const introScene = this.manager.getScene(Scenes.INTRO);
     introScene.setImages(introImages);
   }
 }

@@ -2,22 +2,14 @@ import { Logger } from '../../Logger';
 import { createCanvas, createContext2D } from '../../utils';
 import { Layer, type LayerOptions } from './Layer';
 import { type Picture } from '../Picture';
-import { type Rect } from '../Rect';
-import { type SpriteText } from '../sprites';
 import { Drawable } from '../Drawable';
 
-interface LayerCanvasOptions extends LayerOptions {
-  transparent?: boolean;
-}
-
 export class LayerCanvas extends Layer {
-  private context!: CanvasRenderingContext2D;
-  private transparent;
+  protected node!: HTMLCanvasElement;
+  protected context!: CanvasRenderingContext2D;
 
-  constructor({ transparent, ...options }: LayerCanvasOptions) {
+  constructor(options: LayerOptions) {
     super(options);
-
-    this.transparent = transparent;
 
     this.onContextChange = this.onContextChange.bind(this);
     this.bindEvents();
@@ -32,14 +24,22 @@ export class LayerCanvas extends Layer {
     Logger.error(event);
   }
 
-  protected create(): HTMLCanvasElement {
+  protected createNode() {
     const canvas = createCanvas();
-    this.context = createContext2D(canvas, this.transparent);
+    this.context = createContext2D(canvas);
 
     return canvas;
   }
 
-  protected syncWithCamera() {
+  protected shouldDraw(drawable: Drawable) {
+    return (
+      super.shouldDraw(drawable) &&
+      drawable.isVisible() &&
+      drawable.getOpacity() !== 0
+    );
+  }
+
+  syncWithCamera() {
     const position = this.camera!.getPosition();
     const posX = -Math.floor(position.x);
     const posY = -Math.floor(position.y);
@@ -47,30 +47,30 @@ export class LayerCanvas extends Layer {
     this.context.translate(posX, posY);
   }
 
-  preDraw() {
-    this.clear();
-    this.context.save();
+  drawImage(image: Picture) {
+    const imageSource = image.getImage();
 
-    super.preDraw();
-  }
+    if (!imageSource || !this.shouldDraw(image)) return;
 
-  drawImage(image: Picture | SpriteText) {
-    if (!this.shouldDraw(image)) return;
-
-    const position = image.getOffsetPosition();
+    const position = image.getPosition();
     const source = image.getSource();
     const width = image.getWidth();
     const height = image.getHeight();
     const opacity = image.getOpacity();
+    const color = image.getColor();
 
     this.context.save();
+
+    if (color) {
+      this.context.fillStyle = color;
+    }
 
     if (opacity !== 1) {
       this.context.globalAlpha = opacity;
     }
 
     this.context.drawImage(
-      image.getImage(),
+      imageSource.getSource(),
       source.x | 0,
       source.y | 0,
       width | 0,
@@ -84,26 +84,18 @@ export class LayerCanvas extends Layer {
     this.context.restore();
   }
 
-  postDraw() {
-    this.context.restore();
-  }
-
-  protected shouldDraw(drawable: Drawable): boolean {
-    return (
-      super.shouldDraw(drawable) &&
-      drawable.isVisible() &&
-      drawable.getOpacity() !== 0
-    );
-  }
-
-  drawRect(shape: Rect) {
+  drawRect(shape: Drawable) {
     if (!this.shouldDraw(shape)) return;
 
-    const position = shape.getOffsetPosition();
+    const position = shape.getPosition();
     const opacity = shape.getOpacity();
+    const color = shape.getColor();
 
     this.context.save();
-    this.context.fillStyle = shape.getColor();
+
+    if (color) {
+      this.context.fillStyle = color;
+    }
 
     if (opacity !== 1) {
       this.context.globalAlpha = opacity;
@@ -119,15 +111,21 @@ export class LayerCanvas extends Layer {
     this.context.restore();
   }
 
-  getNode(): HTMLCanvasElement {
-    return super.getNode() as HTMLCanvasElement;
+  getNode() {
+    return this.node;
   }
 
-  getContext(): CanvasRenderingContext2D {
+  getContext() {
     return this.context;
   }
 
   clear() {
     this.context.clearRect(0, 0, this.width, this.height);
+  }
+
+  destroy() {
+    super.destroy();
+
+    this.context = null as unknown as CanvasRenderingContext2D;
   }
 }

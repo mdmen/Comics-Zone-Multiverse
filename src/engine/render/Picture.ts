@@ -1,87 +1,96 @@
-import { Settings } from '../Settings';
 import { Vector } from '../geometries';
-import { getFlippedImage, getScaledImage } from '../utils';
+import { getFlippedImageCanvas, getScaledImageSource } from '../utils';
 import { Drawable, type DrawableOptions } from './Drawable';
-import { type Image, HTMLImage, CanvasImage } from './images';
+import { createImage } from './factories';
+import { type Image } from './images';
 import { LayerDOM } from './layers/LayerDOM';
 import { ImageNode } from './nodes/ImageNode';
 
 export interface PictureOptions extends DrawableOptions {
   image: HTMLImageElement;
+  skipImageCreation?: boolean;
   flippable?: boolean;
   scale?: number;
-  onCreate?: (image: Picture) => void;
+  onCreate?: (picture: Picture) => void;
 }
 
 export class Picture extends Drawable {
-  protected image!: Image;
-  protected flippedImage: Image | null = null;
+  private flippedImage: Image | null = null;
+  protected image: Image | null = null;
   protected domNode!: ImageNode | null;
   protected source = new Vector();
+
+  protected readonly flippable;
   protected flipped = false;
-  protected loaded = false;
+  protected scale;
 
   constructor({
     image,
     scale = 1,
     flippable = false,
+    skipImageCreation = false,
     onCreate = () => {},
     ...options
   }: PictureOptions) {
     super(options);
 
-    this.createImages(image, flippable, scale, onCreate);
+    this.scale = scale;
+    this.flippable = flippable;
 
-    // precalculate image size before scaled image loaded
-    this.width = Math.floor(image.width * scale);
-    this.height = Math.floor(image.height * scale);
+    if (!skipImageCreation) {
+      this.createImages(image, onCreate);
+
+      // precalculate image size before scaled image loaded
+      this.width = image.naturalWidth * scale;
+      this.height = image.naturalHeight * scale;
+    }
   }
 
   private async createImages(
     image: HTMLImageElement,
-    flippable: boolean,
-    scale: number,
     onCreate: (image: Picture) => void
-  ): Promise<void> {
-    const scaled = await getScaledImage(image, scale);
-    this.image = this.createImage(scaled);
+  ) {
+    const scaled = await getScaledImageSource(image, this.scale);
 
-    if (flippable) {
-      const flipped = await getFlippedImage(scaled);
-      this.flippedImage = this.createImage(flipped);
-    }
+    [this.image, this.flippedImage] = await Promise.all([
+      createImage(scaled),
+      (async () => {
+        if (!this.flippable) return null;
+
+        const flipped = await getFlippedImageCanvas(scaled);
+        return createImage(flipped);
+      })(),
+    ]);
 
     this.width = this.image.getWidth();
     this.height = this.image.getHeight();
 
     onCreate(this);
-
-    if (Settings.isDOMEngine()) {
-      this.domNode?.updateImage();
-    }
-
-    this.loaded = true;
   }
 
-  private createImage(source: HTMLImageElement): Image {
-    return Settings.isDOMEngine()
-      ? new HTMLImage(source)
-      : new CanvasImage(source);
+  protected createDomNode() {
+    return new ImageNode(this.layer as LayerDOM, this);
   }
 
-  protected createDomNode(): ImageNode {
-    return new ImageNode({ layer: this.layer as LayerDOM, drawable: this });
+  isLoaded() {
+    return !!this.image?.isLoaded();
   }
 
-  getSource(): Vector {
+  isFlipped() {
+    return this.flipped;
+  }
+
+  getSource() {
     return this.source;
   }
 
-  getImage(): Image {
+  getImage() {
     return this.image;
   }
 
   flip() {
+    if (!this.flippable) return;
+
     [this.image, this.flippedImage] = [this.flippedImage as Image, this.image];
     this.flipped = !this.flipped;
 
@@ -91,7 +100,7 @@ export class Picture extends Drawable {
   draw() {
     super.draw();
 
-    if (this.loaded && this.image.isLoaded()) {
+    if (this.isLoaded()) {
       this.layer.drawImage(this);
     }
   }
@@ -99,7 +108,7 @@ export class Picture extends Drawable {
   destroy() {
     super.destroy();
 
-    this.image.destroy();
+    this.image?.destroy();
     this.image = null as unknown as Image;
 
     this.flippedImage?.destroy();

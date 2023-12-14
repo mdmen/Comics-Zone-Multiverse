@@ -1,5 +1,4 @@
-import { createHiddenLabel } from '@/game/helpers';
-import { generateUniqueId } from '@/engine';
+import { createHiddenLabel, generateUniqueId } from '../../helpers';
 import { type NodeContent, Node } from './Node';
 
 interface Options {
@@ -11,6 +10,7 @@ interface Options {
 export class Modal extends Node {
   private heading;
   private content;
+  private container;
   private readonly headingId;
 
   constructor({ container, heading, content }: Options) {
@@ -18,11 +18,10 @@ export class Modal extends Node {
 
     this.heading = heading;
     this.content = content;
+    this.container = container;
     this.headingId = generateUniqueId();
 
     this.node = this.create();
-
-    container.append(this.node);
 
     this.bindClose();
   }
@@ -112,10 +111,12 @@ export class Modal extends Node {
     this.node.querySelector('.modal')?.classList.remove('visible');
     setTimeout(() => {
       this.node.classList.add('hidden');
+      this.container.removeChild(this.node);
     }, 300);
   }
 
   show() {
+    this.container.append(this.node);
     this.node.classList.remove('hidden');
     setTimeout(() => {
       this.node.querySelector('.modal')?.classList.add('visible');

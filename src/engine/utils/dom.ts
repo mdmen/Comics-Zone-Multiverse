@@ -1,4 +1,4 @@
-export function isPageActive() {
+function isPageActive() {
   return document.visibilityState === 'visible';
 }
 

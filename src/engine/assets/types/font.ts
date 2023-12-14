@@ -1,12 +1,12 @@
 interface GlyphOffset {
-  left: number;
-  right: number;
+  left?: number;
+  right?: number;
 }
 
 export interface ImageFontGlyph {
   x: number;
   width: number;
-  offset: GlyphOffset;
+  offset?: GlyphOffset;
 }
 
 export interface ImageFontData {

@@ -12,7 +12,7 @@ export class Storage<Values extends Record<string, unknown>> {
       throw Error(`Storage "${storageKey}" already exists`);
     }
 
-    this.initialValues = initialValues;
+    this.initialValues = { ...initialValues };
     this.storageKey = storageKey;
     this.memory = (LocalStorage.get(this.storageKey) || {}) as Values;
 

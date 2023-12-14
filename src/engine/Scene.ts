@@ -1,41 +1,35 @@
-import { Drawable, type Updatable } from './render';
+import { Drawable } from './render';
 import { type Layer } from './render/layers/Layer';
 
-type SceneItem = Updatable | Drawable;
-
 export class Scene {
-  protected readonly items: Set<SceneItem> = new Set();
+  protected readonly items: Set<Drawable> = new Set();
   private readonly layers: Set<Layer> = new Set();
 
-  private hasUpdatablesUsingLayer(layer: Layer) {
+  private hasItemsUsingLayer(layer: Layer) {
     for (const item of this.items) {
-      if (item instanceof Drawable && item.getLayer() === layer) return true;
+      if (item.getLayer() === layer) return true;
     }
 
     return false;
   }
 
-  add(updatable: SceneItem) {
-    this.items.add(updatable);
+  add(drawable: Drawable) {
+    this.items.add(drawable);
 
-    if (updatable instanceof Drawable) {
-      const layer = updatable.getLayer();
-      this.layers.add(layer);
-    }
+    const layer = drawable.getLayer();
+    this.layers.add(layer);
 
     return this;
   }
 
-  remove(updatable: Updatable) {
-    updatable.destroy();
-    this.items.delete(updatable);
-
-    if (updatable instanceof Drawable) {
-      const layer = updatable.getLayer();
-      if (!this.hasUpdatablesUsingLayer(layer)) {
-        this.layers.delete(layer);
-      }
+  remove(drawable: Drawable) {
+    const layer = drawable.getLayer();
+    if (!this.hasItemsUsingLayer(layer)) {
+      this.layers.delete(layer);
     }
+
+    drawable.destroy();
+    this.items.delete(drawable);
 
     return this;
   }
@@ -61,15 +55,14 @@ export class Scene {
 
   draw() {
     this.layers.forEach((layer) => {
-      layer.preDraw();
+      if (!layer.shouldSyncWithCamera()) return;
+
+      layer.syncWithCamera();
+      layer.updatePrevPosition();
     });
 
     this.items.forEach((item) => {
       item.draw();
-    });
-
-    this.layers.forEach((layer) => {
-      layer.postDraw();
     });
   }
 }

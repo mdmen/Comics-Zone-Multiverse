@@ -1,24 +1,26 @@
 import { type Picture } from '../Picture';
-import { type SpriteText } from '../sprites';
-import { DrawableNode, type DrawableNodeOptions } from './DrawableNode';
+import { type LayerDOM } from '../layers';
+import { Node } from './Node';
+import { type HTMLImage } from '../images';
 
-interface ImageNodeOptions extends DrawableNodeOptions {
-  drawable: Picture | SpriteText;
-}
-
-export class ImageNode extends DrawableNode {
+export class ImageNode extends Node {
   protected drawable!: Picture;
 
-  constructor({ layer, drawable }: ImageNodeOptions) {
-    super({ layer, drawable });
+  constructor(layer: LayerDOM, drawable: Picture) {
+    super(layer, drawable);
+
+    this.setImage();
+    this.node.style.backgroundRepeat = 'no-repeat';
   }
 
-  updateImage() {
-    const { src } = this.drawable.getImage();
+  setImage() {
+    const image = this.drawable.getImage() as HTMLImage;
+    const { src } = image.getSource();
+
     this.node.style.backgroundImage = `url(${src})`;
   }
 
   flip() {
-    this.updateImage();
+    this.setImage();
   }
 }

@@ -4,6 +4,5 @@ export * from './Updatable';
 export * from './Drawable';
 export * from './Sprite';
 export * from './Text';
-export * from './Rect';
 export * from './layers';
-export * from './Factory';
+export * from './factories';

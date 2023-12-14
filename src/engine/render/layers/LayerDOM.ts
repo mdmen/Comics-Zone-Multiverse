@@ -1,16 +1,11 @@
-import { Settings } from '../../Settings';
 import { Layer } from './Layer';
-import { type Picture } from '../Picture';
-import { type Rect } from '../Rect';
-import { type SpriteText } from '../sprites';
-import { Drawable } from '../Drawable';
 
 export class LayerDOM extends Layer {
-  private subnode!: HTMLDivElement;
+  protected node!: HTMLDivElement;
+  protected subnode!: HTMLDivElement;
 
-  protected create(): HTMLDivElement {
+  protected createNode() {
     const layer = document.createElement('div');
-    layer.style.overflow = 'hidden';
 
     this.subnode = this.createSubLayer();
     layer.appendChild(this.subnode);
@@ -18,21 +13,20 @@ export class LayerDOM extends Layer {
     return layer;
   }
 
-  private createSubLayer(): HTMLDivElement {
+  private createSubLayer() {
     const layer = document.createElement('div');
-    const className = Settings.get('canvasSubLayerClassName');
 
-    layer.classList.add(className);
     layer.style.position = 'absolute';
     layer.style.transform = 'translate3d(0, 0, 0)';
     layer.style.minWidth = '100%';
+    layer.style.minHeight = '100%';
     layer.style.top = '0';
     layer.style.left = '0';
 
     return layer;
   }
 
-  protected syncWithCamera() {
+  syncWithCamera() {
     const position = this.camera!.getPosition();
     const posX = -Math.floor(position.x);
     const posY = -Math.floor(position.y);
@@ -40,58 +34,17 @@ export class LayerDOM extends Layer {
     this.subnode.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
   }
 
-  drawImage(image: Picture | SpriteText) {
-    const node = image.getDomNode();
-
-    if (!node) throw Error('There is no Node within Image');
-    if (!this.shouldDraw(image)) return;
-
-    const domNode = node.getNode();
-    this.setCommonProps(domNode, image);
-
-    const source = image.getSource();
-    domNode.style.backgroundPosition = `${-source.x}px ${-source.y}px`;
+  getNode() {
+    return this.node;
   }
 
-  drawRect(shape: Rect) {
-    const node = shape.getDomNode();
-
-    if (!node) throw Error('There is no Node within Shape');
-    if (!this.shouldDraw(shape)) return;
-
-    const domNode = node.getNode();
-    this.setCommonProps(domNode, shape);
-
-    domNode.style.backgroundColor = shape.getColor();
-  }
-
-  private setCommonProps(node: HTMLElement, drawable: Drawable) {
-    const visible = drawable.isVisible();
-
-    node.hidden = !visible;
-
-    if (!visible) return;
-
-    const position = drawable.getOffsetPosition();
-    const posX = position.x | 0;
-    const posY = position.y | 0;
-    const width = drawable.getWidth();
-    const height = drawable.getHeight();
-    const opacity = drawable.getOpacity();
-
-    node.style.opacity = `${opacity}`;
-    node.style.width = `${width | 0}px`;
-    node.style.height = `${height | 0}px`;
-    node.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
-  }
-
-  postDraw() {
-    return;
-  }
-
-  getSubnode(): HTMLDivElement {
+  getSubnode() {
     return this.subnode;
   }
+
+  drawImage() {}
+
+  drawRect() {}
 
   clear() {}
 }

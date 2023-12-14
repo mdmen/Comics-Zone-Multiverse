@@ -14,18 +14,8 @@ export function isNumber(value: unknown): value is number {
   return typeof value === 'number';
 }
 
-export function generateUniqueId() {
-  if (typeof crypto !== 'undefined') {
-    return crypto.randomUUID();
-  }
-
-  return Math.floor(Math.random() * Date.now())
-    .toString(36)
-    .slice(0, 10);
-}
-
 export function squashSpaces(str: string) {
-  return str.replace(/\s\s+/g, ' ');
+  return str.replace(/\s\s+/g, ' ').trim();
 }
 
 export function getPercent(total: number, value: number) {
@@ -42,4 +32,12 @@ export function getRandomNumber(min = 0, max = 1) {
 
 export function getRandomInteger(min = 0, max = 1) {
   return Math.floor(getRandomNumber(min, max));
+}
+
+export function lerp(start: number, end: number, percent: number) {
+  return start * (1 - percent) + end * percent;
+}
+
+export function clamp(min: number, max: number, value: number) {
+  return Math.min(Math.max(min, value), max);
 }

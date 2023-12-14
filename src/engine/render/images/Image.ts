@@ -1,7 +1,12 @@
 export abstract class Image {
-  abstract getSource(): CanvasImageSource;
+  protected loaded = false;
+
   abstract getWidth(): number;
   abstract getHeight(): number;
-  abstract isLoaded(): boolean;
   abstract destroy(): void;
+  abstract getSource(): CanvasImageSource;
+
+  isLoaded() {
+    return this.loaded;
+  }
 }

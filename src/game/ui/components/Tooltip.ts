@@ -3,6 +3,7 @@ import { Node, type NodeContent } from './Node';
 interface Options {
   content: NodeContent;
   tooltip: NodeContent;
+  opened?: boolean;
   right?: boolean;
   classNames?: string[];
   tooltipId?: string;
@@ -21,6 +22,7 @@ export class Tooltip extends Node {
     content,
     tooltip,
     classNames = [],
+    opened = false,
     right = false,
   }: Options): HTMLElement {
     const node = document.createElement('div');
@@ -32,9 +34,18 @@ export class Tooltip extends Node {
     node.append(nodeContent);
 
     const nodeTooltip = document.createElement('span');
-    nodeTooltip.classList.add('tooltip-popup');
+    nodeTooltip.classList.add('tooltip-popup', opened ? 'visible' : '');
     nodeTooltip.setAttribute('role', 'tooltip');
     nodeTooltip.append(tooltip instanceof Node ? tooltip.getNode() : tooltip);
+
+    if (opened) {
+      const close = () => {
+        nodeTooltip.classList.remove('visible');
+      };
+
+      window.addEventListener('click', close, { once: true });
+      window.addEventListener('keydown', close, { once: true });
+    }
 
     node.append(nodeTooltip);
 

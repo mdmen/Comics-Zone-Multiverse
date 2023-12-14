@@ -1,4 +1,4 @@
-import { Vector, type Scene, SpriteText, delay, isEmpty } from '@/engine';
+import { Vector, type Scene, Text, delay, isEmpty } from '@/engine';
 import { Progress } from './Progress';
 
 interface Options {
@@ -38,7 +38,7 @@ export class ProgressText extends Progress {
     this.stepDelay = stepDelay;
     this.textTemplateFunc = templateFunc;
 
-    this.text = new SpriteText({
+    this.text = new Text({
       x: position.x,
       y: position.y,
       scale,

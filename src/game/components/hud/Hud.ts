@@ -1,11 +1,11 @@
 import { Updatable, type Layer, type Scene } from '@/engine';
 import { HudHealthBar } from './HudHealthBar';
 import { HudInventory } from './HudInventory';
-import { type Manager } from '@/game/Manager';
+import { type SceneManager } from '@/game/scenes/SceneManager';
 
 interface Options {
   scene: Scene;
-  manager: Manager;
+  manager: SceneManager;
   layer: Layer;
   scale?: number;
   x?: number;

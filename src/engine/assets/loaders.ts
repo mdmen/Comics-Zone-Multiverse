@@ -6,14 +6,15 @@ export function loadImage(src: string): Promise<HTMLImageElement> {
       reject(event);
     };
 
-    const onLoad = () => {
-      image.removeEventListener('load', onLoad);
-      image.removeEventListener('error', onError);
+    image.addEventListener(
+      'load',
+      () => {
+        image.removeEventListener('error', onError);
 
-      resolve(image);
-    };
-
-    image.addEventListener('load', onLoad);
+        resolve(image);
+      },
+      { once: true }
+    );
     image.addEventListener('error', onError);
 
     image.src = src;

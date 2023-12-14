@@ -1,14 +1,16 @@
 import { type Point, Vector } from '../geometries';
 
-export class Rectangle {
-  protected position;
-  protected width;
-  protected height;
+interface IRectangle {
+  getPosition(): Vector;
+  getWidth(): number;
+  getHeight(): number;
+}
 
-  constructor(x = 0, y = 0, width = 0, height = 0) {
+export class Rectangle implements IRectangle {
+  protected readonly position;
+
+  constructor(x = 0, y = 0, protected width = 0, protected height = 0) {
     this.position = new Vector(x, y);
-    this.width = width;
-    this.height = height;
   }
 
   getPosition() {
@@ -23,19 +25,19 @@ export class Rectangle {
     return this.width;
   }
 
-  getHeight() {
-    return this.height;
-  }
-
   setWidth(width: number) {
     this.width = width;
+  }
+
+  getHeight() {
+    return this.height;
   }
 
   setHeight(height: number) {
     this.height = height;
   }
 
-  isCollidingWith(target: Rectangle) {
+  isCollidingWith(target: IRectangle) {
     const targetPosition = target.getPosition();
 
     return !(

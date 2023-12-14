@@ -33,6 +33,11 @@
   --ui-tooltip-background-color: var(--ui-background-color-light);
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 .visually-hidden {
   clip-path: inset(100%);
   clip: rect(1px, 1px, 1px, 1px);
@@ -46,4 +51,9 @@
 .hidden,
 [hidden] {
   display: none !important;
+}
+
+b,
+strong {
+  font-weight: bolder;
 }

@@ -1,28 +1,20 @@
-type RenderEngine = 'canvas' | 'dom';
-type SettingsMap = typeof settings;
-type SettingsMapKeys = keyof SettingsMap;
+type RenderEngine = 'canvas' | 'dom' | 'webgl';
 
 const settings = {
-  gamepadAllowed: false,
-  storagePrefix: 'comics-zone-',
-  eventsPrefix: 'COMICS_ZONE_',
-
-  renderEngine: 'canvas' as RenderEngine,
+  gamepad: false,
+  storagePrefix: 'game-',
+  eventsPrefix: 'GAME_',
+  render: 'canvas' as RenderEngine,
   fps: 60,
-  canvasWidth: 1012,
-  canvasHeight: 756,
-  canvasClassName: 'layer',
-  // only DOM render
-  canvasSubLayerClassName: 'sub-layer',
-  antialiasing: false,
-
+  width: 1024,
+  height: 768,
+  antialiasing: true,
   cameraOffsetX: 50,
   cameraOffsetY: 50,
-
-  spriteFontScale: 2,
-  spriteFontRowGap: 3,
-  spriteFontCenter: true,
 };
+
+type SettingsMap = typeof settings;
+type SettingsMapKeys = keyof SettingsMap;
 
 interface Settings {
   get<T extends SettingsMapKeys>(key: T): SettingsMap[T];
@@ -40,6 +32,6 @@ export const Settings: Readonly<Settings> = {
   },
 
   isDOMEngine() {
-    return settings.renderEngine === 'dom';
+    return settings.render === 'dom';
   },
 };

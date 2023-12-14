@@ -23,8 +23,8 @@ export class Camera extends Rectangle {
     y,
     map,
     target,
-    width = Settings.get('canvasWidth'),
-    height = Settings.get('canvasHeight'),
+    width = Settings.get('width'),
+    height = Settings.get('width'),
     offsetX = Settings.get('cameraOffsetX'),
     offsetY = Settings.get('cameraOffsetY'),
   }: Options) {

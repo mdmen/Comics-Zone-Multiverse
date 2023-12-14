@@ -1,4 +1,5 @@
 import { Config } from '../Config';
+import { isSystemDarkTheme } from '../helpers';
 import {
   Toggler,
   FlexContainer,
@@ -37,6 +38,7 @@ export class UISettings {
 
   private createSoundToggler(): Node {
     const soundState = this.config.getSound();
+    const muted = soundState === 'off';
     const onTooltip = 'Mute';
     const offTooltip = 'Unmute';
 
@@ -52,14 +54,18 @@ export class UISettings {
           tooltip.setTooltip(toggler.isActive() ? onTooltip : offTooltip);
         },
       }),
-      tooltip: soundState === 'on' ? onTooltip : offTooltip,
+      opened: muted,
+      tooltip: muted ? offTooltip : onTooltip,
     });
 
     return tooltip;
   }
 
   private createThemeToggler(): Node {
-    const dark = this.config.getTheme() === 'dark';
+    const currentTheme = this.config.getTheme();
+    const dark =
+      (currentTheme === 'system' && isSystemDarkTheme()) ||
+      currentTheme === 'dark';
     const darkThemeTooltip = 'Dark theme';
     const lightThemeTooltip = 'Light theme';
 
