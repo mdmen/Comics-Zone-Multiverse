@@ -16,20 +16,3 @@ export function setTheme(theme: 'dark' | 'light') {
 export function isSystemDarkTheme() {
   return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
-
-export function createHiddenLabel(content: HTMLElement | string) {
-  const label = document.createElement('span');
-
-  label.classList.add('visually-hidden');
-  label.append(content);
-
-  return label;
-}
-
-export function onDOMReady(callback: (event: Event) => void) {
-  window.addEventListener('DOMContentLoaded', callback, { once: true });
-}
-
-export function onGlobalError(callback: (error: ErrorEvent) => void) {
-  window.addEventListener('error', callback);
-}

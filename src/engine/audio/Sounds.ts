@@ -10,15 +10,13 @@ type ResultSounds<Assets> = Record<keyof Assets, Sound | SoundSprite>;
 type AudioAssets = Record<string, ArrayBuffer | AudioSpriteAsset>;
 
 export class Sounds<Assets extends AudioAssets = AudioAssets> {
-  private readonly audio;
   private sounds;
 
   constructor(resources: Assets, audio: Audio) {
-    this.sounds = this.extract(resources);
-    this.audio = audio;
+    this.sounds = this.extract(resources, audio.getContext());
   }
 
-  private extract(resources: Assets) {
+  private extract(resources: Assets, context: AudioContext) {
     const sounds = {} as ResultSounds<Assets>;
 
     try {
@@ -32,11 +30,11 @@ export class Sounds<Assets extends AudioAssets = AudioAssets> {
         const resource = resources[name];
 
         if (resource instanceof ArrayBuffer) {
-          sounds[name] = await this.createSound(resource);
+          sounds[name] = await this.createSound(resource, context);
           return;
         }
 
-        sounds[name] = await this.createSpriteSound(resource);
+        sounds[name] = await this.createSpriteSound(resource, context);
       });
     } catch (error) {
       Logger.error(error);
@@ -45,8 +43,7 @@ export class Sounds<Assets extends AudioAssets = AudioAssets> {
     return sounds;
   }
 
-  private async createSound(arrayBuffer: ArrayBuffer) {
-    const context = this.audio.getContext();
+  private async createSound(arrayBuffer: ArrayBuffer, context: AudioContext) {
     const buffer = await context.decodeAudioData(arrayBuffer);
     const source = new AudioBufferSourceNode(context, { buffer });
 
@@ -55,8 +52,10 @@ export class Sounds<Assets extends AudioAssets = AudioAssets> {
     return new Sound(source);
   }
 
-  private async createSpriteSound(resource: AudioSpriteAsset) {
-    const context = this.audio.getContext();
+  private async createSpriteSound(
+    resource: AudioSpriteAsset,
+    context: AudioContext
+  ) {
     const buffer = await context.decodeAudioData(resource.buffer);
     const source = new AudioBufferSourceNode(context, { buffer });
 

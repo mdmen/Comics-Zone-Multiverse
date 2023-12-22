@@ -1,9 +1,13 @@
-export function generateUniqueId() {
-  if (typeof crypto !== 'undefined') {
-    return crypto.randomUUID();
+export function countObjectKeys<T extends Record<PrimitiveKeys, unknown>>(
+  object: T | T[]
+) {
+  if (Array.isArray(object)) {
+    return object.reduce((sum, obj) => sum + Object.keys(obj).length, 0);
   }
 
-  return Math.floor(Math.random() * Date.now())
-    .toString(36)
-    .slice(0, 10);
+  return Object.keys(object).length;
+}
+
+export function getPercent(total: number, value: number) {
+  return Math.floor((value / total) * 100);
 }

@@ -1,3 +1,4 @@
-@import './base.css';
+@import './setup.css';
+@import './components/index.css';
 @import './ui.css';
 @import './game.css';

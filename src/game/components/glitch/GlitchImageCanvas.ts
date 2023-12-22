@@ -110,11 +110,13 @@ export class GlitchImageCanvas extends Picture {
   }
 
   private drawInitialImage() {
+    if (!this.image) return;
+
     const context = this.layer.getContext();
     const position = this.getPosition();
 
     context.drawImage(
-      this.image,
+      this.image.getSource(),
       position.x,
       position.y,
       this.width,
@@ -137,7 +139,7 @@ export class GlitchImageCanvas extends Picture {
   draw() {
     super.draw();
 
-    if (!this.playing || !this.loaded) return;
+    if (!this.playing || !this.isLoaded()) return;
 
     const context = this.layer.getContext();
     const position = this.getPosition();

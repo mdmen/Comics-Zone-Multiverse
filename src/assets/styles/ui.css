@@ -1,3 +1,10 @@
+.wrapper {
+  font-family: var(--ui-font-family);
+  background-color: var(--ui-background-color);
+  color: var(--ui-text-color);
+  background-image: var(--ui-background-image);
+}
+
 .container {
   position: absolute;
   top: 0;
@@ -16,198 +23,61 @@
   left: 0;
   user-select: none;
   pointer-events: none;
+  image-rendering: pixelated;
 }
 
-.wrapper {
-  background-color: var(--ui-background-color);
-  color: var(--ui-text-color);
-  background-image: url('../images/background.webp');
-}
-
-.flex-container {
+.options {
   display: flex;
-  align-items: center;
-  gap: 5px;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-/* * * * * * * * * *
-* Buttons, Togglers
-* * * * * * * * * */
-
-.toggler,
-.button {
-  border: 0;
-  background: none;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  user-select: none;
+.options-item {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.5rem;
+  row-gap: 1rem;
+  justify-content: space-between;
 }
 
-.settings {
+.options-button {
   position: fixed;
+  z-index: 20;
   bottom: 20px;
   right: 20px;
-  z-index: 20;
 }
 
-.settings-item {
-  font-size: 2.5rem;
-  font-size: 2.5rem;
-  transition: transform 0.3s, opacity 0.3s, filter 0.2s;
-  padding: 5px;
-  opacity: 0.6;
-  filter: drop-shadow(1px 1px 1px #444);
+.options-modal {
+  width: 35rem;
 }
 
-.settings-item:hover,
-.settings-item:focus-visible {
-  opacity: 1;
+.options-controls h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem;
 }
 
-/* * * * * * * * * *
-* Tooltip
-* * * * * * * * * */
-
-.tooltip {
-  position: relative;
-}
-
-.tooltip-popup {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s;
-  position: absolute;
-  left: 50%;
-  bottom: 100%;
-  transform: translate(-50%, 0);
-  font-size: 0.9rem;
-  background-color: var(--ui-tooltip-background-color);
-  border-radius: 0.3rem;
-  color: var(--ui-tooltip-text-color);
-  margin-bottom: 5px;
-  max-width: 300px;
-  padding: 0.4rem 0.6rem;
-  text-align: center;
-}
-
-.tooltip-popup.right {
-  left: inherit;
-  right: 0;
-  transform: translate(0, 0);
-}
-
-.tooltip-popup.visible {
-  opacity: 1;
-}
-
-.tooltip-popup:after {
-  position: absolute;
-  display: inline-block;
-  border: inset 7px;
-  content: '';
-  height: 0;
-  width: 0;
-  border-color: var(--ui-tooltip-background-color) transparent transparent
-    transparent;
-  border-top-style: solid;
-  left: 50%;
-  bottom: -14px;
-  transform-origin: center top;
-  transform: translate(-50%, 0);
-}
-
-.tooltip-popup.right:after {
-  left: inherit;
-  right: 16px;
-  transform: translate(0, 0);
-}
-
-.tooltip:hover .tooltip-popup {
-  opacity: 1;
-}
-
-.tooltip-engine .tooltip-popup {
-  min-width: 9rem;
-}
-
-/* * * * * * * * * *
-* Modal
-* * * * * * * * * */
-
-.modal-overlay {
-  position: fixed;
-  display: flex;
-  inset: 0;
-  z-index: 30;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal {
-  margin: auto;
-  position: relative;
-  overscroll-behavior: contain;
-  background-color: var(--ui-background-color);
-  border-radius: 0.3rem;
-  padding: 1rem;
-  box-shadow: 2px 2px 7px -2px #222;
-  /* Created by Adam Anlauf (https://www.transparenttextures.com/grunge-wall.html) */
-  background-image: url('../images/background.webp');
-  transform: translateY(-100vh);
-  transition: transform 0.3s;
-  width: 30rem;
-  max-width: 100%;
-}
-
-.modal.visible {
-  transform: translateY(0);
-}
-
-.modal-caption {
-  font-size: 1.3rem;
-  margin: 0 0 1rem;
-}
-
-.modal-close {
-  background: none;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  user-select: none;
-  position: absolute;
-  font-size: 1.2rem;
-  line-height: 1;
-  padding: 0.4rem;
-  top: 5px;
-  right: 5px;
-  color: currentColor;
-}
-
-.modal-content {
-  line-height: 1.5rem;
-}
-
-.modal-content p {
-  margin: 0;
+.options-controls-keys {
+  line-height: 2.5;
 }
 
 kbd {
-  align-items: center;
   background: linear-gradient(-225deg, #d5dbe4, #f8f8f8);
   border: 0;
   border-radius: 3px;
   box-shadow: inset 0 -2px 0 0 #cdcde6, inset 0 0 1px 1px #fff,
     0 1px 2px 1px #1e235a66;
-  color: #969faf;
-  display: flex;
-  width: 20px;
-  height: 18px;
-  justify-content: center;
-  margin-right: 0.4em;
-  padding: 0 0 2px;
-  position: relative;
-  top: -1px;
+  color: #000;
+  display: inline-flex;
+  padding: 0.3em 0.5em;
+  margin-right: 0.1em;
+  line-height: 1;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.noscript {
+  padding: 20px;
+  margin: 0;
+  font-weight: 700;
 }

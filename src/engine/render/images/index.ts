@@ -1,3 +1,4 @@
-export * from './CanvasImage';
-export * from './HTMLImage';
-export * from './Image';
+export type * from './CanvasImage';
+export type * from './HTMLImage';
+export type * from './Image';
+export * from './createImage';

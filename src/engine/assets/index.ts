@@ -5,4 +5,5 @@ export {
   ReturnAudioAssets,
   ReturnImageAssets,
   ReturnImageFontAssets,
+  ImageFontData,
 } from './types';

@@ -54,6 +54,14 @@ export class Node {
     subLayer.append(this.node);
   }
 
+  addClassNames(...classNames: string[]) {
+    this.node.classList.add(...classNames.filter(Boolean));
+  }
+
+  removeClassNames(...classNames: string[]) {
+    this.node.classList.remove(...classNames.filter(Boolean));
+  }
+
   show() {
     this.node.hidden = false;
   }

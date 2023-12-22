@@ -1,54 +1,50 @@
-import { createHiddenLabel, generateUniqueId } from '../../helpers';
 import { type NodeContent, Node } from './Node';
 
 interface Options {
   container: HTMLElement;
   heading: string;
   content: NodeContent;
+  classNames?: string[];
 }
 
 export class Modal extends Node {
   private heading;
   private content;
   private container;
-  private readonly headingId;
 
-  constructor({ container, heading, content }: Options) {
+  constructor({ container, classNames = [], heading, content }: Options) {
     super();
 
     this.heading = heading;
     this.content = content;
     this.container = container;
-    this.headingId = generateUniqueId();
 
-    this.node = this.create();
+    this.node = this.create(classNames);
 
     this.bindClose();
   }
 
-  protected create(): HTMLElement {
+  protected create(classNames: string[]) {
     const overlay = this.createOverlay();
-    const modal = this.createModal();
+    const modal = this.createModal(classNames);
+
     overlay.append(modal);
 
     return overlay;
   }
 
-  private createOverlay(): HTMLElement {
+  private createOverlay() {
     const overlay = document.createElement('div');
 
-    overlay.classList.add('modal-overlay', 'hidden');
+    overlay.classList.add('modal-overlay');
 
     return overlay;
   }
 
-  private createModal(): HTMLElement {
+  private createModal(classNames: string[]) {
     const modal = document.createElement('div');
 
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-labelledby', this.headingId);
-    modal.setAttribute('aria-modal', 'true');
-    modal.classList.add('modal');
+    modal.classList.add('modal', 'hidden', ...classNames);
 
     modal.append(this.createHeading());
     modal.append(this.createContent());
@@ -57,32 +53,28 @@ export class Modal extends Node {
     return modal;
   }
 
-  private createHeading(): HTMLElement {
+  private createHeading() {
     const heading = document.createElement('h2');
 
     heading.classList.add('modal-caption');
-    heading.setAttribute('id', this.headingId);
     heading.append(this.heading);
 
     return heading;
   }
 
-  private createContent(): HTMLElement {
+  private createContent() {
     const content = document.createElement('div');
 
     content.classList.add('modal-content');
-    const text =
-      this.content instanceof Node ? this.content.getNode() : this.content;
-    content.append(text);
+    Node.setContent(content, this.content);
 
     return content;
   }
 
-  private createCloseButton(): HTMLElement {
+  private createCloseButton() {
     const button = document.createElement('button');
 
     button.setAttribute('type', 'button');
-    button.append(createHiddenLabel('Close modal'));
     button.append('X');
     button.classList.add('modal-close');
 
@@ -108,18 +100,18 @@ export class Modal extends Node {
   }
 
   hide() {
-    this.node.querySelector('.modal')?.classList.remove('visible');
+    this.node.querySelector('.modal')?.classList.add('hidden');
+
     setTimeout(() => {
-      this.node.classList.add('hidden');
       this.container.removeChild(this.node);
     }, 300);
   }
 
   show() {
     this.container.append(this.node);
-    this.node.classList.remove('hidden');
+
     setTimeout(() => {
-      this.node.querySelector('.modal')?.classList.add('visible');
+      this.node.querySelector('.modal')?.classList.remove('hidden');
     });
   }
 }

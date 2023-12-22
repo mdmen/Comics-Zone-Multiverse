@@ -1,0 +1,50 @@
+.checkbox {
+  --input-width: 1.5em;
+  --input-height: 1.5em;
+  --border-radius: 0.3em;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;
+  column-gap: 0.6rem;
+  user-select: none;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.checkbox.disabled {
+  cursor: default;
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.checkbox input:focus-visible ~ .checkbox-icon {
+  outline: 0.13rem solid var(--ui-focus-outline-color);
+}
+
+.checkbox-icon {
+  width: 1.6em;
+  border-radius: var(--border-radius);
+}
+
+.checkbox-icon-bg {
+  fill: var(--ui-primary-color);
+  stroke: #000;
+  stroke-width: 3;
+}
+
+.checkbox-icon-check {
+  stroke-width: 6;
+  stroke: #000;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.2s;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.checkbox input:checked ~ .checkbox-icon .checkbox-icon-check {
+  stroke-dashoffset: 0;
+}

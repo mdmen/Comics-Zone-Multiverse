@@ -18,10 +18,6 @@ export function squashSpaces(str: string) {
   return str.replace(/\s\s+/g, ' ').trim();
 }
 
-export function getPercent(total: number, value: number) {
-  return Math.floor((value / total) * 100);
-}
-
 export function delay(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }

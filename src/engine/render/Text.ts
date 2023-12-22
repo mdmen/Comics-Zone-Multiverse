@@ -6,9 +6,9 @@ import {
 } from '../utils';
 import type { ImageFontData, ImageFontGlyph } from '../assets/types';
 import { type PictureOptions, Picture } from './Picture';
-import { createImage } from './factories';
+import { createImage } from './images';
 
-interface TextOptions extends PictureOptions {
+export interface TextOptions extends PictureOptions {
   text: string;
   data: ImageFontData;
   row?: string;

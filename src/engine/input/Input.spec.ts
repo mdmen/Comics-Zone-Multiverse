@@ -10,7 +10,7 @@ describe('Input (engine)', () => {
   } satisfies Record<string, [string, number]>;
 
   test('Should response to keyboard input', async () => {
-    Settings.set('gamepadAllowed', false);
+    Settings.set('gamepad', false);
     const input = new Input(controls);
 
     expect(input.isPressed('A')).toBe(false);
@@ -25,7 +25,7 @@ describe('Input (engine)', () => {
   });
 
   test('Should response to gamepad input', async () => {
-    Settings.set('gamepadAllowed', true);
+    Settings.set('gamepad', true);
     const input = new Input(controls);
 
     expect(input.isPressed('A')).toBe(true);

@@ -5,4 +5,3 @@ export * from './Drawable';
 export * from './Sprite';
 export * from './Text';
 export * from './layers';
-export * from './factories';

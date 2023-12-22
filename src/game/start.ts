@@ -1,5 +1,4 @@
 import { getElement, onGlobalError } from './helpers';
-import { UISettings } from './ui/UISettings';
 import { Config } from './Config';
 import {
   Audio,
@@ -10,12 +9,12 @@ import {
   Settings,
   createLayer,
 } from '@/engine';
-import { Modal } from './ui/components';
+import { Button, Modal } from './ui/components';
+import { Options } from './ui/Options';
 import { SceneManager } from './scenes/SceneManager';
 import { IntroScene, LoadingScene, Scenes } from './scenes';
 import { Input } from './Input';
 import { Events, GameEvents } from './Events';
-import type { LayerType } from './types';
 
 Settings.set('storagePrefix', 'czg-');
 Settings.set('eventsPrefix', 'CZG_');
@@ -31,10 +30,18 @@ function createLayers(container: HTMLElement) {
 
   return {
     bottom: createLayer({ container, className: baseLayerClassName }),
-    middle: createLayer({ container, className: baseLayerClassName }),
-    top: createLayer({ container, className: baseLayerClassName }),
-    outer: createLayer({ container, className: outerLayerClassName }),
-  } satisfies Record<LayerType, ReturnType<typeof createLayer>>;
+    middle: createLayer({
+      container,
+      className: baseLayerClassName,
+      zIndex: 5,
+    }),
+    top: createLayer({ container, className: baseLayerClassName, zIndex: 10 }),
+    outer: createLayer({
+      container,
+      className: outerLayerClassName,
+      zIndex: 15,
+    }),
+  };
 }
 
 export function start() {
@@ -69,7 +76,22 @@ export function start() {
     },
   });
 
-  new UISettings({ container, config });
+  const optionsModal = new Modal({
+    container,
+    heading: 'Game options',
+    content: new Options(config),
+    classNames: ['options-modal'],
+  });
+
+  const optionsButton = new Button({
+    content: 'Options',
+    classNames: ['options-button'],
+    onClick: () => {
+      optionsModal.show();
+    },
+  });
+
+  container.append(optionsButton.getNode());
 
   onGlobalError(() => {
     const modal = new Modal({

@@ -34,6 +34,27 @@ export class Scene {
     return this;
   }
 
+  update(step: number) {
+    this.items.forEach((item) => {
+      item.update(step);
+    });
+  }
+
+  draw() {
+    this.layers.forEach((layer) => {
+      layer.clear();
+
+      if (!layer.shouldSyncWithCamera()) return;
+
+      layer.syncWithCamera();
+      layer.updatePrevPosition();
+    });
+
+    this.items.forEach((item) => {
+      item.draw();
+    });
+  }
+
   destroy() {
     this.items.forEach((item) => {
       item.destroy();
@@ -45,24 +66,5 @@ export class Scene {
     this.layers.clear();
 
     return this;
-  }
-
-  update(step: number) {
-    this.items.forEach((item) => {
-      item.update(step);
-    });
-  }
-
-  draw() {
-    this.layers.forEach((layer) => {
-      if (!layer.shouldSyncWithCamera()) return;
-
-      layer.syncWithCamera();
-      layer.updatePrevPosition();
-    });
-
-    this.items.forEach((item) => {
-      item.draw();
-    });
   }
 }

@@ -9,6 +9,7 @@ export interface DrawableOptions extends UpdatableOptions {
   color?: string;
   visible?: boolean;
   opacity?: number;
+  classList?: string[];
 }
 
 export abstract class Drawable extends Updatable {
@@ -25,6 +26,7 @@ export abstract class Drawable extends Updatable {
     color = '',
     visible = true,
     opacity = 1,
+    classList = [],
     ...options
   }: DrawableOptions) {
     super(options);
@@ -36,6 +38,7 @@ export abstract class Drawable extends Updatable {
 
     if (Settings.isDOMEngine()) {
       this.domNode = this.createDomNode();
+      this.domNode.addClassNames(...classList);
     }
   }
 
@@ -101,11 +104,19 @@ export abstract class Drawable extends Updatable {
 
   hide() {
     this.visible = false;
+    this.children.forEach((drawable) => {
+      drawable.hide();
+    });
+
     this.domNode?.hide();
   }
 
   show() {
     this.visible = true;
+    this.children.forEach((drawable) => {
+      drawable.show();
+    });
+
     this.domNode?.show();
   }
 

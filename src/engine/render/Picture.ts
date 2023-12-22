@@ -1,7 +1,7 @@
 import { Vector } from '../geometries';
 import { getFlippedImageCanvas, getScaledImageSource } from '../utils';
 import { Drawable, type DrawableOptions } from './Drawable';
-import { createImage } from './factories';
+import { createImage } from './images';
 import { type Image } from './images';
 import { LayerDOM } from './layers/LayerDOM';
 import { ImageNode } from './nodes/ImageNode';

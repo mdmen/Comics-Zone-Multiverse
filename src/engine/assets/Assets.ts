@@ -16,7 +16,6 @@ export abstract class Assets extends Observable {
         throw Error('There is nothing to load');
       }
 
-      let counter = 0;
       await Promise.all(
         names.map(async (key) => {
           const source = sources[key];
@@ -24,8 +23,7 @@ export abstract class Assets extends Observable {
 
           assets[key] = asset;
 
-          counter++;
-          this.notify(counter);
+          this.notify();
         })
       );
     } catch (error) {

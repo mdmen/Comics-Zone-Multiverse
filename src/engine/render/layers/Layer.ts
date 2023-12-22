@@ -7,6 +7,7 @@ import { type Picture } from '../Picture';
 export interface LayerOptions {
   container: HTMLElement;
   className?: string;
+  zIndex?: number;
   width?: number;
   height?: number;
   camera?: Camera | null;
@@ -22,6 +23,7 @@ export abstract class Layer {
   constructor({
     container,
     camera = null,
+    zIndex = 0,
     className,
     width = Settings.get('width'),
     height = Settings.get('height'),
@@ -30,6 +32,8 @@ export abstract class Layer {
     this.height = height;
     this.camera = camera;
     this.node = this.create(className);
+
+    this.node.style.zIndex = `${zIndex}`;
 
     container.appendChild(this.node);
   }

@@ -1,7 +1,7 @@
 import { type Sounds, type ReturnAudioAssets } from '@/engine';
 import { Character, type CharacterOptions } from '../Character';
 import { SketchIdleState } from './states';
-import { globalSounds } from '@/constants';
+import { globalSounds } from '@/assets/sounds';
 
 type SketchSounds = Sounds<ReturnAudioAssets<typeof globalSounds>>;
 
@@ -21,7 +21,7 @@ export class Sketch extends Character {
   }
 
   private addStates() {
-    this.moveStates.addScene('idle', new SketchIdleState({ character: this }));
+    this.moveStates.addState('idle', new SketchIdleState({ character: this }));
   }
 
   getSounds(): SketchSounds {

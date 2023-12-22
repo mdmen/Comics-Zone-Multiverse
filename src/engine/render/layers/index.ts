@@ -1,3 +1,4 @@
-export * from './Layer';
-export * from './LayerDOM';
-export * from './LayerCanvas';
+export type * from './Layer';
+export type * from './LayerDOM';
+export type * from './LayerCanvas';
+export * from './createLayer';

@@ -1,1 +1,1 @@
-export * from './GlitchImage';
+export * from './createGlitchImage';

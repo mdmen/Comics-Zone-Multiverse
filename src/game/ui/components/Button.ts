@@ -1,48 +1,27 @@
-import { createHiddenLabel } from '@/game/helpers';
-import { Node } from './Node';
+import { Node, type NodeContent } from './Node';
 
 interface Options {
   onClick(): void;
-  content: Node | HTMLElement | string;
-  label?: string;
+  content: NodeContent;
   classNames?: string[];
 }
 
 export class Button extends Node {
-  private label;
-  private content;
-
-  constructor({ label = '', content, classNames = [], onClick }: Options) {
+  constructor({ content, classNames = [], onClick }: Options) {
     super();
 
-    this.content = content;
-    this.label = label;
-
-    this.node = this.create(classNames, onClick);
-    this.setContent();
+    this.node = this.create(content, onClick);
+    this.addClassNames(...classNames);
   }
 
-  protected create(
-    classNames: string[],
-    onClick: () => void
-  ): HTMLButtonElement {
+  protected create(content: NodeContent, onClick: () => void) {
     const node = document.createElement('button');
     node.type = 'button';
 
-    const classes = [...classNames];
-    node.classList.add('button', ...classes);
-
+    Node.addContent(node, content);
+    node.classList.add('button');
     node.addEventListener('click', onClick);
 
     return node;
-  }
-
-  setContent() {
-    super.setContent(this.content);
-
-    if (this.label) {
-      const label = createHiddenLabel(this.label);
-      this.node.append(label);
-    }
   }
 }

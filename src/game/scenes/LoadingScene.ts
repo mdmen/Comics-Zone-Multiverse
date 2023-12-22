@@ -1,15 +1,17 @@
-import { Text, Vector, Sounds } from '@/engine';
+import { Sounds } from '@/engine';
 import { Scene } from './Scene';
 import {
   globalImages,
   introSceneImages,
   loadingSceneImages,
 } from '@/assets/images';
+import { BaseText } from '../BaseText';
 import { globalSounds } from '@/assets/sounds';
 import { globalFonts } from '@/assets/fonts';
 import { ProgressImage, ProgressText } from '../components';
 import { OpacityModifier } from '../modifiers';
 import { Scenes } from './scenes';
+import { countObjectKeys, onPressOnce } from '../helpers';
 
 export class LoadingScene extends Scene {
   async enter() {
@@ -23,31 +25,37 @@ export class LoadingScene extends Scene {
       await imageAssets.load(loadingSceneImages),
     ]);
 
-    const resourcesAmount = [
+    const resourcesAmount = countObjectKeys([
       globalImages,
       globalSounds,
       introSceneImages,
-    ].reduce((sum, manifest) => sum + Object.keys(manifest).length, 0);
+    ]);
 
     const progressImage = new ProgressImage({
-      position: new Vector(0, 200),
+      y: 200,
       total: resourcesAmount,
       scene: this.scene,
-      centered: true,
       layer: layers.top,
       scale: 3,
-      lowerImage: loadingImages.loadingFinish,
+      image: loadingImages.loadingFinish,
       upperImage: loadingImages.loadingStart,
-      stepDelay: 0, // 10,
+      delay: 10,
+      onCreate(image) {
+        image.centerHorizontally();
+      },
     });
 
     const progressText = new ProgressText({
-      position: new Vector(380, 550),
+      layer: layers.top,
+      image: imageFonts.base.image,
+      data: imageFonts.base.data,
+      x: 380,
+      y: 550,
       total: resourcesAmount,
       scene: this.scene,
       scale: 3,
-      stepDelay: 0, // 5,
-      templateFunc(progress) {
+      delay: 10,
+      template(progress) {
         return `Loading...${progress}%`;
       },
     });
@@ -61,7 +69,10 @@ export class LoadingScene extends Scene {
       update: (progress: number) => {
         if (progress !== 100) return;
 
-        const pressAnyKeyText = new Text({
+        const pressAnyKeyText = new BaseText({
+          layer: layers.top,
+          image: imageFonts.base.image,
+          data: imageFonts.base.data,
           text: 'Press any key to continue',
           scale: 3,
           y: 550,
@@ -71,20 +82,13 @@ export class LoadingScene extends Scene {
           },
         });
 
-        const opacity = new OpacityModifier({
-          velocity: 2,
-        });
-        pressAnyKeyText.addModifier(opacity);
+        pressAnyKeyText.addModifier(new OpacityModifier(4));
 
         this.scene.add(pressAnyKeyText);
 
-        window.addEventListener(
-          'keydown',
-          () => {
-            this.manager.setScene(Scenes.INTRO);
-          },
-          { once: true }
-        );
+        onPressOnce(() => {
+          this.manager.setScene(Scenes.INTRO);
+        });
       },
     });
 

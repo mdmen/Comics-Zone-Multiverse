@@ -34,6 +34,8 @@ export abstract class Scene implements State {
   destroy() {
     this.scene.destroy();
     this.images = null as unknown as Images;
+
+    this.sounds?.clear();
     this.sounds = null as unknown as Sounds;
   }
 

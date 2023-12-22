@@ -1,24 +1,21 @@
 import { type Drawable } from '@/engine';
 import { Modifier } from './Modifier';
-import { Pendulum } from '../components';
-
-interface Options {
-  velocity?: number;
-}
 
 export class OpacityModifier extends Modifier {
-  private readonly pendulum;
+  private velocity;
+  private counter = 0;
 
-  constructor({ velocity = 1 }: Options = {}) {
+  constructor(velocity = 1) {
     super();
 
-    this.pendulum = new Pendulum({ velocity });
+    this.velocity = velocity;
   }
 
   update(drawable: Drawable, step: number) {
-    this.pendulum.update(step);
+    drawable.setOpacity(
+      Math.abs(Math.sin(this.counter * step * this.velocity) * 0.5 + 0.5)
+    );
 
-    const opacity = this.pendulum.getValue();
-    drawable.setOpacity(opacity);
+    this.counter++;
   }
 }

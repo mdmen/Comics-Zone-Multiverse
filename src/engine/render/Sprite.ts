@@ -51,7 +51,7 @@ export class Sprite extends Picture {
   }
 
   private updateAnimation() {
-    if (!this.animation) return;
+    if (!this.animation || !this.image) return;
 
     this.animation.update();
 

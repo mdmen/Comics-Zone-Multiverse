@@ -62,7 +62,7 @@
   animation: glitch-stripes 2s linear infinite;
 }
 
-.glitch.earlier::after {
+.glitch.intro::after {
   background-image: url(../images/scenes/intro_earlier.webp);
   background-size: cover;
 }
