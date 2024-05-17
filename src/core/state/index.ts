@@ -1,2 +1,2 @@
 export * from './StateMachine';
-export * from './types';
+export type * from './State';

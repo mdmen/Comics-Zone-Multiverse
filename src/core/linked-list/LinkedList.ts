@@ -1,8 +1,8 @@
-import { LinkedListNode, type NodeType } from './LinkedListNode';
+import { LinkedListNode } from './LinkedListNode';
 
 export class LinkedList<Value = unknown> {
-  private head: NodeType<Value> = null;
-  private tail: NodeType<Value> = null;
+  private head: LinkedListNode<Value> | null = null;
+  private tail: LinkedListNode<Value> | null = null;
   private length = 0;
 
   prepend(value: Value) {

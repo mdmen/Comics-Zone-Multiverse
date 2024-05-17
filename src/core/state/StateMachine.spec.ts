@@ -1,10 +1,10 @@
 import { StateMachine } from './StateMachine';
-import { type State } from './types';
+import { type State } from './State';
 
 class BaseState implements State {
-  enter() {}
-  leave() {}
-  update() {}
+  onEnter() {}
+  onLeave() {}
+  onUpdate() {}
 }
 
 class State1 extends BaseState {}
