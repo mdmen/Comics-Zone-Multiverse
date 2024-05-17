@@ -1,4 +1,6 @@
-@import './setup.css';
+@import './normalize.css';
+@import './variables.css';
+@import './common.css';
 @import './components/index.css';
-@import './ui.css';
 @import './game.css';
+@import './ui.css';

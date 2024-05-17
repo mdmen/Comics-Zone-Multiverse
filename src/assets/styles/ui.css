@@ -60,24 +60,3 @@
 .options-controls-keys {
   line-height: 2.5;
 }
-
-kbd {
-  background: linear-gradient(-225deg, #d5dbe4, #f8f8f8);
-  border: 0;
-  border-radius: 3px;
-  box-shadow: inset 0 -2px 0 0 #cdcde6, inset 0 0 1px 1px #fff,
-    0 1px 2px 1px #1e235a66;
-  color: #000;
-  display: inline-flex;
-  padding: 0.3em 0.5em;
-  margin-right: 0.1em;
-  line-height: 1;
-  font-family: inherit;
-  font-size: 1rem;
-}
-
-.noscript {
-  padding: 20px;
-  margin: 0;
-  font-weight: 700;
-}

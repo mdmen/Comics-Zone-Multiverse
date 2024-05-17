@@ -1,0 +1,41 @@
+/* * * * * * * * * *
+* Fonts
+*
+* https://www.dafont.com/sonic-comics.font
+* * * * * * * * * */
+@font-face {
+  font-family: 'sonic_comics';
+  src: url('../../fonts/sonic/sonic_comic.woff2') format('woff2'),
+    url('../../fonts/sonic/sonic_comic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* * * * * * * * * *
+* Misc
+* * * * * * * * * */
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+kbd {
+  background: linear-gradient(-225deg, #d5dbe4, #f8f8f8);
+  border: 0;
+  border-radius: 3px;
+  box-shadow: inset 0 -2px 0 0 #cdcde6, inset 0 0 1px 1px #fff,
+    0 1px 2px 1px #1e235a66;
+  color: #000;
+  display: inline-flex;
+  padding: 0.3em 0.5em;
+  margin-right: 0.1em;
+  line-height: 1;
+  font-family: inherit;
+  font-size: 1rem;
+}
