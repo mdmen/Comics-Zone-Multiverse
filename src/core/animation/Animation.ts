@@ -5,34 +5,39 @@ import type { AnimationFrame } from './AnimationFrame';
 interface Options {
   frames: AnimationFrame[];
   infinite?: boolean;
-  frameDuration?: number;
+  frameDurationDefault?: number;
 }
 
 export class Animation {
   private readonly frames;
   private readonly infinite;
-  private readonly frameDuration;
+  private readonly frameDurationDefault;
   private dirty = false;
   private playing = false;
   private currentFrameIndex = 0;
+  private time = 0;
   private previousTime = 0;
 
   public readonly events = new Observable<AnimationEvents>();
 
-  constructor({ frames, infinite = false, frameDuration = 100 }: Options) {
+  constructor({
+    frames,
+    infinite = false,
+    frameDurationDefault = 100,
+  }: Options) {
     this.infinite = infinite;
     this.frames = frames;
-    this.frameDuration = frameDuration;
+    this.frameDurationDefault = frameDurationDefault;
   }
 
   private shouldFinish() {
     return this.currentFrameIndex === this.frames.length - 1;
   }
 
-  private shouldUpdateFrame(timeStamp: number) {
-    const delta = timeStamp - this.previousTime;
+  private shouldUpdateFrame() {
+    const delta = this.time - this.previousTime;
     const frame = this.gerCurrentFrame();
-    const duration = frame.duration ?? this.frameDuration;
+    const duration = frame.duration ?? this.frameDurationDefault;
 
     return delta > duration;
   }
@@ -43,7 +48,7 @@ export class Animation {
 
   public play() {
     this.playing = true;
-    this.previousTime = performance.now();
+    this.previousTime = 0;
 
     if (!this.dirty) {
       this.dirty = true;
@@ -56,6 +61,8 @@ export class Animation {
   public reset() {
     this.playing = false;
     this.currentFrameIndex = 0;
+    this.time = 0;
+    this.previousTime = 0;
     this.dirty = false;
   }
 
@@ -70,14 +77,14 @@ export class Animation {
     }
   }
 
-  public update() {
+  public update(deltaStep: number) {
     if (!this.playing) return;
 
-    const now = performance.now();
+    this.time += deltaStep;
 
-    if (!this.shouldUpdateFrame(now)) return;
+    if (!this.shouldUpdateFrame()) return;
 
-    this.previousTime = now;
+    this.previousTime = this.time;
 
     if (this.shouldFinish()) {
       if (this.infinite) {

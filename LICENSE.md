@@ -2,5 +2,5 @@ This game exists solely for fun and learning non-profit purposes. The code in th
 
 The media assets (some are edited and/or packed into sprites) are taken from the following games:
 
-- [**Comix Zone**](https://en.wikipedia.org/wiki/Comix_Zone)
+- [Comix Zone](https://en.wikipedia.org/wiki/Comix_Zone) (SEGA)
 - ...

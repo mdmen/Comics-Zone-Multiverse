@@ -9,31 +9,21 @@ Description
 ## Roadmap
 
 - [x] Game engine
-- [ ] Game mechanics
 - [ ] Playable version
 - [ ] Level 1
 - [ ] Level 2
 - [ ] Level 3
+- [ ] Level 4
 
-## Plot
+## Screenshots
 
 ...
-
-## Controls
-
-- ↑, ↓, ←, → - Moves
-- Space - Pause
-- J - Punch/Kick
-- K - Jump
-- L - Defense
-- Esc - Pause
 
 ## Technical features
 
 - Custom game engine
 - Can be rendered using 2D Canvas, WebGL or HTML/CSS
 - Loads assets only needed for current scene
-- Dark and light themes
 - Gamepad support
 
 ## License

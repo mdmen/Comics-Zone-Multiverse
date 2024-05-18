@@ -15,21 +15,21 @@
   <meta name="og:title" content="<%= htmlWebpackPlugin.options.title %>" />
   <meta name="og:description" content="<%= htmlWebpackPlugin.options.description %>" />
   <meta name="og:url" content="<%= htmlWebpackPlugin.options.homepage %>" />
-  <meta name="og:image" content="<%=require('./assets/images/readme/header.webp')%>" />
+  <meta name="og:image" content="<%=require('../public/images/header.webp')%>" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="<%= htmlWebpackPlugin.options.title %>" />
   <meta name="twitter:description" content="<%= htmlWebpackPlugin.options.description %>" />
   <meta name="twitter:url" content="<%= htmlWebpackPlugin.options.homepage %>" />
-  <meta name="twitter:image" content="<%=require('./assets/images/readme/header.webp')%>" />
+  <meta name="twitter:image" content="<%=require('../public/images/header.webp')%>" />
 
-  <link rel="preload" as="image" href="<%=require('./assets/images/scenes/loading_start.webp')%>" />
-  <link rel="preload" as="image" href="<%=require('./assets/images/scenes/loading_finish.webp')%>" />
-  <link rel="preload" as="image" href="<%=require('./assets/fonts/base/bitmap.webp')%>" />
-  <link rel="preload" as="fetch" href="<%=require('./assets/fonts/base/glyphs.json')%>" crossorigin="anonymous" />
+  <link rel="preload" as="image" href="<%=require('./assets/images/loading/progress_lower.webp')%>" />
+  <link rel="preload" as="image" href="<%=require('./assets/images/loading/progress_upper.webp')%>" />
+  <link rel="preload" as="image" href="<%=require('./assets/images/fonts/base.webp')%>" />
+  <link rel="preload" as="fetch" href="<%=require('./assets/data/fonts/base.json')%>" crossorigin="anonymous" />
 
-  <link rel="icon" href="/favicons/favicon.png" sizes="any" />
-  <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" />
+  <link rel="icon" href="/favicon.png" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <%= htmlWebpackPlugin.options.criticalStyles %>
 </head>
@@ -38,7 +38,7 @@
   <div class="wrapper">
     <div class="paper">
       <noscript>
-        <p class="noscript">
+        <p style="font-size: 1.2rem; padding: 20px; margin: 0">
           You need to enable JavaScript to play this game
         </p>
       </noscript>

@@ -14,7 +14,7 @@ export class Emitter<EventTypes extends string> {
   }
 
   private getEventType(type: EventTypes) {
-    return `${this.prefix}${type}`;
+    return `${this.prefix}_${type}`;
   }
 
   subscribe(type: EventTypes, listener: CustomEventListener) {
@@ -32,7 +32,9 @@ export class Emitter<EventTypes extends string> {
   }
 
   emit(type: EventTypes, detail?: unknown) {
-    const event = new CustomEvent(this.getEventType(type), { detail });
+    const eventType = this.getEventType(type);
+    const event = new CustomEvent(eventType, { detail });
+
     this.emitter.dispatchEvent(event);
   }
 }

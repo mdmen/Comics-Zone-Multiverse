@@ -1,13 +1,13 @@
-type RenderEngine = 'canvas' | 'dom' | 'webgl';
+import { RenderEngines } from './RenderEngines';
 
 const settings = {
   gamepad: false,
-  storagePrefix: 'game-',
-  eventsPrefix: 'GAME_',
-  render: 'canvas' as RenderEngine,
+  storagesPrefix: 'game',
+  eventsPrefix: 'GAME',
+  renderEngine: RenderEngines.CANVAS,
   fps: 60,
-  width: 1024,
-  height: 768,
+  canvasWidth: 1024,
+  canvasHeight: 768,
   antialiasing: true,
   cameraOffsetX: 50,
   cameraOffsetY: 50,
@@ -19,7 +19,7 @@ type SettingsMapKeys = keyof SettingsMap;
 interface Settings {
   get<T extends SettingsMapKeys>(key: T): SettingsMap[T];
   set<T extends SettingsMapKeys>(key: T, value: SettingsMap[T]): void;
-  isDOMEngine(): boolean;
+  isHTMLRenderEngine(): boolean;
 }
 
 export const Settings: Readonly<Settings> = {
@@ -31,7 +31,7 @@ export const Settings: Readonly<Settings> = {
     settings[key] = value;
   },
 
-  isDOMEngine() {
-    return settings.render === 'dom';
+  isHTMLRenderEngine() {
+    return settings.renderEngine === RenderEngines.HTML;
   },
 };
