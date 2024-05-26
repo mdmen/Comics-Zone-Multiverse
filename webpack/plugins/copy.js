@@ -6,7 +6,7 @@ module.exports = () =>
     patterns: [
       {
         from: `${sourceFolder}/assets/images/favicons`,
-        to: `${distFolder}/favicons`,
+        to: `${distFolder}/`,
       },
     ],
   });

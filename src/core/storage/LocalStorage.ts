@@ -1,36 +1,40 @@
 import { Logger } from '../Logger';
-import { Settings } from '../Settings';
+import type { Storage } from './Storage';
 
-function getKey(key: string) {
-  return `${Settings.get('storagesPrefix')}-${key}`;
-}
+export class LocalStorage implements Storage {
+  private static instance: LocalStorage;
+  private readonly logger;
 
-interface LocalStorage {
-  set: (key: string, value: unknown) => void;
-  get: (key: string) => unknown;
-}
+  private constructor() {
+    this.logger = Logger.getInstance();
+  }
 
-export const LocalStorage: Readonly<LocalStorage> = {
-  set(key, value) {
+  public static getInstance() {
+    if (!LocalStorage.instance) {
+      LocalStorage.instance = new LocalStorage();
+    }
+
+    return LocalStorage.instance;
+  }
+
+  public set(key: string, value: unknown) {
     try {
       const jsonValue = JSON.stringify(value);
-      const itemKey = getKey(key);
 
-      localStorage.setItem(itemKey, jsonValue);
+      localStorage.setItem(key, jsonValue);
     } catch (error) {
-      Logger.error(error);
+      this.logger.error(error);
     }
-  },
+  }
 
-  get(key) {
+  public get(key: string) {
     try {
-      const itemKey = getKey(key);
-      const value = localStorage.getItem(itemKey);
+      const value = localStorage.getItem(key);
 
       return value ? JSON.parse(value) : value;
     } catch (error) {
-      Logger.error(error);
+      this.logger.error(error);
       return null;
     }
-  },
-};
+  }
+}

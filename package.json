@@ -1,9 +1,11 @@
 {
   "version": "0.1.0",
   "private": true,
-  "title": "Comics Zone: Glitch",
+  "title": "Comics Zone: Multiverse",
   "description": "An attempt to create HTML5 spin-off for the great SEGA game called Comix Zone",
-  "homepage": "https://comicszoneglitch.github.io",
+  "homepage": "https://comics-zone-multiverse.github.io",
+  "author": "Dmitry Menov (https://github.com/mdmen)",
+  "license": "See license in LICENSE.md",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
@@ -57,7 +59,6 @@
     "webpack-dev-server": "^4.8.1"
   },
   "engines": {
-    "node": ">=20",
-    "yarn": ">=4"
+    "node": ">=20"
   }
 }

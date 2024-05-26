@@ -1,4 +1,7 @@
-import { Settings } from './Settings';
+enum GameLoopState {
+  RUNNING,
+  STOPPED,
+}
 
 interface Options {
   update(deltaStep: number): void;
@@ -9,26 +12,24 @@ interface Options {
 export class GameLoop {
   private readonly update;
   private readonly render;
-  private readonly deltaStep;
+  private deltaStep;
   private previousTime = 0;
-  private rafId = -1;
   private accumulator = 0;
+  private state = GameLoopState.STOPPED;
 
-  constructor({ update, render, fps = Settings.get('fps') }: Options) {
+  constructor({ update, render, fps = 60 }: Options) {
     this.update = update;
     this.render = render;
     this.deltaStep = 1000 / fps;
-
-    this.loop = this.loop.bind(this);
   }
 
-  private loop(timeStamp: number) {
-    if (timeStamp < this.previousTime + this.deltaStep) {
-      this.start();
-      return;
-    }
+  private loop = (timeStamp: number) => {
+    if (this.state !== GameLoopState.RUNNING) return;
 
-    this.accumulator += timeStamp - this.previousTime;
+    let delta = timeStamp - this.previousTime;
+    if (delta > 1000) delta = this.deltaStep;
+
+    this.accumulator += delta;
     this.previousTime = timeStamp;
 
     while (this.accumulator >= this.deltaStep) {
@@ -39,15 +40,16 @@ export class GameLoop {
 
     this.render();
 
-    this.start();
+    requestAnimationFrame(this.loop);
+  };
+
+  public start() {
+    this.state = GameLoopState.RUNNING;
+    requestAnimationFrame(this.loop);
   }
 
-  start() {
-    this.rafId = requestAnimationFrame(this.loop);
-  }
-
-  stop() {
-    cancelAnimationFrame(this.rafId);
+  public stop() {
+    this.state = GameLoopState.STOPPED;
     this.previousTime = 0;
     this.accumulator = 0;
   }

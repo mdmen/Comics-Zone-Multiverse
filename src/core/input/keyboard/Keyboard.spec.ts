@@ -4,7 +4,7 @@ import { Keyboard } from './Keyboard';
 describe('Keyboard (engine)', () => {
   test('Should response to user input', async () => {
     const user = userEvent.setup();
-    const keyboard = new Keyboard();
+    const keyboard = Keyboard.getInstance();
 
     expect(keyboard.isPressed('ShiftLeft')).toBe(false);
     expect(keyboard.isPressed('KeyW')).toBe(false);

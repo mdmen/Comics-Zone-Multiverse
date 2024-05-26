@@ -1,9 +1,6 @@
-import { Settings } from '../Settings';
+import { CANVAS_WIDTH, CANVAS_HEIGHT, ANTIALIASING } from '../config';
 
-export function createCanvas(
-  width = Settings.get('width'),
-  height = Settings.get('height')
-) {
+export function createCanvas(width = CANVAS_WIDTH, height = CANVAS_HEIGHT) {
   const canvas = document.createElement('canvas');
   canvas.width = Math.floor(width);
   canvas.height = Math.floor(height);
@@ -13,8 +10,8 @@ export function createCanvas(
 
 export function createContext2D(
   canvas: HTMLCanvasElement,
-  transparent = true,
-  antialiasing = Settings.get('antialiasing')
+  antialiasing = ANTIALIASING,
+  transparent = true
 ) {
   const context = canvas.getContext('2d', {
     alpha: transparent,

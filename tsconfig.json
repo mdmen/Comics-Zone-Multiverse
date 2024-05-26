@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ESNext",
     "module": "commonjs",
+    "lib": ["ESNext", "DOM"],
     "strict": true,
     "esModuleInterop": true,
-    // Exists solely for type definitions for the json files
-    // But these files are actually will be loaded by fetch
-    // and webpack when sees json import resolves it as url string
-    "resolveJsonModule": true,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": "./src",
     "paths": {
       "@/*": ["./*"]

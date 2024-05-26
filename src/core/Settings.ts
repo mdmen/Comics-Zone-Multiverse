@@ -1,16 +1,8 @@
 import { RenderEngines } from './RenderEngines';
 
 const settings = {
-  gamepad: false,
-  storagesPrefix: 'game',
-  eventsPrefix: 'GAME',
+  debug: false,
   renderEngine: RenderEngines.CANVAS,
-  fps: 60,
-  canvasWidth: 1024,
-  canvasHeight: 768,
-  antialiasing: true,
-  cameraOffsetX: 50,
-  cameraOffsetY: 50,
 };
 
 type SettingsMap = typeof settings;
@@ -20,6 +12,7 @@ interface Settings {
   get<T extends SettingsMapKeys>(key: T): SettingsMap[T];
   set<T extends SettingsMapKeys>(key: T, value: SettingsMap[T]): void;
   isHTMLRenderEngine(): boolean;
+  isDebug(): boolean;
 }
 
 export const Settings: Readonly<Settings> = {
@@ -33,5 +26,9 @@ export const Settings: Readonly<Settings> = {
 
   isHTMLRenderEngine() {
     return settings.renderEngine === RenderEngines.HTML;
+  },
+
+  isDebug() {
+    return settings.debug;
   },
 };

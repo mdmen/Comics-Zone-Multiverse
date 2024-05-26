@@ -1,14 +1,9 @@
 import { Observable } from '../Observable';
+import { ANIMATION_FRAME_DURATION } from '../config';
 import { AnimationEvents } from './AnimationEvents';
 import type { AnimationFrame } from './AnimationFrame';
 
-interface Options {
-  frames: AnimationFrame[];
-  infinite?: boolean;
-  frameDurationDefault?: number;
-}
-
-export class Animation {
+export class Animation<T extends AnimationFrame> {
   private readonly frames;
   private readonly infinite;
   private readonly frameDurationDefault;
@@ -20,17 +15,17 @@ export class Animation {
 
   public readonly events = new Observable<AnimationEvents>();
 
-  constructor({
-    frames,
+  constructor(
+    frames: T[],
     infinite = false,
-    frameDurationDefault = 100,
-  }: Options) {
+    frameDurationDefault = ANIMATION_FRAME_DURATION
+  ) {
     this.infinite = infinite;
     this.frames = frames;
     this.frameDurationDefault = frameDurationDefault;
   }
 
-  private shouldFinish() {
+  private isLastFrame() {
     return this.currentFrameIndex === this.frames.length - 1;
   }
 
@@ -48,6 +43,7 @@ export class Animation {
 
   public play() {
     this.playing = true;
+    this.time = 0;
     this.previousTime = 0;
 
     if (!this.dirty) {
@@ -69,7 +65,7 @@ export class Animation {
   public stop() {
     this.playing = false;
 
-    if (this.shouldFinish()) {
+    if (this.isLastFrame() && !this.infinite) {
       this.dirty = false;
       this.events.notify(AnimationEvents.END);
     } else {
@@ -86,13 +82,14 @@ export class Animation {
 
     this.previousTime = this.time;
 
-    if (this.shouldFinish()) {
+    if (this.isLastFrame()) {
       if (this.infinite) {
         this.currentFrameIndex = 0;
         return;
       }
 
-      return this.stop();
+      this.stop();
+      return;
     }
 
     this.currentFrameIndex++;

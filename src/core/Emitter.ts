@@ -1,39 +1,24 @@
-import { Settings } from './Settings';
-
-interface CustomEventListener {
+interface CustomEventListener extends EventListener {
   (event: CustomEvent): void;
 }
 
 export class Emitter<EventTypes extends string> {
-  private readonly emitter;
-  private readonly prefix;
+  private readonly emitter = new EventTarget();
 
-  constructor() {
-    this.emitter = new EventTarget();
-    this.prefix = Settings.get('eventsPrefix');
+  public on(type: EventTypes, listener: CustomEventListener) {
+    this.emitter.addEventListener(type, listener);
   }
 
-  private getEventType(type: EventTypes) {
-    return `${this.prefix}_${type}`;
+  public once(type: EventTypes, listener: CustomEventListener) {
+    this.emitter.addEventListener(type, listener, { once: true });
   }
 
-  subscribe(type: EventTypes, listener: CustomEventListener) {
-    this.emitter.addEventListener(
-      this.getEventType(type),
-      listener as EventListener
-    );
+  public off(type: EventTypes, listener: CustomEventListener) {
+    this.emitter.removeEventListener(type, listener);
   }
 
-  unsubscribe(type: EventTypes, listener: CustomEventListener) {
-    this.emitter.removeEventListener(
-      this.getEventType(type),
-      listener as EventListener
-    );
-  }
-
-  emit(type: EventTypes, detail?: unknown) {
-    const eventType = this.getEventType(type);
-    const event = new CustomEvent(eventType, { detail });
+  public emit(type: EventTypes, detail?: unknown) {
+    const event = new CustomEvent(type, { detail });
 
     this.emitter.dispatchEvent(event);
   }

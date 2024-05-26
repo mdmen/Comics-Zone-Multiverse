@@ -1,25 +1,32 @@
-interface Observer<T = unknown> {
-  listen(observable?: T, ...args: unknown[]): void;
-}
+type Observer<T> = (event?: T) => void;
 
-export class Observable<T = unknown> {
+export class Observable<T> {
   private readonly observers = new Set<Observer<T>>();
 
-  subscribe(observer: Observer<T>) {
+  public subscribe(observer: Observer<T>) {
     this.observers.add(observer);
   }
 
-  unsubscribe(observer: Observer<T>) {
+  public subscribeOnce(observer: Observer<T>) {
+    const unobservable = (event?: T) => {
+      this.unsubscribe(unobservable);
+      observer(event);
+    };
+
+    this.subscribe(unobservable);
+  }
+
+  public unsubscribe(observer: Observer<T>) {
     this.observers.delete(observer);
   }
 
-  notify(observable?: T, ...args: unknown[]) {
+  public notify(event?: T) {
     this.observers.forEach((observer) => {
-      observer.listen(observable, ...args);
+      observer(event);
     });
   }
 
-  unsubscribeAll() {
+  public unsubscribeAll() {
     this.observers.clear();
   }
 }

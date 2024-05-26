@@ -1,7 +1,7 @@
 import { isSafari } from './browsers';
 import { createCanvas, createContext2D } from './canvas';
 
-type ImageSource = HTMLImageElement | HTMLCanvasElement;
+type ImageSource = HTMLImageElement | HTMLCanvasElement | ImageBitmap;
 
 export function getImageWidth(source: ImageSource) {
   return source instanceof Image ? source.naturalWidth : source.width;
