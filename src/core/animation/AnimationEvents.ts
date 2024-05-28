@@ -1,6 +1,6 @@
 export enum AnimationEvents {
-  START,
-  CONTINUE,
-  STOP,
-  END,
+  Start = 'start',
+  Continue = 'continue',
+  Stop = 'stop',
+  End = 'end',
 }

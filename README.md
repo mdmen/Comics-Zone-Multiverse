@@ -8,7 +8,7 @@ Description
 
 ## Roadmap
 
-- [x] Game engine
+- [ ] Game engine
 - [ ] Playable version
 - [ ] Level 1
 - [ ] Level 2

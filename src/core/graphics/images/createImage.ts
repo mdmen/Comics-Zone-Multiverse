@@ -1,14 +1,15 @@
 import { Settings } from '../../Settings';
-import { ImageSourceCanvas } from './ImageSourceCanvas';
-import { ImageSourceHTML } from './ImageSourceHTML';
-import type { ImageSourceInput } from './ImageSource';
+import { CanvasImage } from './CanvasImage';
+import { HTMLImage } from './HTMLImage';
+import type { ImageSource } from './ImageSource';
 
-export async function createImage(source: ImageSourceInput) {
-  return new Promise<ImageSourceCanvas | ImageSourceHTML>((resolve) => {
-    const ImageClass = Settings.isHTMLRenderEngine()
-      ? ImageSourceHTML
-      : ImageSourceCanvas;
-    const image = new ImageClass(source);
+export async function createImage(
+  source: HTMLCanvasElement | HTMLImageElement,
+  scale = 1
+) {
+  return new Promise<ImageSource>((resolve) => {
+    const ImageClass = Settings.isHTMLRenderEngine() ? HTMLImage : CanvasImage;
+    const image = new ImageClass(source, scale);
 
     image.loadedEvent.subscribe(() => {
       resolve(image);

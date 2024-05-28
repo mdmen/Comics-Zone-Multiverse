@@ -1,17 +1,17 @@
 import { isSafari } from './browsers';
-import { createCanvas, createContext2D } from './canvas';
+import { createCanvas, createContext2D, isCanvas } from './canvas';
 
-type ImageSource = HTMLImageElement | HTMLCanvasElement | ImageBitmap;
-
-export function getImageWidth(source: ImageSource) {
-  return source instanceof Image ? source.naturalWidth : source.width;
+export function getImageWidth(source: HTMLImageElement | HTMLCanvasElement) {
+  return isCanvas(source) ? source.width : source.naturalWidth;
 }
 
-export function getImageHeight(source: ImageSource) {
-  return source instanceof Image ? source.naturalHeight : source.height;
+export function getImageHeight(source: HTMLImageElement | HTMLCanvasElement) {
+  return isCanvas(source) ? source.height : source.naturalHeight;
 }
 
-export async function getFlippedImageCanvas(source: ImageSource) {
+export async function getFlippedImageCanvas(
+  source: HTMLImageElement | HTMLCanvasElement
+) {
   const sourceWidth = getImageWidth(source);
   const sourceHeight = getImageHeight(source);
 
@@ -25,7 +25,10 @@ export async function getFlippedImageCanvas(source: ImageSource) {
   return canvas;
 }
 
-export async function getScaledImageSource(source: ImageSource, scale = 1) {
+export async function getScaledImage(
+  source: HTMLImageElement | HTMLCanvasElement,
+  scale = 1
+) {
   if (scale === 1) return source;
 
   const sourceWidth = getImageWidth(source);
@@ -51,7 +54,7 @@ export async function getScaledImageSource(source: ImageSource, scale = 1) {
   return canvas;
 }
 
-export async function extractImageFromCanvas(canvas: HTMLCanvasElement) {
+export async function getImageFromCanvas(canvas: HTMLCanvasElement) {
   return new Promise<HTMLImageElement>((resolve) => {
     const image = new Image();
 

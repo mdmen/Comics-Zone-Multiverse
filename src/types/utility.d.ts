@@ -1,1 +1,1 @@
-type PrimitiveKeys = string | number | symbol;
+type PrimitiveTypes = string | number | symbol;

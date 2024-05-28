@@ -48,9 +48,9 @@ export class Animation<T extends AnimationFrame> {
 
     if (!this.dirty) {
       this.dirty = true;
-      this.events.notify(AnimationEvents.START);
+      this.events.notify(AnimationEvents.Start);
     } else {
-      this.events.notify(AnimationEvents.CONTINUE);
+      this.events.notify(AnimationEvents.Continue);
     }
   }
 
