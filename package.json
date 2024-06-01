@@ -11,9 +11,9 @@
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "eslint": "eslint . --ext .ts",
     "tslint": "tsc --noEmit",
-    "lint": "yarn eslint && yarn tslint",
+    "lint": "npm run eslint && npm run tslint",
     "test": "jest",
-    "postinstall": "yarn simple-git-hooks"
+    "postinstall": "npx simple-git-hooks"
   },
   "lint-staged": {
     "*.{ts,js,json,css}": [
@@ -21,13 +21,14 @@
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "yarn lint-staged",
-    "pre-push": "yarn lint"
+    "pre-commit": "npx lint-staged",
+    "pre-push": "npm run lint"
   },
   "devDependencies": {
     "@testing-library/dom": "^9.3.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^14.4.3",
+    "@total-typescript/ts-reset": "^0.5.1",
     "@types/jest": "^29.5.2",
     "@typescript-eslint/eslint-plugin": "^6.12.0",
     "@typescript-eslint/parser": "^6.12.0",

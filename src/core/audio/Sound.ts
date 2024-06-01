@@ -1,49 +1,17 @@
-import type { SoundLayer } from './SoundLayer';
-import { Observable } from '../Observable';
-import { SoundEvents } from './SoundEvents';
+import { SoundSource } from './SoundSource';
 
-export class Sound {
-  protected node;
-  public readonly events = new Observable<SoundEvents>();
-
-  constructor(buffer: AudioBuffer, layer: SoundLayer) {
-    const context = layer.getContext();
-    const node = new AudioBufferSourceNode(context, { buffer });
-
-    node.connect(layer.getGainNode());
-    node.addEventListener('ended', this.stopPlayingNotify);
-
-    this.node = node;
-  }
-
-  protected startPlayingNotify = () => {
-    this.events.notify(SoundEvents.Start);
-  };
-
-  protected stopPlayingNotify = () => {
-    this.events.notify(SoundEvents.End);
-  };
-
+export class Sound extends SoundSource {
   public play() {
-    this.node.start();
+    try {
+      this.sourceNode.start();
 
-    this.startPlayingNotify();
+      this.startPlayingNotify();
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 
   public setLoop(loop: boolean) {
-    this.node.loop = loop;
-  }
-
-  public stop() {
-    this.node.stop();
-  }
-
-  public destroy() {
-    this.stop();
-
-    this.node.removeEventListener('ended', this.stopPlayingNotify);
-    this.node.disconnect();
-    this.node = null as unknown as AudioBufferSourceNode;
-    this.events.unsubscribeAll();
+    this.sourceNode.loop = loop;
   }
 }

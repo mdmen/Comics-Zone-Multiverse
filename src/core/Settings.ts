@@ -2,6 +2,7 @@ import { RenderEngines } from './RenderEngines';
 
 const settings = {
   debug: false,
+  antialiasing: false,
   renderEngine: RenderEngines.CANVAS,
 };
 
@@ -13,6 +14,7 @@ interface Settings {
   set<T extends SettingsMapKeys>(key: T, value: SettingsMap[T]): void;
   isHTMLRenderEngine(): boolean;
   isDebug(): boolean;
+  isAntialiasing(): boolean;
 }
 
 export const Settings: Readonly<Settings> = {
@@ -30,5 +32,9 @@ export const Settings: Readonly<Settings> = {
 
   isDebug() {
     return settings.debug;
+  },
+
+  isAntialiasing() {
+    return settings.antialiasing;
   },
 };

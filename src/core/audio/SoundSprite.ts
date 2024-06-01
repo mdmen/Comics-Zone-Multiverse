@@ -1,22 +1,28 @@
-import { Logger } from '../Logger';
 import type { SoundLayer } from './SoundLayer';
-import type { AudioSpriteAtlas } from '../assets/AudioSpriteAtlas';
-import { Sound } from './Sound';
+import type { SoundSpriteAtlas } from './SoundSpriteAtlas';
+import { SoundSource } from './SoundSource';
 
-export class SoundSprite extends Sound {
+export class SoundSprite extends SoundSource {
   private atlas;
-  protected readonly logger = Logger.getInstance();
 
-  constructor(buffer: AudioBuffer, audio: SoundLayer, atlas: AudioSpriteAtlas) {
-    super(buffer, audio);
+  constructor(buffer: AudioBuffer, layer: SoundLayer, atlas: SoundSpriteAtlas) {
+    super(buffer, layer);
 
     this.atlas = atlas;
   }
 
-  public playSegment(segment: string) {
+  private checkSegment(segment: string) {
+    if (!this.atlas.segments[segment]) {
+      throw Error(`Sound sprite segment "${segment}" not found`);
+    }
+  }
+
+  public play(segment: string) {
     try {
+      this.checkSegment(segment);
+
       const { start, end } = this.atlas.segments[segment];
-      this.node.start(0, start, end - start);
+      this.sourceNode.start(0, start, end - start);
 
       this.startPlayingNotify();
     } catch (error) {
@@ -24,13 +30,15 @@ export class SoundSprite extends Sound {
     }
   }
 
-  public setLoopSegment(segment: string, loop: boolean) {
+  public setLoop(segment: string, loop: boolean) {
     try {
+      this.checkSegment(segment);
+
       const { start, end } = this.atlas.segments[segment];
 
-      this.node.loop = loop;
-      this.node.loopStart = start;
-      this.node.loopEnd = end;
+      this.sourceNode.loop = loop;
+      this.sourceNode.loopStart = start;
+      this.sourceNode.loopEnd = end;
     } catch (error) {
       this.logger.error(error);
     }
@@ -39,6 +47,6 @@ export class SoundSprite extends Sound {
   public destroy() {
     super.destroy();
 
-    this.atlas = null as unknown as AudioSpriteAtlas;
+    this.atlas = null as unknown as SoundSpriteAtlas;
   }
 }

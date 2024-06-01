@@ -1,5 +1,4 @@
 import { Observable } from '../Observable';
-import { ANIMATION_FRAME_DURATION } from '../config';
 import { AnimationEvents } from './AnimationEvents';
 import type { AnimationFrame } from './AnimationFrame';
 
@@ -15,11 +14,7 @@ export class Animation<T extends AnimationFrame> {
 
   public readonly events = new Observable<AnimationEvents>();
 
-  constructor(
-    frames: T[],
-    infinite = false,
-    frameDurationDefault = ANIMATION_FRAME_DURATION
-  ) {
+  constructor(frames: T[], infinite = false, frameDurationDefault = 100) {
     this.infinite = infinite;
     this.frames = frames;
     this.frameDurationDefault = frameDurationDefault;
@@ -67,9 +62,9 @@ export class Animation<T extends AnimationFrame> {
 
     if (this.isLastFrame() && !this.infinite) {
       this.dirty = false;
-      this.events.notify(AnimationEvents.END);
+      this.events.notify(AnimationEvents.End);
     } else {
-      this.events.notify(AnimationEvents.STOP);
+      this.events.notify(AnimationEvents.Stop);
     }
   }
 
