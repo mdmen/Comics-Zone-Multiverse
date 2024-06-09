@@ -6,26 +6,36 @@ export class Vector implements Point {
   public set(x: number, y = x) {
     this.x = x;
     this.y = y;
+
+    return this;
   }
 
   public copy(v: Point) {
     this.x = v.x;
     this.y = v.y;
+
+    return this;
   }
 
   public addV(v: Point) {
     this.x += v.x;
     this.y += v.y;
+
+    return this;
   }
 
   public subV(v: Point) {
     this.x -= v.x;
     this.y -= v.y;
+
+    return this;
   }
 
   public scale(x: number, y = x) {
     this.x *= x;
     this.y *= y;
+
+    return this;
   }
 
   public getLength() {

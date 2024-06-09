@@ -1,5 +1,5 @@
 export interface State {
-  onUpdate: (...args: unknown[]) => void;
-  onEnter: () => void;
-  onLeave: () => void;
+  update: (deltaStep: number, ...args: unknown[]) => void;
+  enter: () => void;
+  leave: () => void;
 }

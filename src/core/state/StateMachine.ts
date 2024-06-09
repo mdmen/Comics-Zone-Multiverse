@@ -1,64 +1,76 @@
-import { LinkedList } from '../linked-list/LinkedList';
+import { LinkedList } from '../list';
 import { isEmpty } from '../utils';
 import type { State } from './State';
+import { StateMachineNode } from './StateMachineNode';
+import type { StateTransition } from './StateTransition';
 
-export class StateMachine<Key extends string = string> {
-  private readonly states;
-  private readonly stack = new LinkedList<Key>();
+export abstract class StateMachine<
+  T extends State = State,
+  K extends string = string
+> {
+  private readonly states = new Map<K, StateMachineNode<T, K>>();
+  private currentNode: StateMachineNode<T, K> | null = null;
+  private readonly stack = new LinkedList<K>();
   private readonly stackMaxSize = 10;
-  private readonly stacked;
-  private prevStateKey!: Key;
-  private currentState: State = {
-    onUpdate() {},
-    onEnter() {},
-    onLeave() {},
-  };
 
-  constructor(initialStates = {}, stacked = false) {
-    this.states = initialStates as Record<Key, State>;
-    this.stacked = stacked;
+  private startTransition(key: K) {
+    const node = this.states.get(key);
+
+    if (!node) return;
+
+    this.currentNode?.state.leave();
+    this.currentNode = node;
+    this.currentNode.state.enter();
   }
 
-  private transitionTo(key: Key) {
-    this.currentState.onLeave();
-    this.currentState = this.states[key];
-    this.currentState.onEnter();
-  }
-
-  addState(key: Key, state: State) {
-    this.states[key] = state;
+  public register(key: K, state: T) {
+    this.states.set(key, new StateMachineNode(state));
 
     return this;
   }
 
-  setState(key: Key) {
-    if (this.states[key] === this.currentState) return;
+  public addTransition(transition: StateTransition<K>) {
+    const node = this.states.get(transition.from);
 
-    this.transitionTo(key);
+    if (!node) {
+      throw Error(`State "${transition.from}" is not registered`);
+    }
 
-    this.stacked && this.updateStateStack(key);
+    node.addTransition(transition);
   }
 
-  updateStateStack(newStateKey: Key) {
-    if (this.prevStateKey) {
-      this.stack.append(this.prevStateKey);
-    }
+  public set(key: K) {
+    if (this.stack.getTail() === key) return;
+
+    this.stack.append(key);
 
     if (this.stack.size > this.stackMaxSize) {
       this.stack.shift();
     }
-
-    this.prevStateKey = newStateKey;
   }
 
-  setPrevState() {
+  public setPrev() {
     if (isEmpty(this.stack)) return;
 
-    const key = this.stack.pop() as Key;
-    this.transitionTo(key);
+    const key = this.stack.pop() as K;
+    this.startTransition(key);
   }
 
-  getState(key?: Key) {
-    return key ? this.states[key] : this.currentState;
+  public update(deltaStep: number) {
+    if (!this.currentNode) return;
+
+    for (const transition of this.currentNode.transitions) {
+      if (transition.condition()) {
+        this.startTransition(transition.to);
+      }
+    }
+
+    this.currentNode.state.update(deltaStep);
+  }
+
+  public destroy() {
+    this.states.clear();
+    this.stack.clear();
+    this.currentNode = null;
   }
 }

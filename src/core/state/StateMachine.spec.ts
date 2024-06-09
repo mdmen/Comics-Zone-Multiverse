@@ -2,9 +2,9 @@ import { StateMachine } from './StateMachine';
 import { type State } from './State';
 
 class BaseState implements State {
-  onEnter() {}
-  onLeave() {}
-  onUpdate() {}
+  enter() {}
+  leave() {}
+  update() {}
 }
 
 class State1 extends BaseState {}
