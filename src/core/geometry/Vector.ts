@@ -38,12 +38,28 @@ export class Vector implements Point {
     return this;
   }
 
+  public normalize() {
+    const length = this.getLength();
+
+    if (length === 0) return this;
+
+    return this.scale(1 / length);
+  }
+
+  public dot(v: Point) {
+    return this.x * v.x + this.y * v.y;
+  }
+
+  public cross(v: Point) {
+    return this.x * v.y - this.y * v.x;
+  }
+
   public getLength() {
     return Math.hypot(this.x, this.y);
   }
 
   public getDistance(v: Point) {
-    return Math.hypot(v.x - this.x, v.y - this.y);
+    return Math.hypot(this.x - v.x, this.y - v.y);
   }
 
   public clone() {

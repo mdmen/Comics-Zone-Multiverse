@@ -1,40 +1,52 @@
 import { RenderEngines } from './RenderEngines';
 
-const settings = {
-  debug: false,
-  antialiasing: false,
-  renderEngine: RenderEngines.CANVAS,
-};
-
-type SettingsMap = typeof settings;
-type SettingsMapKeys = keyof SettingsMap;
-
-interface Settings {
-  get<T extends SettingsMapKeys>(key: T): SettingsMap[T];
-  set<T extends SettingsMapKeys>(key: T, value: SettingsMap[T]): void;
-  isHTMLRenderEngine(): boolean;
-  isDebug(): boolean;
-  isAntialiasing(): boolean;
+interface Values {
+  debug: boolean;
+  antialiasing: boolean;
+  renderEngine: RenderEngines;
 }
 
-export const Settings: Readonly<Settings> = {
-  get(key) {
-    return settings[key];
-  },
+export class Settings {
+  private static instance: Settings;
+  private readonly values: Values = {
+    debug: false,
+    antialiasing: false,
+    renderEngine: RenderEngines.CANVAS,
+  };
 
-  set(key, value) {
-    settings[key] = value;
-  },
+  public static getInstance() {
+    if (!Settings.instance) {
+      Settings.instance = new Settings();
+    }
 
-  isHTMLRenderEngine() {
-    return settings.renderEngine === RenderEngines.HTML;
-  },
+    return Settings.instance;
+  }
 
-  isDebug() {
-    return settings.debug;
-  },
+  public get<T extends keyof Values>(key: T): Values[T] {
+    return this.values[key];
+  }
 
-  isAntialiasing() {
-    return settings.antialiasing;
-  },
-};
+  public set<T extends keyof Values>(key: T, value: Values[T]) {
+    this.values[key] = value;
+  }
+
+  public isHTMLRenderEngine() {
+    return this.values.renderEngine === RenderEngines.HTML;
+  }
+
+  public isWebGLRenderEngine() {
+    return this.values.renderEngine === RenderEngines.WEBGL;
+  }
+
+  public isCanvasRenderEngine() {
+    return this.values.renderEngine === RenderEngines.CANVAS;
+  }
+
+  public isDebug() {
+    return this.values.debug;
+  }
+
+  public isAntialiasing() {
+    return this.values.antialiasing;
+  }
+}

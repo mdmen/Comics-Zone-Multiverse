@@ -1,13 +1,18 @@
-import type { LinkedList } from '../linked-list/LinkedList';
+import type { LinkedList } from '../list/LinkedList';
 
-export function isProduction() {
-  return process.env.NODE_ENV === 'production';
-}
-
-export function isEmpty(
-  value: unknown[] | Set<unknown> | Map<unknown, unknown> | LinkedList
+export function isEmpty<T>(
+  collection:
+    | T[]
+    | Set<T>
+    | Map<unknown, T>
+    | LinkedList
+    | Record<string | number | symbol, T>
 ) {
-  return Array.isArray(value) ? !value.length : !value.size;
+  return collection.constructor === Object
+    ? Object.entries(collection).length
+    : Array.isArray(collection)
+    ? !collection.length
+    : !collection.size;
 }
 
 export function isString(value: unknown): value is string {

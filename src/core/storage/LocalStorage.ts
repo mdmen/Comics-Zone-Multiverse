@@ -3,11 +3,9 @@ import type { Storage } from './Storage';
 
 export class LocalStorage implements Storage {
   private static instance: LocalStorage;
-  private readonly logger;
+  private readonly logger = Logger.getInstance();
 
-  private constructor() {
-    this.logger = Logger.getInstance();
-  }
+  private constructor() {}
 
   public static getInstance() {
     if (!LocalStorage.instance) {

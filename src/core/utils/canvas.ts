@@ -12,20 +12,16 @@ export function createCanvas(width: number, height: number) {
   return canvas;
 }
 
-export function createContext2D(
-  canvas: HTMLCanvasElement,
-  antialiasing = Settings.isAntialiasing(),
-  transparent = true
-) {
+export function createContext2D(canvas: HTMLCanvasElement) {
   const context = canvas.getContext('2d', {
-    alpha: transparent,
+    alpha: true,
   });
 
   if (!context) {
     throw Error('Cannot create 2d context');
   }
 
-  context.imageSmoothingEnabled = antialiasing;
+  context.imageSmoothingEnabled = Settings.getInstance().isAntialiasing();
 
   return context;
 }

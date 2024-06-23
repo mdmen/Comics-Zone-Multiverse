@@ -1,28 +1,28 @@
-type Observer<T, U = unknown> = (event?: T, payload?: U) => void;
+type Observer<T> = (payload: T) => void;
 
-export class Observable<T, U = unknown> {
-  private readonly observers = new Set<Observer<T, U>>();
+export class Observable<T = unknown> {
+  private readonly observers = new Set<Observer<T>>();
 
-  public subscribe(observer: Observer<T, U>) {
+  public subscribe(observer: Observer<T>) {
     this.observers.add(observer);
   }
 
   public subscribeOnce(observer: Observer<T>) {
-    const unobservable = (event?: T, payload?: U) => {
+    const unobservable = (payload: T) => {
       this.unsubscribe(unobservable);
-      observer(event, payload);
+      observer(payload);
     };
 
     this.subscribe(unobservable);
   }
 
-  public unsubscribe(observer: Observer<T, U>) {
+  public unsubscribe(observer: Observer<T>) {
     this.observers.delete(observer);
   }
 
-  public notify(event?: T, payload?: U) {
+  public notify(payload: T) {
     this.observers.forEach((observer) => {
-      observer(event, payload);
+      observer(payload);
     });
   }
 

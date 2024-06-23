@@ -9,7 +9,7 @@ export function getImageHeight(source: HTMLImageElement | HTMLCanvasElement) {
   return isCanvas(source) ? source.height : source.naturalHeight;
 }
 
-export async function getFlippedImageCanvas(
+export async function getFlippedImage(
   source: HTMLImageElement | HTMLCanvasElement
 ) {
   const sourceWidth = getImageWidth(source);

@@ -1,4 +1,4 @@
-import { isProduction } from './utils';
+import { PRODUCTION } from './config';
 
 enum LogLevel {
   Debug = 0,
@@ -12,7 +12,7 @@ export class Logger {
   private readonly logLevel;
 
   private constructor() {
-    this.logLevel = isProduction() ? LogLevel.Warn : LogLevel.Debug;
+    this.logLevel = PRODUCTION ? LogLevel.Warn : LogLevel.Debug;
   }
 
   public static getInstance() {

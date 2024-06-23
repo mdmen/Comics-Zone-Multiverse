@@ -6,6 +6,7 @@ export function loadImage(src: string) {
       reject(event);
     };
 
+    image.addEventListener('error', onError);
     image.addEventListener(
       'load',
       () => {
@@ -14,8 +15,6 @@ export function loadImage(src: string) {
       },
       { once: true }
     );
-
-    image.addEventListener('error', onError);
 
     image.src = src;
   });

@@ -1,8 +1,10 @@
 import { Observable } from '../Observable';
-import { AnimationEvents } from './AnimationEvents';
+import type { State } from '../state';
 import type { AnimationFrame } from './AnimationFrame';
 
-export class Animation<T extends AnimationFrame> {
+export class Animation<Frame extends AnimationFrame = AnimationFrame>
+  implements State
+{
   private readonly frames;
   private readonly infinite;
   private readonly frameDurationDefault;
@@ -12,9 +14,10 @@ export class Animation<T extends AnimationFrame> {
   private time = 0;
   private previousTime = 0;
 
-  public readonly events = new Observable<AnimationEvents>();
+  public readonly startEvent = new Observable<this>();
+  public readonly endEvent = new Observable<this>();
 
-  constructor(frames: T[], infinite = false, frameDurationDefault = 100) {
+  constructor(frames: Frame[], infinite = false, frameDurationDefault = 100) {
     this.infinite = infinite;
     this.frames = frames;
     this.frameDurationDefault = frameDurationDefault;
@@ -26,13 +29,13 @@ export class Animation<T extends AnimationFrame> {
 
   private shouldUpdateFrame() {
     const delta = this.time - this.previousTime;
-    const frame = this.gerCurrentFrame();
+    const frame = this.getCurrentFrame();
     const duration = frame.duration ?? this.frameDurationDefault;
 
     return delta > duration;
   }
 
-  public gerCurrentFrame() {
+  public getCurrentFrame() {
     return this.frames[this.currentFrameIndex];
   }
 
@@ -43,9 +46,7 @@ export class Animation<T extends AnimationFrame> {
 
     if (!this.dirty) {
       this.dirty = true;
-      this.events.notify(AnimationEvents.Start);
-    } else {
-      this.events.notify(AnimationEvents.Continue);
+      this.startEvent.notify(this);
     }
   }
 
@@ -62,10 +63,16 @@ export class Animation<T extends AnimationFrame> {
 
     if (this.isLastFrame() && !this.infinite) {
       this.dirty = false;
-      this.events.notify(AnimationEvents.End);
-    } else {
-      this.events.notify(AnimationEvents.Stop);
+      this.endEvent.notify(this);
     }
+  }
+
+  public leave() {
+    this.reset();
+  }
+
+  public enter() {
+    this.play();
   }
 
   public update(deltaStep: number) {

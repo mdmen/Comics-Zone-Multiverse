@@ -1,13 +1,13 @@
 import type { State } from './State';
 import type { StateTransition } from './StateTransition';
 
-export class StateMachineNode<T extends State, K extends string> {
+export class StateMachineNode<T extends State> {
   constructor(
     public readonly state: T,
-    public readonly transitions = new Set<StateTransition<K>>()
+    public readonly transitions = new Set<StateTransition>()
   ) {}
 
-  public addTransition(transition: StateTransition<K>) {
+  public addTransition(transition: StateTransition) {
     this.transitions.add(transition);
   }
 }

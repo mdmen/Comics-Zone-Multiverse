@@ -2,7 +2,7 @@
 
 # Comics Zone: Multiverse
 
-[![GitHub CI status](https://img.shields.io/github/actions/workflow/status/mdmen/comix-zone-glitch/ci.yaml?branch=main&label=CI&logo=Github)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/ci.yaml) [![License](https://img.shields.io/badge/License-!!!-blue.svg)](./LICENSE.md)
+[![GitHub CI status](https://img.shields.io/github/actions/workflow/status/mdmen/comix-zone-glitch/ci.yaml?branch=main&label=CI&logo=Github)](https://github.com/mdmen/comix-zone-glitch/actions/workflows/ci.yaml)
 
 Description
 

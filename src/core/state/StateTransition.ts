@@ -1,7 +1,7 @@
-export class StateTransition<T extends string> {
+export class StateTransition {
   constructor(
-    public readonly from: T,
-    public readonly to: T,
+    public readonly from: string,
+    public readonly to: string,
     public readonly condition: () => boolean
   ) {}
 }
