@@ -1,13 +1,14 @@
 import { Observable } from '../Observable';
 
-export class AssetsLoader<
-  Source,
-  Asset,
-  Load extends (source: Source) => Promise<Asset>
+export class AssetLoader<
+  Load extends (source: Source) => Promise<Asset>,
+  Asset = Awaited<ReturnType<Load>>,
+  Source = Parameters<Load>[0]
 > {
   private readonly assets = new Map<string, Asset>();
-  public readonly progressEvent = new Observable<this>();
-  public readonly loadedEvent = new Observable<this>();
+
+  public readonly progressEvent = new Observable<Asset>();
+  public readonly loadedEvent = new Observable<Asset>();
 
   constructor(
     private readonly manifest: Record<string, Source>,
@@ -21,15 +22,19 @@ export class AssetsLoader<
 
       await Promise.all(
         keys.map(async (key) => {
-          const asset = await this.load(this.manifest[key]);
+          let asset = this.assets.get(key);
 
-          this.assets.set(key, asset);
+          if (!asset) {
+            asset = await this.load(this.manifest[key]);
+            this.assets.set(key, asset);
+          }
+
           loaded++;
 
           if (loaded === keys.length) {
-            this.loadedEvent.notify(this);
+            this.loadedEvent.notify(asset);
           } else {
-            this.progressEvent.notify(this);
+            this.progressEvent.notify(asset);
           }
         })
       );
@@ -42,18 +47,20 @@ export class AssetsLoader<
     const asset = this.assets.get(key);
 
     if (!asset) {
-      throw Error(`Unable to retrieve "${key}" asset`);
+      throw Error(`Unable to retrieve an asset. "${key}" is not loaded`);
     }
 
     return asset;
   }
 
   public delete(...keys: string[]) {
-    keys.forEach((key) => {
-      if (!this.assets.has(key)) {
-        throw Error(`Unable to delete "${key}" asset`);
-      }
+    const notFound = keys.filter((key) => !this.assets.has(key));
 
+    if (notFound.length) {
+      throw Error(`Unable to delete assets. "${notFound}" are not loaded`);
+    }
+
+    keys.forEach((key) => {
       this.assets.delete(key);
     });
   }

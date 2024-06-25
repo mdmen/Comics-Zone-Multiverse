@@ -1,1 +1,2 @@
-export * from './AssetsLoader';
+export * from './AssetLoader';
+export * from './ImageLoader';
