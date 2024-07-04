@@ -47,7 +47,7 @@ export class AssetLoader<
     const asset = this.assets.get(key);
 
     if (!asset) {
-      throw Error(`Unable to retrieve an asset. "${key}" is not loaded`);
+      throw Error(`Unable to retrieve an asset. "${key}" not loaded`);
     }
 
     return asset;
@@ -57,7 +57,7 @@ export class AssetLoader<
     const notFound = keys.filter((key) => !this.assets.has(key));
 
     if (notFound.length) {
-      throw Error(`Unable to delete assets. "${notFound}" are not loaded`);
+      throw Error(`Unable to delete assets. "${notFound}" not loaded`);
     }
 
     keys.forEach((key) => {

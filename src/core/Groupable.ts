@@ -33,13 +33,33 @@ export class Groupable {
   }
 
   public traverseParents(callback: (groupable: this) => void) {
-    const parent = this.parent;
+    let parent = this.parent;
 
-    if (parent) {
+    while (parent) {
       callback(parent);
 
-      parent.traverseParents(callback);
+      parent = parent.parent;
     }
+  }
+
+  public traverseChildren(callback: (groupable: this) => void) {
+    this.children.forEach((groupable) => {
+      callback(groupable);
+
+      groupable.traverseChildren(callback);
+    });
+  }
+
+  public findParent(predicate: (groupable: this) => boolean) {
+    let parent = this.parent;
+
+    while (parent) {
+      if (predicate(parent)) return parent;
+
+      parent = parent.parent;
+    }
+
+    return null;
   }
 
   public destroy() {

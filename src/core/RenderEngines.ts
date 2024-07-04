@@ -1,5 +1,5 @@
 export enum RenderEngines {
-  HTML = 'html',
-  CANVAS = 'canvas',
-  WEBGL = 'webgl',
+  HTML,
+  CANVAS,
+  WEBGL,
 }

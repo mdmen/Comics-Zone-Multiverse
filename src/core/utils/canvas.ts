@@ -1,9 +1,5 @@
 import { Settings } from '../Settings';
 
-export function isCanvas(source: unknown): source is HTMLCanvasElement {
-  return source instanceof HTMLCanvasElement;
-}
-
 export function createCanvas(width: number, height: number) {
   const canvas = document.createElement('canvas');
   canvas.width = Math.floor(width);
@@ -18,10 +14,12 @@ export function createContext2D(canvas: HTMLCanvasElement) {
   });
 
   if (!context) {
-    throw Error('Cannot create 2d context');
+    throw Error('Failed to create 2d context');
   }
 
-  context.imageSmoothingEnabled = Settings.getInstance().isAntialiasing();
+  const antialiasing = Settings.getInstance().isAntialiasing();
+  context.imageSmoothingEnabled = antialiasing;
+  !antialiasing && (context.textRendering = 'optimizeSpeed');
 
   return context;
 }

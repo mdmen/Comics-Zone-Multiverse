@@ -10,11 +10,28 @@ export class Vector implements Point {
     return this;
   }
 
+  public setX(n: number) {
+    this.x = n;
+
+    return this;
+  }
+
+  public setY(n: number) {
+    this.y = n;
+
+    return this;
+  }
+
   public copy(v: Point) {
     this.x = v.x;
     this.y = v.y;
 
     return this;
+  }
+
+  public add(x: number, y = x) {
+    this.x += x;
+    this.y += y;
   }
 
   public addV(v: Point) {

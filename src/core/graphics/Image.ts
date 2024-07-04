@@ -1,23 +1,19 @@
-import { getImageHeight, getImageWidth } from '../utils';
+import { Drawable, type DrawableOptions } from './Drawable';
+import type { Rectangle } from '../geometry';
 
-type ImageElement = HTMLImageElement | HTMLCanvasElement;
+export interface ImageOptions extends DrawableOptions {
+  image: HTMLImageElement;
+}
 
-export class Image {
-  public readonly element: ImageElement | null = null;
-  public readonly flippedElement: ImageElement | null = null;
-  public readonly width;
-  public readonly height;
-  public readonly scale;
+export class Image extends Drawable implements Rectangle {
+  public readonly image;
+  public flipped = false;
 
-  constructor(
-    element: ImageElement,
-    flippedElement: ImageElement | null = null,
-    scale = 1
-  ) {
-    this.element = element;
-    this.flippedElement = flippedElement;
-    this.scale = scale;
-    this.width = getImageWidth(element);
-    this.height = getImageHeight(element);
+  constructor({ image, ...options }: ImageOptions) {
+    super(options);
+
+    this.image = image;
+
+    this.size.set(image.clientWidth, image.clientHeight);
   }
 }
