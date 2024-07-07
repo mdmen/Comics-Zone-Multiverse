@@ -1,21 +1,10 @@
 import { CanvasNode } from './CanvasNode';
-import type { Rect } from '../Rect';
+import type { Rect } from '../../Rect';
 
 export class CanvasRectNode<T extends Rect> extends CanvasNode<T> {
-  protected color;
-  protected borderColor;
-  protected borderWidth;
-
-  constructor(drawable: T) {
-    super(drawable);
-
-    const { color, borderColor, borderWidth } = drawable;
-    this.color = color;
-    this.borderColor = borderColor;
-    this.borderWidth = borderWidth;
-
-    this.draw();
-  }
+  protected color = '';
+  protected borderColor = '';
+  protected borderWidth = -1;
 
   protected shouldRedraw() {
     return (
@@ -62,11 +51,11 @@ export class CanvasRectNode<T extends Rect> extends CanvasNode<T> {
   protected draw() {
     super.draw();
 
-    if (this.borderColor || this.borderWidth) {
+    if (this.drawable.borderColor || this.drawable.borderWidth) {
       this.drawStrokedRect();
     }
 
-    if (this.color) {
+    if (this.drawable.color) {
       this.drawFilledRect();
     }
   }

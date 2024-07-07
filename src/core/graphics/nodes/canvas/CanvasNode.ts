@@ -1,31 +1,33 @@
-import { Vector } from '../../geometry';
-import { createCanvas, createContext2D, toRadians } from '../../utils';
-import { Drawable } from '../Drawable';
+import { createCanvas, createContext2D, toRadians } from '@/core/utils';
+import { Drawable } from '../../Drawable';
 
 export abstract class CanvasNode<T extends Drawable> {
   public readonly canvas;
   public readonly context;
   protected readonly drawable;
-  protected readonly size = new Vector();
+  protected readonly size;
   protected opacity;
   protected rotation;
   protected scale;
+  private firstDraw = true;
 
   constructor(drawable: T) {
     this.drawable = drawable;
-    this.canvas = createCanvas(0, 0);
-    this.context = createContext2D(this.canvas);
-
-    this.scale = drawable.scale;
+    this.opacity = drawable.getFullOpacity();
     this.rotation = drawable.rotation;
-    this.opacity = drawable.opacity;
-    this.size.copy(drawable.size);
+    this.scale = drawable.scale;
+    this.size = drawable.size.clone();
 
-    this.setCanvasSize();
+    this.canvas = createCanvas(
+      this.scale * this.size.x,
+      this.scale * this.size.y
+    );
+    this.context = createContext2D(this.canvas);
   }
 
   protected shouldRedraw() {
     return (
+      this.firstDraw ||
       !this.size.isEqual(this.drawable.size) ||
       this.opacity !== this.drawable.getFullOpacity() ||
       this.scale !== this.drawable.scale ||
@@ -68,7 +70,7 @@ export abstract class CanvasNode<T extends Drawable> {
       this.setOpacity(opacity);
     }
 
-    if (this.rotation) {
+    if (this.drawable.rotation) {
       this.setRotation();
     }
   }
@@ -81,6 +83,8 @@ export abstract class CanvasNode<T extends Drawable> {
     if (!this.shouldRedraw()) {
       return this.canvas;
     }
+
+    this.firstDraw &&= false;
 
     this.clear();
 

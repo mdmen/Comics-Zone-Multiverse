@@ -82,7 +82,7 @@ export class Drawable extends Groupable {
     }
 
     let opacity = this.opacity;
-    this.findParent((drawable) => {
+    this.traverseParentsUntil((drawable) => {
       if (drawable.opacity >= 1) return false;
 
       opacity -= 1 - drawable.opacity;

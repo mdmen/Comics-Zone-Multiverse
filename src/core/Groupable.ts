@@ -62,6 +62,10 @@ export class Groupable {
     return null;
   }
 
+  public traverseParentsUntil(predicate: (groupable: this) => boolean) {
+    this.findParent(predicate);
+  }
+
   public destroy() {
     this.children.forEach((groupable) => {
       groupable.destroy();
