@@ -1,0 +1,24 @@
+@layer core {
+  .layer {
+    position: absolute;
+    overflow: hidden;
+    top: var(--layer-top, 0);
+    left: var(--layer-left, 0);
+    width: var(--layer-width, 0);
+    height: var(--layer-height, 0);
+  }
+
+  .layer-pixelated {
+    image-rendering: pixelated;
+    text-rendering: optimizeSpeed;
+  }
+
+  .inner-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate3d(var(--inner-layer-x, 0), var(--inner-layer-y, 0), 0);
+    width: var(--inner-layer-width, 100%);
+    height: var(--inner-layer-height, 100%);
+  }
+}

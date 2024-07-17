@@ -1,4 +1,3 @@
 {
-  "livePreview.serverRoot": "./dist",
-  "svg.preview.background": "editor"
+  "livePreview.serverRoot": "./dist"
 }

@@ -1,8 +1,7 @@
-import { Text } from '../../Text';
+import type { Text } from '../Text';
 import { HTMLNode } from './HTMLNode';
 
-export class HTMLTextNode extends HTMLNode {
-  protected declare readonly drawable: Text;
+export class HTMLTextNode<T extends Text> extends HTMLNode<T> {
   protected text = '';
   protected fontSize = 16;
   protected color = 'black';
@@ -10,7 +9,7 @@ export class HTMLTextNode extends HTMLNode {
   protected maxWidth = 0;
   protected centered = false;
 
-  constructor(drawable: Text) {
+  constructor(drawable: T) {
     super(drawable);
 
     this.element.classList.add('text-node');
@@ -39,7 +38,7 @@ export class HTMLTextNode extends HTMLNode {
   public update() {
     super.update();
 
-    if (!this.visible || this.opacity === 0) return;
+    if (!this.shouldUpdate) return;
 
     this.text !== this.drawable.text && this.syncText();
     this.fontSize !== this.drawable.fontSize && this.syncFontSize();

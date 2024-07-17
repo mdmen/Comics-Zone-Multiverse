@@ -1,10 +1,8 @@
 import { CanvasNode } from './CanvasNode';
-import type { Image } from '../../Image';
-import { Vector } from '../../../geometry';
+import type { Image } from '../Image';
 
 export class CanvasImageNode<T extends Image> extends CanvasNode<T> {
   protected flipped = false;
-  protected readonly sourcePosition = new Vector(0, 0);
 
   protected shouldRedraw() {
     return super.shouldRedraw() || this.flipped !== this.drawable.flipped;
@@ -13,21 +11,22 @@ export class CanvasImageNode<T extends Image> extends CanvasNode<T> {
   protected drawImage() {
     this.context.drawImage(
       this.drawable.image,
-      this.sourcePosition.x | 0,
-      this.sourcePosition.y | 0,
-      this.size.x | 0,
-      this.size.y | 0,
+      this.drawable.source.x | 0,
+      this.drawable.source.y | 0,
+      this.size.width | 0,
+      this.size.height | 0,
       0,
       0,
-      (this.size.x * this.scale) | 0,
-      (this.size.y * this.scale) | 0
+      (this.size.width * this.scale) | 0,
+      (this.size.height * this.scale) | 0
     );
   }
 
   private flipX() {
     this.flipped = this.drawable.flipped;
 
-    this.context.translate(this.size.x, 0);
+    const shiftX = Math.floor(this.size.width * this.scale);
+    this.context.translate(shiftX, 0);
     this.context.scale(-1, 1);
   }
 

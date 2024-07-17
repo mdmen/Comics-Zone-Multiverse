@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 
-export class AssetLoader<
+export class Loader<
   Load extends (source: Source) => Promise<Asset>,
   Asset = Awaited<ReturnType<Load>>,
   Source = Parameters<Load>[0]

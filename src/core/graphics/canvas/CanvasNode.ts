@@ -1,7 +1,7 @@
-import { createCanvas, createContext2D, toRadians } from '@/core/utils';
-import { Drawable } from '../../Drawable';
+import { createCanvas, createContext2D, toRadians } from '../../utils';
+import { Drawable } from '../Drawable';
 
-export abstract class CanvasNode<T extends Drawable> {
+export abstract class CanvasNode<T extends Drawable = Drawable> {
   public readonly canvas;
   public readonly context;
   protected readonly drawable;
@@ -9,7 +9,7 @@ export abstract class CanvasNode<T extends Drawable> {
   protected opacity;
   protected rotation;
   protected scale;
-  private firstDraw = true;
+  private blank = true;
 
   constructor(drawable: T) {
     this.drawable = drawable;
@@ -19,15 +19,16 @@ export abstract class CanvasNode<T extends Drawable> {
     this.size = drawable.size.clone();
 
     this.canvas = createCanvas(
-      this.scale * this.size.x,
-      this.scale * this.size.y
+      this.scale * this.size.width,
+      this.scale * this.size.height,
+      true
     );
     this.context = createContext2D(this.canvas);
   }
 
   protected shouldRedraw() {
     return (
-      this.firstDraw ||
+      this.blank ||
       !this.size.isEqual(this.drawable.size) ||
       this.opacity !== this.drawable.getFullOpacity() ||
       this.scale !== this.drawable.scale ||
@@ -41,6 +42,7 @@ export abstract class CanvasNode<T extends Drawable> {
     this.context.globalAlpha = this.opacity;
   }
 
+  // TODO: add support for rotation
   private setRotation() {
     this.rotation = this.drawable.rotation;
 
@@ -48,8 +50,8 @@ export abstract class CanvasNode<T extends Drawable> {
   }
 
   private setCanvasSize() {
-    this.canvas.width = Math.floor(this.scale * this.size.x);
-    this.canvas.height = Math.floor(this.scale * this.size.y);
+    this.canvas.width = Math.floor(this.scale * this.size.width);
+    this.canvas.height = Math.floor(this.scale * this.size.height);
   }
 
   private setSize() {
@@ -65,6 +67,8 @@ export abstract class CanvasNode<T extends Drawable> {
   }
 
   protected draw() {
+    this.blank &&= false;
+
     const opacity = this.drawable.getFullOpacity();
     if (opacity < 1) {
       this.setOpacity(opacity);
@@ -79,12 +83,10 @@ export abstract class CanvasNode<T extends Drawable> {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
-  public getDrawableNode() {
+  public getDrawableElement() {
     if (!this.shouldRedraw()) {
       return this.canvas;
     }
-
-    this.firstDraw &&= false;
 
     this.clear();
 

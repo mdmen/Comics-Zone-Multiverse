@@ -1,7 +1,8 @@
 import { StateMachine } from '../state';
 import { type AnimationFrame, Animation } from '../animation';
-import type { SpriteAtlas, SpriteFrame } from './SpriteAtlas';
+import type { SpriteAtlas } from './SpriteAtlas';
 import { Image, type ImageOptions } from './Image';
+import { Vector } from '../geometry';
 
 interface SpriteOptions extends ImageOptions {
   atlas: SpriteAtlas;
@@ -10,18 +11,13 @@ interface SpriteOptions extends ImageOptions {
 export class Sprite extends Image {
   private readonly atlas;
   public readonly animations = new StateMachine<Animation>();
-  private currentAnimationFrame: AnimationFrame | null = null;
-  private currentFrame: SpriteFrame = {
-    frame: { x: 0, y: 0, w: 0, h: 0 },
-  };
+  private currentFrame: AnimationFrame | null = null;
+  public readonly offset = new Vector(0, 0);
 
   constructor({ atlas, ...options }: SpriteOptions) {
     super(options);
 
     this.atlas = atlas;
-
-    const { frame } = this.getCurrentFrame();
-    this.size.set(frame.w, frame.h);
   }
 
   private getFrame(name: string) {
@@ -35,11 +31,14 @@ export class Sprite extends Image {
   }
 
   public setFrame(name: string) {
-    this.currentFrame = this.getFrame(name);
-  }
+    const { frame, offset } = this.getFrame(name);
 
-  public getCurrentFrame() {
-    return this.currentFrame;
+    this.source.set(frame.x, frame.y);
+    this.size.set(frame.w, frame.h);
+
+    if (offset) {
+      this.offset.set(offset.x || 0, offset.y || 0);
+    }
   }
 
   public update(deltaStep: number) {
@@ -50,9 +49,9 @@ export class Sprite extends Image {
     if (!animation) return;
 
     const animationFrame = animation.getCurrentFrame();
-    if (this.currentAnimationFrame !== animationFrame) {
+    if (this.currentFrame !== animationFrame) {
       this.setFrame(animationFrame.name);
-      this.currentAnimationFrame = animationFrame;
+      this.currentFrame = animationFrame;
     }
 
     this.animations.update(deltaStep);

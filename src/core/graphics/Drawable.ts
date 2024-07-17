@@ -1,22 +1,25 @@
-import type { Layer } from './layers';
-import { HTMLNode, type CanvasNode } from './nodes';
-import { Vector } from '../geometry';
-import { Groupable } from '../Groupable';
+import type { Layer } from './Layer';
+import { HTMLNode } from './html';
+import type { CanvasNode } from './canvas';
+import { Size, Vector, Shapes } from '../geometry';
+import { Container } from '../Container';
 
 export interface DrawableOptions {
   layer: Layer;
   x?: number;
   y?: number;
+  originX?: number;
+  originY?: number;
   visible?: boolean;
   opacity?: number;
   zIndex?: number;
-  origin?: Vector;
   rotation?: number;
   scale?: number;
 }
 
-export class Drawable extends Groupable {
+export class Drawable extends Container {
   public readonly layer;
+  public shape = Shapes.NONE;
   public readonly node!: HTMLNode | CanvasNode;
   public readonly modifiers = new Set<
     (drawable: Drawable, deltaStep: number) => void
@@ -24,7 +27,7 @@ export class Drawable extends Groupable {
   public readonly velocity;
   public readonly position;
   public readonly origin;
-  public readonly size = new Vector();
+  public readonly size = new Size();
   public opacity;
   public zIndex;
   public visible;
@@ -38,7 +41,8 @@ export class Drawable extends Groupable {
     visible = true,
     opacity = 1,
     zIndex = 0,
-    origin = new Vector(),
+    originX = 0,
+    originY = 0,
     scale = 1,
     rotation = 0,
   }: DrawableOptions) {
@@ -51,7 +55,7 @@ export class Drawable extends Groupable {
     this.opacity = opacity;
     this.zIndex = zIndex;
     this.scale = scale;
-    this.origin = origin;
+    this.origin = new Vector(originX, originY);
     this.rotation = rotation;
   }
 
@@ -91,6 +95,19 @@ export class Drawable extends Groupable {
     });
 
     return Math.max(0, opacity);
+  }
+
+  public getFullZIndex() {
+    if (!this.parent) {
+      return this.zIndex;
+    }
+
+    let zIndex = this.zIndex;
+    this.traverseParents((drawable) => {
+      zIndex += drawable.zIndex;
+    });
+
+    return zIndex;
   }
 
   public update(deltaStep: number) {

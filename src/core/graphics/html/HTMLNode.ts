@@ -1,11 +1,11 @@
 import { Vector } from '../../geometry';
 import { Settings } from '../../Settings';
-import { HTMLLayer } from '../layers';
+import { HTMLLayer } from './HTMLLayer';
 import type { Drawable } from '../Drawable';
 
 import './html-node.css';
 
-export abstract class HTMLNode {
+export abstract class HTMLNode<T extends Drawable = Drawable> {
   protected readonly element;
   protected readonly settings = Settings.getInstance();
   protected readonly position = new Vector();
@@ -17,8 +17,9 @@ export abstract class HTMLNode {
   protected zIndex = 0;
   protected mounted = false;
   protected flipped = false;
+  protected shouldUpdate = false;
 
-  constructor(protected readonly drawable: Drawable) {
+  constructor(protected readonly drawable: T) {
     this.element = document.createElement('div');
     this.element.classList.add('node');
 
@@ -30,10 +31,12 @@ export abstract class HTMLNode {
     const opacity = this.drawable.getFullOpacity();
     this.syncOpacity(opacity);
 
+    const zIndex = this.drawable.getFullZIndex();
+    this.syncZIndex(zIndex);
+
     this.syncRotation();
     this.syncScale();
     this.syncDebugBox();
-    this.syncZIndex();
   }
 
   public mount() {
@@ -60,24 +63,50 @@ export abstract class HTMLNode {
     if (this.visible !== visible) {
       this.syncVisibility(visible);
 
-      if (!visible) return;
+      if (!visible) {
+        this.shouldUpdate = false;
+        return;
+      }
+
+      this.shouldUpdate = true;
     }
 
     const opacity = this.drawable.getFullOpacity();
     if (this.opacity !== opacity) {
       this.syncOpacity(opacity);
 
-      if (opacity === 0) return;
+      if (opacity === 0) {
+        this.shouldUpdate = false;
+        return;
+      }
+
+      this.shouldUpdate = true;
     }
 
     const position = this.drawable.getFullPosition();
-    this.position.x !== position.x && this.syncPositionX(position.x);
-    this.position.y !== position.y && this.syncPositionY(position.y);
+    if (this.position.x !== position.x) {
+      this.syncPositionX(position.x);
+    }
+    if (this.position.y !== position.y) {
+      this.syncPositionY(position.y);
+    }
 
-    this.rotation !== this.drawable.rotation && this.syncRotation();
-    this.scale !== this.drawable.scale && this.syncScale();
-    this.zIndex !== this.drawable.zIndex && this.syncZIndex();
-    this.debug !== this.settings.isDebug() && this.syncDebugBox();
+    const zIndex = this.drawable.getFullZIndex();
+    if (this.zIndex !== zIndex) {
+      this.syncZIndex(zIndex);
+    }
+
+    if (this.rotation !== this.drawable.rotation) {
+      this.syncRotation();
+    }
+
+    if (this.scale !== this.drawable.scale) {
+      this.syncScale();
+    }
+
+    if (this.debug !== this.settings.isDebug()) {
+      this.syncDebugBox();
+    }
   }
 
   public syncVisibility(visible: boolean) {
@@ -128,10 +157,10 @@ export abstract class HTMLNode {
     this.element.style.setProperty('--node-scale-y', `${this.scale}`);
   }
 
-  public syncZIndex() {
-    this.zIndex = this.drawable.zIndex;
+  public syncZIndex(zIndex: number) {
+    this.zIndex = zIndex;
 
-    this.element.style.setProperty('--node-z-index', `${this.zIndex}`);
+    this.element.style.setProperty('--node-z-index', `${zIndex}`);
   }
 
   public syncDebugBox() {

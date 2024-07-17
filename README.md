@@ -11,11 +11,12 @@ Description
 - [ ] Game engine
 - [ ] Playable version
 - [ ] Level 1
-- [ ] Level 2
-- [ ] Level 3
-- [ ] Level 4
 
 ## Screenshots
+
+...
+
+## Gameplay
 
 ...
 
@@ -23,7 +24,6 @@ Description
 
 - Custom game engine
 - Can be rendered using 2D Canvas, WebGL or HTML/CSS
-- Loads assets only needed for current scene
 - Gamepad support
 
 ## License

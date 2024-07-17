@@ -1,10 +1,18 @@
 import { CanvasNode } from './CanvasNode';
-import type { Rect } from '../../Rect';
+import type { Rect } from '../Rect';
 
 export class CanvasRectNode<T extends Rect> extends CanvasNode<T> {
-  protected color = '';
-  protected borderColor = '';
-  protected borderWidth = -1;
+  protected color;
+  protected borderColor;
+  protected borderWidth;
+
+  constructor(drawable: T) {
+    super(drawable);
+
+    this.color = drawable.color;
+    this.borderColor = drawable.borderColor;
+    this.borderWidth = drawable.borderWidth;
+  }
 
   protected shouldRedraw() {
     return (
@@ -29,8 +37,8 @@ export class CanvasRectNode<T extends Rect> extends CanvasNode<T> {
     this.context.strokeRect(
       borderHalfWidth | 0,
       borderHalfWidth | 0,
-      (size.x - borderHalfWidth) | 0,
-      (size.y - borderHalfWidth) | 0
+      (size.width - borderHalfWidth) | 0,
+      (size.height - borderHalfWidth) | 0
     );
   }
 
@@ -43,8 +51,8 @@ export class CanvasRectNode<T extends Rect> extends CanvasNode<T> {
     this.context.fillRect(
       borderWidth | 0,
       borderWidth | 0,
-      (size.x - borderWidth) | 0,
-      (size.y - borderWidth) | 0
+      (size.width - borderWidth) | 0,
+      (size.height - borderWidth) | 0
     );
   }
 

@@ -1,5 +1,5 @@
 {
-  "rows": ["dark", "light", "yellow"],
+  "rows": ["dark", "light", "primary"],
   "rowHeight": 6,
   "glyphs": {
     "!": {

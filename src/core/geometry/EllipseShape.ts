@@ -1,6 +1,6 @@
 import type { Vector } from './Vector';
 
-export interface Rectangle {
+export interface EllipseShape {
   position: Vector;
-  size: Vector;
+  radius: Vector;
 }

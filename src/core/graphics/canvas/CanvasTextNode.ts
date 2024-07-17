@@ -1,5 +1,5 @@
 import { CanvasNode } from './CanvasNode';
-import type { Text } from '../../Text';
+import type { Text } from '../Text';
 
 export class CanvasTextNode<T extends Text> extends CanvasNode<T> {
   protected text;
