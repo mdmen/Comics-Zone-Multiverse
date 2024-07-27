@@ -23,8 +23,9 @@ Description
 ## Technical features
 
 - Custom game engine
-- Can be rendered using 2D Canvas, WebGL or HTML/CSS
-- Gamepad support
+- Can be rendered using WebGL, WebGPU, 2D Canvas or HTML/CSS
+- Keyboard/Gamepad support with key bindings
+- ...
 
 ## License
 

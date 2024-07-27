@@ -1,5 +1,3 @@
-import { PRODUCTION } from './config';
-
 enum LogLevel {
   Debug = 0,
   Info = 5,
@@ -9,11 +7,9 @@ enum LogLevel {
 
 export class Logger {
   private static instance: Logger;
-  private readonly logLevel;
+  private logLevel = LogLevel.Warn;
 
-  private constructor() {
-    this.logLevel = PRODUCTION ? LogLevel.Warn : LogLevel.Debug;
-  }
+  private constructor() {}
 
   public static getInstance() {
     if (!Logger.instance) {
@@ -21,6 +17,10 @@ export class Logger {
     }
 
     return Logger.instance;
+  }
+
+  public setLevel(level: LogLevel) {
+    this.logLevel = level;
   }
 
   public debug(...args: unknown[]) {

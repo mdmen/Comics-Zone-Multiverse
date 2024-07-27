@@ -1,4 +1,5 @@
 import { InputDevice } from '../InputDevice';
+import { InputDeviceType } from '../InputDeviceType';
 import { InputKeyState } from '../InputKeyState';
 
 export class Keyboard extends InputDevice<string> {
@@ -6,9 +7,11 @@ export class Keyboard extends InputDevice<string> {
   private readonly nextStateKeys = new Map<string, InputKeyState>();
 
   private constructor() {
-    super();
+    super(InputDeviceType.Keyboard);
 
-    this.bindEvents();
+    window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('keyup', this.handleKeyUp);
+    window.addEventListener('blur', this.handleBlur);
   }
 
   public static getInstance() {
@@ -17,12 +20,6 @@ export class Keyboard extends InputDevice<string> {
     }
 
     return Keyboard.instance;
-  }
-
-  private bindEvents() {
-    window.addEventListener('keydown', this.handleKeyDown);
-    window.addEventListener('keyup', this.handleKeyUp);
-    window.addEventListener('blur', this.handleBlur);
   }
 
   private handleKeyDown = ({ code }: KeyboardEvent) => {
@@ -44,8 +41,12 @@ export class Keyboard extends InputDevice<string> {
 
       if (state === InputKeyState.Pressed) {
         this.nextStateKeys.set(code, InputKeyState.Hold);
-      } else if (state === InputKeyState.Released) {
+        return;
+      }
+
+      if (state === InputKeyState.Released) {
         this.nextStateKeys.set(code, InputKeyState.None);
+        return;
       }
     });
   }

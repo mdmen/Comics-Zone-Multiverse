@@ -1,17 +1,17 @@
-import { RenderEngines } from './RenderEngines';
+import { RenderEngine } from './RenderEngine';
 
-interface Values {
+interface SettingsValues {
   debug: boolean;
   antialiasing: boolean;
-  renderEngine: RenderEngines;
+  renderEngine: RenderEngine;
 }
 
 export class Settings {
   private static instance: Settings;
-  private readonly values: Values = {
+  private readonly settings: SettingsValues = {
     debug: false,
-    antialiasing: false,
-    renderEngine: RenderEngines.CANVAS,
+    antialiasing: true,
+    renderEngine: RenderEngine.WebGL,
   };
 
   public static getInstance() {
@@ -22,31 +22,35 @@ export class Settings {
     return Settings.instance;
   }
 
-  public get<T extends keyof Values>(key: T): Values[T] {
-    return this.values[key];
+  public get<T extends keyof SettingsValues>(key: T): SettingsValues[T] {
+    return this.settings[key];
   }
 
-  public set<T extends keyof Values>(key: T, value: Values[T]) {
-    this.values[key] = value;
+  public set<T extends keyof SettingsValues>(key: T, value: SettingsValues[T]) {
+    this.settings[key] = value;
   }
 
   public isHTMLRenderEngine() {
-    return this.values.renderEngine === RenderEngines.HTML;
+    return this.settings.renderEngine === RenderEngine.HTML;
   }
 
   public isWebGLRenderEngine() {
-    return this.values.renderEngine === RenderEngines.WEBGL;
+    return this.settings.renderEngine === RenderEngine.WebGL;
   }
 
   public isCanvasRenderEngine() {
-    return this.values.renderEngine === RenderEngines.CANVAS;
+    return this.settings.renderEngine === RenderEngine.Canvas;
+  }
+
+  public isWebGPURenderEngine() {
+    return this.settings.renderEngine === RenderEngine.WebGPU;
   }
 
   public isDebug() {
-    return this.values.debug;
+    return this.settings.debug;
   }
 
   public isAntialiasing() {
-    return this.values.antialiasing;
+    return this.settings.antialiasing;
   }
 }

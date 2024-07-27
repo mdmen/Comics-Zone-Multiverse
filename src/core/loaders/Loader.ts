@@ -6,7 +6,6 @@ export class Loader<
   Source = Parameters<Load>[0]
 > {
   private readonly assets = new Map<string, Asset>();
-
   public readonly progressEvent = new Observable<Asset>();
   public readonly loadedEvent = new Observable<Asset>();
 
@@ -47,17 +46,19 @@ export class Loader<
     const asset = this.assets.get(key);
 
     if (!asset) {
-      throw Error(`Unable to retrieve an asset. "${key}" not loaded`);
+      throw Error(
+        `Unable to retrieve an asset. ${key} not ` +
+          (this.manifest[key] ? 'loaded' : 'found')
+      );
     }
 
     return asset;
   }
 
   public delete(...keys: string[]) {
-    const notFound = keys.filter((key) => !this.assets.has(key));
-
+    const notFound = keys.filter((key) => !this.manifest[key]);
     if (notFound.length) {
-      throw Error(`Unable to delete assets. "${notFound}" not loaded`);
+      throw Error(`Unable to delete assets. "${notFound}" not found`);
     }
 
     keys.forEach((key) => {

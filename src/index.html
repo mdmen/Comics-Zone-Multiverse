@@ -15,13 +15,13 @@
   <meta name="og:title" content="<%= htmlWebpackPlugin.options.title %>" />
   <meta name="og:description" content="<%= htmlWebpackPlugin.options.description %>" />
   <meta name="og:url" content="<%= htmlWebpackPlugin.options.homepage %>" />
-  <meta name="og:image" content="<%=require('./assets/images/preview.webp')%>" />
+  <meta name="og:image" content="<%=require('../images/header.webp')%>" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="<%= htmlWebpackPlugin.options.title %>" />
   <meta name="twitter:description" content="<%= htmlWebpackPlugin.options.description %>" />
   <meta name="twitter:url" content="<%= htmlWebpackPlugin.options.homepage %>" />
-  <meta name="twitter:image" content="<%=require('./assets/images/preview.webp')%>" />
+  <meta name="twitter:image" content="<%=require('../images/header.webp')%>" />
 
   <link rel="preload" as="image" href="<%=require('./assets/images/loading/progress_lower.webp')%>" />
   <link rel="preload" as="image" href="<%=require('./assets/images/loading/progress_upper.webp')%>" />
@@ -37,7 +37,7 @@
   <div class="wrapper">
     <div class="paper">
       <noscript>
-        <p style="font-size: 1.2rem; padding: 20px; margin: 0">
+        <p class="noscript">
           You need to enable JavaScript to play this game
         </p>
       </noscript>

@@ -60,3 +60,9 @@
 .options-controls-keys {
   line-height: 2.5;
 }
+
+.noscript {
+  font-size: 1.2rem;
+  padding: 20px;
+  margin: 0;
+}

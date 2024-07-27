@@ -6,8 +6,4 @@ export class StateMachineNode<T extends State> {
     public readonly state: T,
     public readonly transitions = new Set<StateTransition>()
   ) {}
-
-  public addTransition(transition: StateTransition) {
-    this.transitions.add(transition);
-  }
 }

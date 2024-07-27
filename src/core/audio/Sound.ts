@@ -16,7 +16,7 @@ export class Sound {
   ) {}
 
   private onStop = () => {
-    this.destroy();
+    this.stop();
     this.stopEvent.notify(this);
   };
 
@@ -44,14 +44,6 @@ export class Sound {
   }
 
   public stop() {
-    try {
-      this.sourceNode?.stop();
-    } catch (error) {
-      this.logger.error(error);
-    }
-  }
-
-  public destroy() {
     try {
       if (!this.sourceNode) return;
 

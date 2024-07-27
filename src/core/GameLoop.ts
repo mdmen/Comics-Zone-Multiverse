@@ -1,3 +1,5 @@
+import { Settings } from './Settings';
+
 enum GameLoopState {
   RUNNING,
   STOPPED,
@@ -10,6 +12,7 @@ interface Options {
 }
 
 export class GameLoop {
+  private readonly settings = Settings.getInstance();
   private readonly update;
   private readonly render;
   private deltaStep;
@@ -17,10 +20,18 @@ export class GameLoop {
   private accumulator = 0;
   private state = GameLoopState.STOPPED;
 
+  private static MAX_HTML_FPS = 40;
+
   constructor({ update, render, fps = 60 }: Options) {
     this.update = update;
     this.render = render;
-    this.deltaStep = 1000 / fps;
+
+    const limitedFps =
+      this.settings.isHTMLRenderEngine() && fps > GameLoop.MAX_HTML_FPS
+        ? GameLoop.MAX_HTML_FPS
+        : fps;
+
+    this.deltaStep = 1000 / limitedFps;
   }
 
   private loop = (timeStamp: number) => {
