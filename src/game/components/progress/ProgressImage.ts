@@ -1,37 +1,32 @@
-import { Picture, type PictureOptions, type Scene } from '@/engine';
+import { type Picture } from '@/core';
 import { Progress } from './Progress';
 
-interface Options extends PictureOptions {
+interface Options {
+  lowerPicture: Picture;
+  upperPicture: Picture;
   total: number;
-  scene: Scene;
-  upperImage: HTMLImageElement;
   delay?: number;
 }
 
 export class ProgressImage extends Progress {
-  private readonly scene;
-  private readonly lowerImage;
-  private readonly upperImage;
+  private lowerPicture;
+  private upperPicture;
 
-  constructor({ scene, total, image, upperImage, delay, ...options }: Options) {
+  constructor({ total, lowerPicture, upperPicture, delay }: Options) {
     super(total, delay);
 
-    this.scene = scene;
-
-    this.lowerImage = new Picture({ ...options, image });
-    this.upperImage = new Picture({ ...options, image: upperImage });
+    this.lowerPicture = lowerPicture;
+    this.upperPicture = upperPicture;
 
     this.checkImagesSizes();
-
-    this.scene.add(this.lowerImage);
-    this.scene.add(this.upperImage);
+    this.reset();
   }
 
   private checkImagesSizes() {
     const isWidthsEqual =
-      this.lowerImage.getWidth() === this.upperImage.getWidth();
+      this.lowerPicture.getWidth() === this.upperPicture.getWidth();
     const isHeightsEqual =
-      this.lowerImage.getHeight() === this.upperImage.getHeight();
+      this.lowerPicture.getHeight() === this.upperPicture.getHeight();
 
     if (!isHeightsEqual || !isWidthsEqual) {
       throw Error('Sizes of progress images should be equal');
@@ -40,7 +35,14 @@ export class ProgressImage extends Progress {
 
   protected async updateVisually() {
     const upperImageHeight =
-      ((100 - this.currentPercentAsync) * this.lowerImage.getHeight()) / 100;
-    this.upperImage.setHeight(upperImageHeight);
+      ((100 - this.progressPercent) * this.lowerPicture.getHeight()) / 100;
+    this.upperPicture.setHeight(upperImageHeight);
+  }
+
+  reset() {
+    super.reset();
+
+    const height = this.lowerPicture.getHeight();
+    this.upperPicture.setHeight(height);
   }
 }

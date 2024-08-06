@@ -1,16 +1,15 @@
 import { Vector } from '../../geometry';
-import { Settings } from '../../Settings';
 import { HTMLLayer } from './HTMLLayer';
+import { HTMLCustomElement } from './HTMLCustomElement';
+import type { Entity } from '../../entities';
 import type { Drawable } from '../Drawable';
 
-import './html-node.css';
+type DrawableEntity = Entity & { drawable: Drawable };
 
-export abstract class HTMLNode<T extends Drawable = Drawable> {
+export abstract class HTMLNode<T extends DrawableEntity = DrawableEntity> {
   protected readonly element;
-  protected readonly settings = Settings.getInstance();
   protected readonly position = new Vector();
   protected opacity = 1;
-  protected rotation = 0;
   protected scale = 1;
   protected debug = false;
   protected visible = true;
@@ -19,22 +18,27 @@ export abstract class HTMLNode<T extends Drawable = Drawable> {
   protected flipped = false;
   protected shouldUpdate = false;
 
-  constructor(protected readonly drawable: T) {
-    this.element = document.createElement('div');
+  public static readonly TAG_NAME = 'g-node';
+
+  static {
+    HTMLCustomElement.define(HTMLNode.TAG_NAME);
+  }
+
+  constructor(protected readonly entity: T) {
+    this.element = document.createElement(HTMLNode.TAG_NAME);
     this.element.classList.add('node');
 
     this.syncPosition();
 
-    const visible = this.drawable.isFullyVisible();
+    const visible = this.entity.drawable.isGloballyVisible();
     this.syncVisibility(visible);
 
-    const opacity = this.drawable.getFullOpacity();
+    const opacity = this.entity.drawable.getGlobalOpacity();
     this.syncOpacity(opacity);
 
-    const zIndex = this.drawable.getFullZIndex();
+    const zIndex = this.entity.drawable.getGlobalZIndex();
     this.syncZIndex(zIndex);
 
-    this.syncRotation();
     this.syncScale();
     this.syncDebugBox();
   }
@@ -42,7 +46,7 @@ export abstract class HTMLNode<T extends Drawable = Drawable> {
   public mount() {
     if (this.mounted) return;
 
-    const layer = this.drawable.layer as HTMLLayer;
+    const layer = this.entity.drawable.layer as HTMLLayer;
     layer.innerElement.appendChild(this.element);
     this.mounted = true;
   }
@@ -59,7 +63,7 @@ export abstract class HTMLNode<T extends Drawable = Drawable> {
   }
 
   public update() {
-    const visible = this.drawable.isFullyVisible();
+    const visible = this.entity.drawable.isGloballyVisible();
     if (this.visible !== visible) {
       this.syncVisibility(visible);
 
@@ -71,7 +75,7 @@ export abstract class HTMLNode<T extends Drawable = Drawable> {
       this.shouldUpdate = true;
     }
 
-    const opacity = this.drawable.getFullOpacity();
+    const opacity = this.entity.drawable.getGlobalOpacity();
     if (this.opacity !== opacity) {
       this.syncOpacity(opacity);
 
@@ -83,7 +87,7 @@ export abstract class HTMLNode<T extends Drawable = Drawable> {
       this.shouldUpdate = true;
     }
 
-    const position = this.drawable.getFullPosition();
+    const position = this.entity.globalPosition;
     if (this.position.x !== position.x) {
       this.syncPositionX(position.x);
     }
@@ -91,20 +95,16 @@ export abstract class HTMLNode<T extends Drawable = Drawable> {
       this.syncPositionY(position.y);
     }
 
-    const zIndex = this.drawable.getFullZIndex();
+    const zIndex = this.entity.drawable.getGlobalZIndex();
     if (this.zIndex !== zIndex) {
       this.syncZIndex(zIndex);
     }
 
-    if (this.rotation !== this.drawable.rotation) {
-      this.syncRotation();
-    }
-
-    if (this.scale !== this.drawable.scale) {
+    if (this.scale !== this.entity.scale) {
       this.syncScale();
     }
 
-    if (this.debug !== this.settings.isDebug()) {
+    if (this.debug !== this.entity.drawable.debug) {
       this.syncDebugBox();
     }
   }
@@ -124,33 +124,27 @@ export abstract class HTMLNode<T extends Drawable = Drawable> {
     this.element.style.setProperty('--node-opacity', `${opacity}`);
   }
 
-  public syncRotation() {
-    this.rotation = this.drawable.rotation;
-
-    this.element.style.setProperty('--node-rotation', `${this.rotation}deg`);
-  }
-
   public syncPosition() {
-    const position = this.drawable.getFullPosition();
+    const position = this.entity.globalPosition;
 
     this.syncPositionX(position.x);
     this.syncPositionY(position.y);
   }
 
   public syncPositionX(n: number) {
-    this.position.setX(n);
+    this.position.x = n;
 
     this.element.style.setProperty('--node-pos-x', `${n | 0}px`);
   }
 
   public syncPositionY(n: number) {
-    this.position.setY(n);
+    this.position.y = n;
 
     this.element.style.setProperty('--node-pos-y', `${n | 0}px`);
   }
 
   public syncScale() {
-    this.scale = this.drawable.scale;
+    this.scale = this.entity.scale;
 
     const scaleX = this.flipped ? -this.scale : this.scale;
     this.element.style.setProperty('--node-scale-x', `${scaleX}`);
@@ -164,7 +158,7 @@ export abstract class HTMLNode<T extends Drawable = Drawable> {
   }
 
   public syncDebugBox() {
-    this.debug = this.settings.isDebug();
+    this.debug = this.entity.drawable.debug;
 
     this.element.style.setProperty(
       '--node-outline',

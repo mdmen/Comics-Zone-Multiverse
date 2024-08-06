@@ -1,10 +1,11 @@
 import { Logger } from '../../Logger';
-import { createCanvas, createContext2D } from '../../utils';
+import { createCanvas } from '../../utils';
 import { Layer, type LayerOptions } from '../Layer';
 import type { Drawable } from '../Drawable';
 import type { CanvasNode } from './CanvasNode';
+import { createContext2D } from './context';
 
-export class LayerCanvas extends Layer {
+export class CanvasLayer extends Layer {
   protected declare element: HTMLCanvasElement;
   protected context!: CanvasRenderingContext2D;
 
@@ -25,8 +26,8 @@ export class LayerCanvas extends Layer {
   }
 
   protected createNode() {
-    const canvas = createCanvas();
-    this.context = createContext2D(canvas);
+    const canvas = createCanvas(this.width, this.height);
+    this.context = createContext2D(canvas) as CanvasRenderingContext2D;
 
     return canvas;
   }
@@ -44,16 +45,18 @@ export class LayerCanvas extends Layer {
   private shouldDraw(drawable: Drawable) {
     return (
       this.isOnCamera(drawable) &&
-      drawable.isFullyVisible() &&
-      drawable.getFullOpacity() > 0
+      drawable.isGloballyVisible() &&
+      drawable.getGlobalOpacity() > 0
     );
   }
 
   public draw(drawable: Drawable) {
     if (!this.shouldDraw(drawable)) return;
 
-    const node = drawable.node as CanvasNode;
-    const position = drawable.getFullPosition();
+    const node = drawable.node as CanvasNode | null;
+    if (!node) return;
+
+    const position = drawable.globalPosition;
     const width = node.canvas.width;
     const height = node.canvas.height;
 

@@ -15,6 +15,13 @@ export class Size {
     return this;
   }
 
+  public scale(kw: number, kh = kw) {
+    this.width *= kw;
+    this.height *= kh;
+
+    return this;
+  }
+
   public setWidth(width: number) {
     this.width = width;
 

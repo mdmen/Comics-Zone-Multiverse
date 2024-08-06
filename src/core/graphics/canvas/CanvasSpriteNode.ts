@@ -1,5 +1,5 @@
 import { CanvasImageNode } from './CanvasImageNode';
-import type { Sprite } from '../Sprite';
+import type { Sprite } from '../DrawableSprite';
 import { Vector } from '../../geometry';
 
 export class CanvasSpriteNode<T extends Sprite> extends CanvasImageNode<T> {

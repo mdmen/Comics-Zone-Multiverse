@@ -1,6 +1,7 @@
-@import './normalize.css';
-@import './variables.css';
-@import './common.css';
-@import './components/index.css';
-@import './game.css';
-@import './ui.css';
+@import './common.css' layer common;
+@import './theme.css' layer theme;
+@import './components/index.css' layer components;
+@import './ui.css' layer ui;
+@import './game.css' layer game;
+
+@layer common, theme, components, ui, game;

@@ -14,10 +14,10 @@ export class SketchIdleState extends SketchState {
 
   protected onInput() {}
 
-  enter() {
+  onEnter() {
     this.character.getSounds().play('sketch', 'oh-yeah');
     this.character.setAnimation(CharacterMoves.IDLE);
   }
 
-  leave() {}
+  onLeave() {}
 }

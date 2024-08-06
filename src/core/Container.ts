@@ -1,17 +1,25 @@
 export class Container {
-  protected readonly children = new Set<this>();
-  protected parent: this | null = null;
+  public children: this[] = [];
+  public parent: this | null = null;
 
   public addChild(item: this) {
+    if (item.parent) {
+      item.parent.removeChild(this);
+    }
+
     item.parent = this;
-    this.children.add(item);
+    this.children.push(item);
 
     return this;
   }
 
   public removeChild(item: this) {
     item.parent = null;
-    this.children.delete(item);
+
+    const index = this.children.indexOf(item);
+    if (index !== -1) {
+      this.children.splice(index, 1);
+    }
 
     return this;
   }
@@ -62,16 +70,12 @@ export class Container {
     return null;
   }
 
-  public traverseParentsUntil(predicate: (item: this) => boolean) {
-    this.findParent(predicate);
-  }
-
   public destroy() {
     this.children.forEach((item) => {
       item.destroy();
     });
 
-    this.children.clear();
+    this.children = [];
     this.parent = null;
   }
 }

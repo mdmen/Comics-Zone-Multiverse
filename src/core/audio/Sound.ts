@@ -10,8 +10,8 @@ export class Sound {
   public readonly stopEvent = new Observable<this>();
 
   constructor(
-    private buffer: AudioBuffer,
-    private layer: SoundLayer,
+    private readonly buffer: AudioBuffer,
+    private readonly layer: SoundLayer,
     private readonly loop = false
   ) {}
 

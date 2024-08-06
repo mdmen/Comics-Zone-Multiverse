@@ -3,7 +3,7 @@ import {
   type ReturnAudioAssets,
   type ReturnImageAssets,
   type Sounds,
-} from '@/engine';
+} from '@/core';
 import { Scene } from './Scene';
 import { introSceneImages } from '@/assets/images';
 import { introSceneSounds } from '@/assets/sounds';

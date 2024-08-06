@@ -1,12 +1,23 @@
 import type { Drawable } from '../Drawable';
 import type { HTMLNode } from './HTMLNode';
 import { Layer } from '../Layer';
+import { HTMLCustomElement } from './HTMLCustomElement';
+
+import './styles.css';
 
 export class HTMLLayer extends Layer {
   public readonly innerElement = this.createInnerLayer();
 
+  public static readonly TAG_NAME = 'g-layer';
+  public static readonly INNER_TAG_NAME = 'g-inner-layer';
+
+  static {
+    HTMLCustomElement.define(HTMLLayer.TAG_NAME);
+    HTMLCustomElement.define(HTMLLayer.INNER_TAG_NAME);
+  }
+
   protected create() {
-    const layer = document.createElement('div');
+    const layer = document.createElement(HTMLLayer.TAG_NAME);
 
     layer.appendChild(this.innerElement);
 
@@ -14,9 +25,9 @@ export class HTMLLayer extends Layer {
   }
 
   private createInnerLayer() {
-    const layer = document.createElement('div');
+    const layer = document.createElement(HTMLLayer.INNER_TAG_NAME);
 
-    layer.classList.add('inner-layer');
+    layer.classList.add('g-inner-layer');
 
     return layer;
   }

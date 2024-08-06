@@ -1,39 +1,34 @@
-import { type Scene, type TextOptions } from '@/engine';
+import { type Text } from '@/core';
 import { Progress } from './Progress';
-import { BaseText } from '../../BaseText';
 
-interface Options extends Omit<TextOptions, 'text'> {
+interface Options {
   total: number;
-  scene: Scene;
+  text: Text;
   template: (progress: number) => string;
   delay?: number;
 }
 
 export class ProgressText extends Progress {
-  private readonly scene;
-  private readonly text;
-  private readonly template;
+  private text;
+  private template;
 
-  constructor({ scene, total, template, delay, ...options }: Options) {
+  constructor({ total, template, delay, text }: Options) {
     super(total, delay);
 
-    this.scene = scene;
     this.template = template;
+    this.text = text;
 
-    this.text = new BaseText({
-      ...options,
-      text: template(0),
-    });
-
-    this.scene.add(this.text);
+    this.reset();
   }
 
   protected async updateVisually() {
-    const text = this.template(this.currentPercentAsync);
+    const text = this.template(this.progressPercent);
     await this.text.setText(text);
   }
 
-  hide() {
-    this.text.hide();
+  reset() {
+    super.reset();
+
+    this.text.setText(this.template(0));
   }
 }

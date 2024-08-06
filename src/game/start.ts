@@ -1,17 +1,17 @@
 import { getElement, onGlobalError } from './helpers';
 import { Config } from './Config';
 import {
-  Audio,
+  GameAudio,
   AudioAssets,
   ImageFontAssets,
   GameLoop,
-  ImageAssets,
+  ImageLoader,
   Settings,
   createLayer,
-} from '@/engine';
+} from '@/core';
 import { Button, Modal } from './ui/components';
 import { Options } from './ui/Options';
-import { SceneManager } from './scenes/SceneManager';
+import { Manager } from './Manager';
 import { IntroScene, LoadingScene, Scenes } from './scenes';
 import { Input } from './Input';
 import { Events, GameEvents } from './Events';
@@ -47,17 +47,17 @@ function createLayers(container: HTMLElement) {
 export function start() {
   const container = getElement('.container');
 
-  const audio = new Audio();
+  const audio = new GameAudio();
   const config = new Config(audio);
 
   Settings.set('render', config.getRender());
 
-  const sceneManager = new SceneManager({
+  const sceneManager = new Manager({
     config,
     audio,
     layers: createLayers(container),
     fontAssets: new ImageFontAssets(),
-    imageAssets: new ImageAssets(),
+    imageAssets: new ImageLoader(),
     audioAssets: new AudioAssets(),
     input: new Input(),
   });

@@ -1,13 +1,11 @@
-import { LinkedList, Observable, delay, isEmpty } from '@/engine';
-import { getPercent } from '../../helpers';
+import { Observable } from '@/core';
+import { getPercent, wait } from '../../helpers';
 
-export abstract class Progress extends Observable {
-  protected readonly total;
-  protected readonly stack = new LinkedList<number>();
+export abstract class Progress extends Observable<Progress> {
+  protected total;
+  protected queuedPercentUpdates = 0;
   protected progress = 0;
   protected progressPercent = 0;
-  protected prevPercent = 0;
-  protected currentPercentAsync = 0;
   protected busy = false;
   protected delay;
 
@@ -20,46 +18,52 @@ export abstract class Progress extends Observable {
 
   protected abstract updateVisually(): Promise<void>;
 
-  update() {
-    this.progress++;
-    this.progressPercent = getPercent(this.total, this.progress);
+  listen(progressValue = 1) {
+    if (this.progress === this.total) return;
 
-    if (this.progressPercent === this.prevPercent) return;
+    this.progress += progressValue;
+    if (this.progress > this.total) {
+      this.progress = this.total;
+    }
 
-    this.stack.append(this.progressPercent);
+    this.queuedPercentUpdates += getPercent(this.total, progressValue);
     this.updateAsync();
-
-    this.prevPercent = this.progressPercent;
   }
 
-  protected async updateAsync() {
-    if (this.busy || isEmpty(this.stack) || this.currentPercentAsync === 100) {
+  private shouldUpdateAsync() {
+    return !this.busy && this.queuedPercentUpdates;
+  }
+
+  private async updateAsync() {
+    if (!this.shouldUpdateAsync()) {
       return;
     }
 
     this.busy = true;
 
-    const targetPercent = this.stack.shift() as number;
+    while (this.queuedPercentUpdates) {
+      await wait(this.delay);
 
-    while (this.currentPercentAsync < targetPercent) {
-      await delay(this.delay);
-      this.currentPercentAsync++;
+      this.progressPercent++;
+      this.queuedPercentUpdates--;
 
       await this.updateVisually();
     }
 
     this.busy = false;
 
-    this.notify(this.currentPercentAsync);
+    this.notify(this);
 
     this.updateAsync();
+  }
+
+  getProgressPercent() {
+    return this.progressPercent;
   }
 
   reset() {
     this.progress = 0;
     this.progressPercent = 0;
-    this.prevPercent = 0;
-    this.currentPercentAsync = 0;
-    this.stack.clear();
+    this.queuedPercentUpdates = 0;
   }
 }

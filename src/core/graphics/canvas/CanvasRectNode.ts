@@ -1,7 +1,7 @@
 import { CanvasNode } from './CanvasNode';
-import type { Rect } from '../Rect';
+import type { DrawableRect } from '../DrawableRect';
 
-export class CanvasRectNode<T extends Rect> extends CanvasNode<T> {
+export class CanvasRectNode<T extends DrawableRect> extends CanvasNode<T> {
   protected color;
   protected borderColor;
   protected borderWidth;

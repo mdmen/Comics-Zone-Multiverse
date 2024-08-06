@@ -1,1 +1,1 @@
-export * from './OpacityModifier';
+export * from './BlinkModifier';

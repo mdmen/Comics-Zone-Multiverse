@@ -1,36 +1,21 @@
-import {
-  Picture,
-  type PictureOptions,
-  type LayerCanvas,
-  getRandomInteger,
-} from '@/engine';
-
-interface Options extends PictureOptions {
-  delayMin?: number;
-  delayMax?: number;
-}
+import { Picture, type PictureOptions, type LayerCanvas } from '@/core';
+import { getRandomInteger } from '@/game/helpers';
 
 // Based on https://codepen.io/dimaZubkov/pen/EgmobE
 export class GlitchImageCanvas extends Picture {
   protected layer!: LayerCanvas;
   private imageOffset;
   private delay = 0;
-  private delayMin;
-  private delayMax;
+  private delayMin = 50;
+  private delayMax = 200;
   private playing = false;
   private lastGenerateTime = 0;
   private cache?: ImageData;
 
-  constructor({ delayMin = 50, delayMax = 200, ...options }: Options) {
+  constructor(options: PictureOptions) {
     super(options);
 
-    if (delayMin > delayMax) {
-      throw Error('delayMin should be greater or equal delayMax');
-    }
-
     this.imageOffset = this.width * 0.01;
-    this.delayMin = delayMin;
-    this.delayMax = delayMax;
 
     this.drawGlitch = this.drawGlitch.bind(this);
     this.glitchBlock = this.glitchBlock.bind(this);

@@ -1,20 +1,19 @@
-import type { State } from '@/engine';
 import type { Character } from './Character';
 
 export interface CharacterStateOptions {
   character: Character;
 }
 
-export abstract class CharacterState implements State {
+export abstract class CharacterState {
   protected readonly character;
 
   constructor({ character }: CharacterStateOptions) {
     this.character = character;
   }
 
-  abstract enter(): void;
+  abstract onEnter(): void;
 
-  abstract update(): void;
+  abstract onUpdate(): void;
 
-  abstract leave(): void;
+  abstract onLeave(): void;
 }

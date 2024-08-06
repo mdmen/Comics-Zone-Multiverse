@@ -1,4 +1,5 @@
 import { InputDevice } from '../InputDevice';
+import { InputDeviceType } from '../InputDeviceType';
 import { InputKeyState } from '../InputKeyState';
 
 export class Gamepad extends InputDevice<number> {
@@ -6,7 +7,7 @@ export class Gamepad extends InputDevice<number> {
   private readonly pressedKeys = new Set<number>();
 
   constructor(index: number) {
-    super();
+    super(InputDeviceType.Gamepad);
 
     this.index = index;
   }
@@ -29,15 +30,15 @@ export class Gamepad extends InputDevice<number> {
         return;
       }
 
-      const keyCode = this.keys.get(index);
+      this.pressedKeys.add(index);
 
-      if (keyCode !== InputKeyState.Pressed && keyCode !== InputKeyState.Hold) {
+      const code = this.keys.get(index);
+
+      if (code !== InputKeyState.Pressed && code !== InputKeyState.Hold) {
         this.keys.set(index, InputKeyState.Pressed);
-      } else if (keyCode === InputKeyState.Pressed) {
+      } else if (code === InputKeyState.Pressed) {
         this.keys.set(index, InputKeyState.Hold);
       }
-
-      this.pressedKeys.add(index);
     });
 
     this.keys.forEach((state, code) => {

@@ -1,4 +1,4 @@
-import { Text, type TextOptions } from '@/engine';
+import { Text, type TextOptions } from '@/core';
 
 export class BaseText extends Text {
   constructor(options: TextOptions) {

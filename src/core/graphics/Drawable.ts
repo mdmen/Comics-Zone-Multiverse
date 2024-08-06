@@ -1,143 +1,109 @@
+import type { Entity } from '../entities';
 import type { Layer } from './Layer';
-import { HTMLNode } from './html';
-import type { CanvasNode } from './canvas';
-import { Size, Vector, Shapes } from '../geometry';
-import { Container } from '../Container';
 
 export interface DrawableOptions {
+  entity: Entity;
   layer: Layer;
-  x?: number;
-  y?: number;
-  originX?: number;
-  originY?: number;
   visible?: boolean;
   opacity?: number;
   zIndex?: number;
-  rotation?: number;
-  scale?: number;
+  shouldCreateNode?: boolean;
 }
 
-export class Drawable extends Container {
+export interface RenderNode {
+  destroy?(): void;
+}
+
+export abstract class Drawable {
+  public readonly entity;
   public readonly layer;
-  public shape = Shapes.NONE;
-  public readonly node!: HTMLNode | CanvasNode;
-  public readonly modifiers = new Set<
-    (drawable: Drawable, deltaStep: number) => void
-  >();
-  public readonly velocity;
-  public readonly position;
-  public readonly origin;
-  public readonly size = new Size();
+  public node: RenderNode | null = null;
   public opacity;
-  public zIndex;
   public visible;
-  public scale;
-  public rotation;
+  private _zIndex;
+  public debug = false;
 
   constructor({
+    entity,
     layer,
-    x,
-    y,
+    zIndex = 0,
     visible = true,
     opacity = 1,
-    zIndex = 0,
-    originX = 0,
-    originY = 0,
-    scale = 1,
-    rotation = 0,
   }: DrawableOptions) {
-    super();
-
+    this.entity = entity;
     this.layer = layer;
-    this.position = new Vector(x, y);
-    this.velocity = new Vector();
     this.visible = visible;
     this.opacity = opacity;
-    this.zIndex = zIndex;
-    this.scale = scale;
-    this.origin = new Vector(originX, originY);
-    this.rotation = rotation;
+    this._zIndex = zIndex;
   }
 
-  public isFullyVisible() {
-    if (!this.parent || !this.visible) {
-      return this.visible;
+  public getGlobalZIndex() {
+    if (!this.entity.getParent()) {
+      return this._zIndex;
     }
 
-    return !!this.findParent((drawable) => !drawable.visible);
-  }
+    let zIndex = this._zIndex;
+    this.entity.traverseParents((entity) => {
+      if (!entity.drawable) return false;
 
-  public getFullPosition() {
-    if (!this.parent) {
-      return this.position;
-    }
-
-    const position = this.position.clone();
-    this.traverseParents((drawable: this) => {
-      position.addV(drawable.position);
-    });
-
-    return position;
-  }
-
-  public getFullOpacity() {
-    if (!this.parent || this.opacity === 0) {
-      return this.opacity;
-    }
-
-    let opacity = this.opacity;
-    this.traverseParentsUntil((drawable) => {
-      if (drawable.opacity >= 1) return false;
-
-      opacity -= 1 - drawable.opacity;
-
-      return opacity <= 0;
-    });
-
-    return Math.max(0, opacity);
-  }
-
-  public getFullZIndex() {
-    if (!this.parent) {
-      return this.zIndex;
-    }
-
-    let zIndex = this.zIndex;
-    this.traverseParents((drawable) => {
-      zIndex += drawable.zIndex;
+      zIndex += entity.drawable._zIndex;
     });
 
     return zIndex;
   }
 
-  public update(deltaStep: number) {
-    this.modifiers.forEach((modify) => {
-      modify(this, deltaStep);
-    });
+  public get zIndex() {
+    return this._zIndex;
+  }
 
-    if (!this.velocity.isZero()) {
-      const step = this.velocity.clone();
-      step.scale(deltaStep);
-      this.position.addV(step);
+  public set zIndex(n: number) {
+    if (this._zIndex === n) return;
+
+    this._zIndex = n;
+
+    this.sortDrawableSiblingsByZIndex();
+  }
+
+  public sortDrawableSiblingsByZIndex() {
+    const parent = this.entity.getParent();
+    if (!parent) return;
+
+    const prev = this.entity.getPreviousSibling();
+    if (prev?.drawable && prev.drawable._zIndex <= this._zIndex) return;
+
+    parent.getChildren().sort((a, b) => b.drawable._zIndex - a._zIndex);
+  }
+
+  public isGloballyVisible() {
+    if (!this.entity.getParent() || !this.visible) {
+      return this.visible;
     }
 
-    this.children.forEach((drawable) => {
-      drawable.update(deltaStep);
+    return !!this.entity.findParent((entity) =>
+      entity.drawable ? entity.drawable.visible : false
+    );
+  }
+
+  public getGlobalOpacity() {
+    if (!this.entity.getParent() || this.opacity === 0) {
+      return this.opacity;
+    }
+
+    let opacity = this.opacity;
+    this.entity.traverseParents((entity) => {
+      if (!entity.drawable) return false;
+
+      opacity *= entity.drawable.opacity;
     });
+
+    return opacity;
   }
 
   public draw() {
     this.layer.draw(this);
-
-    this.children.forEach((drawable) => {
-      drawable.draw();
-    });
   }
 
   public destroy() {
-    super.destroy();
-
-    this.node instanceof HTMLNode && this.node.destroy();
-    this.modifiers.clear();
+    this.node?.destroy?.();
   }
 }

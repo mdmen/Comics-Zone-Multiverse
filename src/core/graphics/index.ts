@@ -1,4 +1,5 @@
-export * from './_Sprite';
-export * from './BitmapText';
-export * from './layers';
-export * from './images';
+export type * from './Drawable';
+export type * from './Layer';
+export type * from './SpriteAtlas';
+export * from './DrawableCircle';
+export * from './DrawableImage';

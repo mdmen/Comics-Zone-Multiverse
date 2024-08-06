@@ -16,7 +16,7 @@ export abstract class SketchState extends CharacterState {
 
   protected abstract onInput(): void;
 
-  update(): void {
+  onUpdate(): void {
     this.onInput();
   }
 }

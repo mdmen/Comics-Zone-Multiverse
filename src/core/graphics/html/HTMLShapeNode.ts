@@ -1,13 +1,16 @@
-import type { Shape } from '../Shape';
+import { Entity } from '../../entities';
+import type { DrawableShape } from '../DrawableShape';
 import { HTMLNode } from './HTMLNode';
 
-export abstract class HTMLShapeNode<T extends Shape> extends HTMLNode<T> {
-  protected color = '';
-  protected borderColor = '';
-  protected borderWidth = 0;
+export abstract class HTMLShapeNode<
+  T extends Entity & { drawable: DrawableShape }
+> extends HTMLNode<T> {
+  private color = '';
+  private borderWidth = 0;
+  private borderColor = '';
 
-  constructor(drawable: T) {
-    super(drawable);
+  constructor(entity: T) {
+    super(entity);
 
     this.element.classList.add('shape-node');
 
@@ -17,19 +20,19 @@ export abstract class HTMLShapeNode<T extends Shape> extends HTMLNode<T> {
   }
 
   public syncFillColor() {
-    this.color = this.drawable.color;
+    this.color = this.entity.drawable.color;
 
     this.element.style.setProperty('--node-bg-color', this.color);
   }
 
   public syncBorderColor() {
-    this.color = this.drawable.borderColor;
+    this.color = this.entity.drawable.borderColor;
 
     this.element.style.setProperty('--node-border-color', this.color);
   }
 
   public syncBorderWidth() {
-    this.borderWidth = this.drawable.borderWidth;
+    this.borderWidth = this.entity.drawable.borderWidth;
 
     this.element.style.setProperty(
       '--node-border-width',
@@ -37,20 +40,20 @@ export abstract class HTMLShapeNode<T extends Shape> extends HTMLNode<T> {
     );
   }
 
-  public update() {
+  public override update() {
     super.update();
 
     if (!this.shouldUpdate) return;
 
-    if (this.color !== this.drawable.color) {
+    if (this.color !== this.entity.drawable.color) {
       this.syncFillColor();
     }
 
-    if (this.borderColor !== this.drawable.borderColor) {
+    if (this.borderColor !== this.entity.drawable.borderColor) {
       this.syncBorderColor();
     }
 
-    if (this.borderWidth !== this.drawable.borderWidth) {
+    if (this.borderWidth !== this.entity.drawable.borderWidth) {
       this.syncBorderWidth();
     }
   }

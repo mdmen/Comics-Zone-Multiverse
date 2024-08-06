@@ -1,9 +1,3 @@
-import {
-  CANVAS_WIDTH,
-  CANVAS_HEIGHT,
-  CAMERA_INNER_OFFSET_X,
-  CAMERA_INNER_OFFSET_Y,
-} from './config';
 import { Vector, type Rectangle } from './geometry';
 
 interface Options {

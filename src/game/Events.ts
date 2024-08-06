@@ -1,4 +1,4 @@
-import { Emitter } from '@/engine';
+import { Emitter } from '@/core';
 
 export enum GameEvents {
   GAME_RESET = 'GAME_RESET',

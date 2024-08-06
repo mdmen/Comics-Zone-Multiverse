@@ -1,20 +1,19 @@
 import {
   Scene as EngineScene,
   type Sounds,
-  type State,
   type ReturnImageAssets,
-} from '@/engine';
-import { type SceneManager } from './SceneManager';
+} from '@/core';
+import { type Manager } from '../Manager';
 
 type Images = ReturnImageAssets<unknown>;
 
-export abstract class Scene implements State {
-  protected readonly manager: SceneManager;
+export abstract class Scene {
+  protected readonly manager: Manager;
   protected readonly scene;
   protected images!: Images;
   protected sounds!: Sounds;
 
-  constructor(manager: SceneManager) {
+  constructor(manager: Manager) {
     this.manager = manager;
     this.scene = new EngineScene();
   }

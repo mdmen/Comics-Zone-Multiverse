@@ -1,4 +1,4 @@
-import { Gamepad } from './gamepad/Gamepad';
+import { Gamepad } from './Gamepad';
 
 describe('Gamepad (engine)', () => {
   test('Should response to user input', async () => {

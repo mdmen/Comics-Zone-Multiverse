@@ -1,12 +1,15 @@
+import type { CircleEntity } from '../../entities';
 import { Vector } from '../../geometry';
-import type { Ellipse } from '../Ellipse';
+import type { DrawableShape } from '../DrawableShape';
 import { HTMLShapeNode } from './HTMLShapeNode';
 
-export class HTMLEllipseNode<T extends Ellipse> extends HTMLShapeNode<T> {
-  protected readonly radius = new Vector();
+export class HTMLEllipseNode<
+  T extends CircleEntity & { drawable: DrawableShape }
+> extends HTMLShapeNode<T> {
+  private readonly radius = new Vector();
 
-  constructor(drawable: T) {
-    super(drawable);
+  constructor(entity: T) {
+    super(entity);
 
     this.element.classList.add('ellipse-node');
 
@@ -15,7 +18,7 @@ export class HTMLEllipseNode<T extends Ellipse> extends HTMLShapeNode<T> {
   }
 
   public syncRadiusX() {
-    this.radius.setX(this.drawable.radius.x);
+    this.radius.x = this.entity.radius.x;
 
     this.element.style.setProperty(
       '--node-width',
@@ -24,7 +27,7 @@ export class HTMLEllipseNode<T extends Ellipse> extends HTMLShapeNode<T> {
   }
 
   public syncRadiusY() {
-    this.radius.setY(this.drawable.radius.y);
+    this.radius.y = this.entity.radius.y;
 
     this.element.style.setProperty(
       '--node-height',
@@ -37,11 +40,11 @@ export class HTMLEllipseNode<T extends Ellipse> extends HTMLShapeNode<T> {
 
     if (!this.shouldUpdate) return;
 
-    if (this.radius.x !== this.drawable.radius.x) {
+    if (this.radius.x !== this.entity.radius.x) {
       this.syncRadiusX();
     }
 
-    if (this.radius.y !== this.drawable.radius.y) {
+    if (this.radius.y !== this.entity.radius.y) {
       this.syncRadiusY();
     }
   }

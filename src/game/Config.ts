@@ -1,4 +1,4 @@
-import { Storage, type Audio, Settings } from '@/engine';
+import { GameStorage, type GameAudio, Settings } from '@/core';
 import { setTheme } from '@/game/helpers';
 import { Events, GameEvents } from './Events';
 
@@ -9,6 +9,8 @@ type Render = 'canvas' | 'dom' | 'webgl';
 interface ConfigValues {
   theme: Theme;
   sound: Sound;
+  music: boolean;
+  sfxSounds: boolean;
   render: Render;
 }
 
@@ -22,8 +24,8 @@ export class Config {
   private readonly storage;
   private readonly audio;
 
-  constructor(audio: Audio) {
-    this.storage = new Storage('config', { ...defaults });
+  constructor(audio: GameAudio) {
+    this.storage = new GameStorage('config', { ...defaults });
     this.audio = audio;
 
     this.initTheme();
@@ -38,7 +40,7 @@ export class Config {
   }
 
   setTheme(value: Theme) {
-    this.storage.setValue('theme', value);
+    this.storage.set('theme', value);
 
     if (value !== 'system') {
       setTheme(value);
@@ -46,25 +48,25 @@ export class Config {
   }
 
   getTheme(): Theme {
-    return this.storage.getValue('theme');
+    return this.storage.get('theme');
   }
 
   setSound(value: Sound) {
     this.audio.setMuted(value === 'off');
-    this.storage.setValue('sound', value);
+    this.storage.set('sound', value);
   }
 
   getSound(): Sound {
-    return this.storage.getValue('sound');
+    return this.storage.get('sound');
   }
 
   getRender(): Render {
-    return this.storage.getValue('render');
+    return this.storage.get('render');
   }
 
   setRender(value: Render) {
     Settings.set('render', value);
-    this.storage.setValue('render', value);
+    this.storage.set('render', value);
 
     Events.emit(GameEvents.GAME_RESET);
   }

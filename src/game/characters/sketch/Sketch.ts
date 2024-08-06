@@ -1,4 +1,4 @@
-import { type Sounds, type ReturnAudioAssets } from '@/engine';
+import { type Sounds, type ReturnAudioAssets } from '@/core';
 import { Character, type CharacterOptions } from '../Character';
 import { SketchIdleState } from './states';
 import { globalSounds } from '@/assets/sounds';

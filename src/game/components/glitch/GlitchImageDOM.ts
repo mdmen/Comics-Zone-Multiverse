@@ -1,4 +1,4 @@
-import { Picture } from '@/engine';
+import { Picture } from '@/core';
 
 export class GlitchImageDOM extends Picture {
   start() {

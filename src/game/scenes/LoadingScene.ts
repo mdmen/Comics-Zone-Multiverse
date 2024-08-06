@@ -1,4 +1,4 @@
-import { Sounds } from '@/engine';
+import { Picture, Sounds, type Layer } from '@/core';
 import { Scene } from './Scene';
 import {
   globalImages,
@@ -9,7 +9,7 @@ import { BaseText } from '../BaseText';
 import { globalSounds } from '@/assets/sounds';
 import { globalFonts } from '@/assets/fonts';
 import { ProgressImage, ProgressText } from '../components';
-import { OpacityModifier } from '../modifiers';
+import { BlinkModifier } from '../modifiers';
 import { Scenes } from './scenes';
 import { countObjectKeys, onPressOnce } from '../helpers';
 
@@ -31,29 +31,50 @@ export class LoadingScene extends Scene {
       introSceneImages,
     ]);
 
-    const progressImage = new ProgressImage({
+    const centerProgressPicture = (image: Picture, layer: Layer) => {
+      const x = layer.getWidth() / 2 - image.getWidth() / 2;
+      image.setPosition(x, image.getPosition().y);
+    };
+
+    const upperProgressPicture = new Picture({
       y: 200,
-      total: resourcesAmount,
-      scene: this.scene,
-      layer: layers.top,
       scale: 3,
+      layer: layers.top,
       image: loadingImages.loadingFinish,
-      upperImage: loadingImages.loadingStart,
-      delay: 10,
       onCreate(image) {
-        image.centerHorizontally();
+        centerProgressPicture(image, layers.top);
       },
     });
 
-    const progressText = new ProgressText({
+    const lowerProgressPicture = new Picture({
+      y: 200,
+      scale: 3,
+      layer: layers.top,
+      image: loadingImages.loadingStart,
+      onCreate(image) {
+        centerProgressPicture(image, layers.top);
+      },
+    });
+
+    const progressImage = new ProgressImage({
+      total: resourcesAmount,
+      lowerPicture: lowerProgressPicture,
+      upperPicture: upperProgressPicture,
+      delay: 10,
+    });
+
+    const progressLoadingText = new BaseText({
       layer: layers.top,
       image: imageFonts.base.image,
       data: imageFonts.base.data,
-      x: 380,
-      y: 550,
-      total: resourcesAmount,
-      scene: this.scene,
+      text: 'Loading...',
       scale: 3,
+      y: 550,
+    });
+
+    const progressText = new ProgressText({
+      total: resourcesAmount,
+      text: progressLoadingText,
       delay: 10,
       template(progress) {
         return `Loading...${progress}%`;
@@ -66,8 +87,10 @@ export class LoadingScene extends Scene {
     audioAssets.subscribe(progressText);
 
     progressText.subscribe({
-      update: (progress: number) => {
-        if (progress !== 100) return;
+      observe: (progress) => {
+        const progressPercent = progress.getProgressPercent();
+
+        if (progressPercent !== 100) return;
 
         const pressAnyKeyText = new BaseText({
           layer: layers.top,
@@ -77,12 +100,12 @@ export class LoadingScene extends Scene {
           scale: 3,
           y: 550,
           onCreate(text) {
-            progressText.hide();
-            text.centerHorizontally();
+            progressLoadingText.hide();
+            centerProgressPicture(text, layers.top);
           },
         });
 
-        pressAnyKeyText.addModifier(new OpacityModifier(4));
+        pressAnyKeyText.addModifier(new BlinkModifier(4));
 
         this.scene.add(pressAnyKeyText);
 
@@ -91,6 +114,10 @@ export class LoadingScene extends Scene {
         });
       },
     });
+
+    this.scene.add(upperProgressPicture);
+    this.scene.add(lowerProgressPicture);
+    this.scene.add(progressLoadingText);
 
     const [gameGlobalImages, gameGlobalSounds, introImages] = await Promise.all(
       [

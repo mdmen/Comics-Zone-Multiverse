@@ -1,5 +1,5 @@
 import { Vector } from '../../geometry';
-import type { Sprite } from '../Sprite';
+import type { Sprite } from '../DrawableSprite';
 import { HTMLImageNode } from './HTMLImageNode';
 
 export class HTMLSpriteNode<T extends Sprite> extends HTMLImageNode<T> {
@@ -24,7 +24,7 @@ export class HTMLSpriteNode<T extends Sprite> extends HTMLImageNode<T> {
     );
   }
 
-  public update() {
+  public override update() {
     super.update();
 
     if (!this.shouldUpdate) return;

@@ -1,4 +1,4 @@
-import { Input as EngineInput } from '@/engine';
+import { Input as EngineInput } from '@/core';
 
 const controls = {
   up: ['ArrowUp', 12],

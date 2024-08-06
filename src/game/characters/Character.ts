@@ -1,9 +1,4 @@
-import {
-  StateMachine,
-  type Sounds,
-  Sprite,
-  type SpriteOptions,
-} from '@/engine';
+import { StateMachine, type Sounds, Sprite, type SpriteOptions } from '@/core';
 
 export interface CharacterOptions extends SpriteOptions {
   sounds?: Sounds;
@@ -18,6 +13,7 @@ export abstract class Character extends Sprite {
   protected strength;
   protected speed;
   protected health;
+  public readonly tags = new Set<string>();
 
   constructor({
     strength = 1,
@@ -40,7 +36,7 @@ export abstract class Character extends Sprite {
 
   update(step: number) {
     const moveState = this.moveStates.getState();
-    moveState.update(step);
+    moveState.onUpdate(step);
     super.update(step);
   }
 

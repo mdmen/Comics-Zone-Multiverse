@@ -1,7 +1,7 @@
 import { CanvasNode } from './CanvasNode';
-import type { Image } from '../Image';
+import type { DrawableImage } from '../DrawableImage';
 
-export class CanvasImageNode<T extends Image> extends CanvasNode<T> {
+export class CanvasImageNode<T extends DrawableImage> extends CanvasNode<T> {
   protected flipped = false;
 
   protected shouldRedraw() {

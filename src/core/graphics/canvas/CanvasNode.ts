@@ -1,5 +1,6 @@
-import { createCanvas, createContext2D, toRadians } from '../../utils';
+import { createCanvas } from '../../utils';
 import { Drawable } from '../Drawable';
+import { createContext2D } from './context';
 
 export abstract class CanvasNode<T extends Drawable = Drawable> {
   public readonly canvas;
@@ -7,14 +8,12 @@ export abstract class CanvasNode<T extends Drawable = Drawable> {
   protected readonly drawable;
   protected readonly size;
   protected opacity;
-  protected rotation;
   protected scale;
   private blank = true;
 
   constructor(drawable: T) {
     this.drawable = drawable;
-    this.opacity = drawable.getFullOpacity();
-    this.rotation = drawable.rotation;
+    this.opacity = drawable.getGlobalOpacity();
     this.scale = drawable.scale;
     this.size = drawable.size.clone();
 
@@ -30,9 +29,8 @@ export abstract class CanvasNode<T extends Drawable = Drawable> {
     return (
       this.blank ||
       !this.size.isEqual(this.drawable.size) ||
-      this.opacity !== this.drawable.getFullOpacity() ||
-      this.scale !== this.drawable.scale ||
-      this.rotation !== this.drawable.rotation
+      this.opacity !== this.drawable.getGlobalOpacity() ||
+      this.scale !== this.drawable.scale
     );
   }
 
@@ -40,13 +38,6 @@ export abstract class CanvasNode<T extends Drawable = Drawable> {
     this.opacity = opacity;
 
     this.context.globalAlpha = this.opacity;
-  }
-
-  // TODO: add support for rotation
-  private setRotation() {
-    this.rotation = this.drawable.rotation;
-
-    this.context.rotate(toRadians(this.rotation));
   }
 
   private setCanvasSize() {
@@ -69,13 +60,9 @@ export abstract class CanvasNode<T extends Drawable = Drawable> {
   protected draw() {
     this.blank &&= false;
 
-    const opacity = this.drawable.getFullOpacity();
+    const opacity = this.drawable.getGlobalOpacity();
     if (opacity < 1) {
       this.setOpacity(opacity);
-    }
-
-    if (this.drawable.rotation) {
-      this.setRotation();
     }
   }
 

@@ -1,13 +1,10 @@
 import { Observable } from '../Observable';
-import type { State } from '../state';
 import type { AnimationFrame } from './AnimationFrame';
 
-export class Animation<Frame extends AnimationFrame = AnimationFrame>
-  implements State
-{
+export class Animation<Frame extends AnimationFrame> {
   private readonly frames;
   private readonly infinite;
-  private readonly frameDurationDefault;
+  private readonly frameDuration;
   private dirty = false;
   private playing = false;
   private currentFrameIndex = 0;
@@ -17,10 +14,10 @@ export class Animation<Frame extends AnimationFrame = AnimationFrame>
   public readonly startEvent = new Observable<this>();
   public readonly endEvent = new Observable<this>();
 
-  constructor(frames: Frame[], infinite = false, frameDurationDefault = 100) {
+  constructor(frames: Frame[], infinite = false, frameDuration = 100) {
     this.infinite = infinite;
     this.frames = frames;
-    this.frameDurationDefault = frameDurationDefault;
+    this.frameDuration = frameDuration;
   }
 
   private isLastFrame() {
@@ -30,7 +27,7 @@ export class Animation<Frame extends AnimationFrame = AnimationFrame>
   private shouldUpdateFrame() {
     const delta = this.time - this.previousTime;
     const frame = this.getCurrentFrame();
-    const duration = frame.duration ?? this.frameDurationDefault;
+    const duration = frame.duration || this.frameDuration;
 
     return delta > duration;
   }
@@ -65,14 +62,6 @@ export class Animation<Frame extends AnimationFrame = AnimationFrame>
       this.dirty = false;
       this.endEvent.notify(this);
     }
-  }
-
-  public leave() {
-    this.reset();
-  }
-
-  public enter() {
-    this.play();
   }
 
   public update(deltaStep: number) {

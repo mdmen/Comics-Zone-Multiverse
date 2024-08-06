@@ -1,60 +1,13 @@
 import {
   Picture,
-  Updatable,
   createCanvas,
-  type UpdatableOptions,
   createContext2D,
-  extractImageFromCanvas,
-  type Layer,
-  isEmpty,
-} from '@/engine';
-import { type SceneManager } from '@/game/scenes/SceneManager';
-import {
-  type HudLayout,
-  outerBorderColor,
-  innerBorderColor,
-  innerAccentColor,
-  backgroundColor,
-  scaleLayout,
-} from './layout';
-
-const slotOuterWidth = 24;
-const slotOuterHeight = 24;
-const slotInnerXOffset = 3;
-const slotInnerYOffset = 3;
-const slotInnerWidth = 18;
-const slotInnerHeight = 18;
-
-const slotLayouts: HudLayout[] = [
-  {
-    color: outerBorderColor,
-    x: 0,
-    y: 0,
-    width: slotOuterWidth,
-    height: slotOuterHeight,
-  },
-  {
-    color: innerBorderColor,
-    x: 1,
-    y: 1,
-    width: 21,
-    height: 22,
-  },
-  {
-    color: innerAccentColor,
-    x: 22,
-    y: 1,
-    width: 1,
-    height: 22,
-  },
-  {
-    color: backgroundColor,
-    x: slotInnerXOffset,
-    y: slotInnerYOffset,
-    width: slotInnerWidth,
-    height: slotInnerHeight,
-  },
-];
+  type PictureOptions,
+  type Sprite,
+  createImage,
+} from '@/core';
+import { Colors } from '../../helpers';
+import { ImageSpriteAsset } from '@/core/assets/types';
 
 export enum InventoryItems {
   ROADKILL = 'roadkill',
@@ -65,68 +18,109 @@ export enum InventoryItems {
   SUPERHERO = 'superhero',
 }
 
-interface Options extends UpdatableOptions {
-  manager: SceneManager;
-  layer: Layer;
-  scale?: number;
+const slotOuterWidth = 24;
+const slotOuterHeight = 24;
+
+const slotInnerCell = {
+  x: 3,
+  y: 3,
+  width: 18,
+  height: 18,
+};
+
+const slotLayouts = [
+  {
+    color: Colors.white,
+    x: 0,
+    y: 0,
+    width: slotOuterWidth,
+    height: slotOuterHeight,
+  },
+  {
+    color: Colors.black,
+    x: 1,
+    y: 1,
+    width: 21,
+    height: 22,
+  },
+  {
+    color: Colors.dark,
+    x: 22,
+    y: 1,
+    width: 1,
+    height: 22,
+  },
+  {
+    color: Colors.primary,
+    ...slotInnerCell,
+  },
+];
+
+const spriteCache = new Map<string, Sprite>();
+
+interface Options
+  extends Omit<
+    PictureOptions,
+    'color' | 'image' | 'onCreate' | 'flippable' | 'width' | 'height'
+  > {
+  spriteAsset: ImageSpriteAsset;
 }
 
-export class HudInventory extends Updatable {
-  private readonly manager;
+export class HudInventory<Items extends string> extends Picture {
   private readonly slotsCount = 3;
-  private items: InventoryItems[] = [];
-  private scale;
+  private items: Items[] = [];
 
-  constructor({ manager, layer, scale = 1, ...options }: Options) {
+  constructor(options: Options) {
     super(options);
 
-    this.manager = manager;
-    this.scale = scale;
-
-    this.setBottomLayout(layer);
+    this.setBottomLayout();
   }
 
-  private async setBottomLayout(layer: Layer): Promise<void> {
-    const image = await this.generateSlotsImage();
-    const bottomLayout = new Picture({
-      layer,
-      image,
-    });
+  private async setBottomLayout() {
+    const canvas = await this.createBottomLayout();
+    const image = await createImage(canvas);
 
-    this.addChild(bottomLayout);
+    this.setImage(image);
   }
 
-  private async generateSlotsImage(): Promise<HTMLImageElement> {
+  private async createBottomLayout() {
     const canvas = createCanvas(
       slotOuterWidth * this.scale * this.slotsCount,
       slotOuterHeight * this.scale
     );
     const context = createContext2D(canvas);
-    let xOffset = 0;
 
+    let xOffset = 0;
     for (let i = 0; i < this.slotsCount; i++) {
       slotLayouts.forEach((layout) => {
-        const { color, x, y, width, height } = scaleLayout(layout, this.scale);
+        const { color, x, y, width, height } = layout;
 
         context.fillStyle = color;
-        context.fillRect(x + xOffset, y, width, height);
+        context.fillRect(
+          Math.floor(x + xOffset),
+          Math.floor(y),
+          Math.floor(width * this.scale),
+          Math.floor(height * this.scale)
+        );
       });
 
-      xOffset += Math.floor(slotOuterWidth * this.scale);
+      xOffset += slotOuterWidth * this.scale;
     }
 
-    return extractImageFromCanvas(canvas);
+    return canvas;
   }
 
-  addItem(item: InventoryItems) {
+  addItem(item: Items) {
     if (this.items.length === this.slotsCount) return;
 
     this.items.push(item);
   }
 
-  removeItem(item: InventoryItems) {
-    if (isEmpty(this.items)) return;
+  hasItem(item: Items) {
+    return this.items.includes(item);
+  }
 
-    this.items = this.items.filter((iItem) => iItem !== item);
+  removeItem(item: Items) {
+    this.items = this.items.filter((i) => i !== item);
   }
 }
